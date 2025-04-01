@@ -14,10 +14,10 @@ export function getInitialLanguage() {
       const storedLang = localStorage.getItem('cv-language');
       return storedLang && (storedLang === 'en' || storedLang === 'ru') ? storedLang : 'ru';
     } catch (error) {
-      return 'en';
+      return 'ru';
     }
   }
-  return 'en';
+  return 'ru';
 }
 
 // Function to set language in localStorage
