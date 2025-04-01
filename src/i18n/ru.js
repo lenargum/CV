@@ -1,7 +1,7 @@
 export default {
   personalInfo: {
     name: "Ленар Гумеров",
-    title: "Фронтенд-разработчик",
+    title: "Frontend-разработчик",
     location: "Казань, Россия",
     email: "lenargamgam@gmail.com",
   },
