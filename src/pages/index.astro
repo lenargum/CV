@@ -1,11 +1,161 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header';
+import Skills from '../components/Skills';
+import Experience from '../components/Experience';
+import Education from '../components/Education';
+import Achievements from '../components/Achievements';
+import SocialLinks from '../components/SocialLinks';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const personalInfo = {
+	name: "Lenar Gumerov",
+	title: "Frontend Developer",
+	location: "Kazan, Russia",
+	email: "lenargamgam@gmail.com",
+	links: [
+		{ name: "LinkedIn", url: "https://www.linkedin.com/in/lenar-gumerov-13593b190/" },
+		{ name: "Telegram", url: "https://t.me/lenargum" },
+		{ name: "Instagram", url: "https://www.instagram.com/lenargum" },
+	],
+};
+
+const skills = [
+	{
+		category: "Frontend",
+		items: [
+			{ name: "HTML", level: 5 },
+			{ name: "JavaScript", level: 5 },
+			{ name: "TypeScript", level: 5 },
+			{ name: "Vue", level: 4 },
+			{ name: "Nuxt", level: 4 },
+			{ name: "React", level: 4 },
+			{ name: "Next", level: 4 },
+			{ name: "UI/UX Design", level: 4 },
+			{ name: "Responsive Design & CSS", level: 5 },
+			{ name: "Version Control & CI/CD", level: 4 },
+		],
+	},
+	{
+		category: "Languages",
+		items: [
+			{ name: "English", level: 4 },
+			{ name: "Russian", level: 5 },
+			{ name: "Tatar", level: 3 },
+		],
+	},
+];
+
+const experiences = [
+	{
+		title: "Middle+ Frontend Developer",
+		company: "Game platform in Telegram Mini Apps",
+		location: "Remote",
+		period: "August 2024 — March 2025",
+		description: [
+			"Developed gaming platform using Telegram Mini Apps, React and Redux.",
+			"Developed SDK-overlay for the gaming platform, which allows to use the platform in other apps (rewards, shop, purchases, ads, etc.)",
+		],
+		technologies: ["React", "Redux", "Telegram Mini Apps", "Framer Motion", "TypeScript", "Tailwind"],
+	},
+	{
+		title: "Middle+ Frontend Developer",
+		company: "Incymo, SmartUA",
+		location: "Remote",
+		period: "June 2023 — September 2024",
+		description: [
+			"Led design, development, and maintenance of the entire frontend for SmartUA (Figma-like image and video editor) alongside a colleague.",
+			"Developed landing pages for Incymo projects, performed web analytics, and managed SEO strategies.",
+			"Utilized technologies such as JavaScript, TypeScript, Vue 3, Pinia, Tailwind, Vuetify, Google Tag Manager, Yandex Metrica, and Docker.",
+		],
+		technologies: ["Vue 3", "TypeScript", "Pinia", "Tailwind", "Vuetify", "GTM", "Yandex Metrica", "Docker"],
+	},
+	{
+		title: "Junior+ Frontend Developer",
+		company: "Icons8 LLC, Icons",
+		location: "Remote",
+		period: "October 2021 — June 2023",
+		description: [
+			"Developed the user collection system for icons, enabling downloads in multiple sizes and formats.",
+			"Implemented an accordion feature for selected icons with an editor while also working with Google Tag Manager and Docker.",
+			"Built product landing pages using JavaScript, Vue/Nuxt 2, Paper.js, and SVG, (Iconizer project) and integrated advertising across the website.",
+		],
+		technologies: ["JavaScript", "Vue 2", "Nuxt 2", "Paper.js", "SVG", "GTM", "Docker"],
+	},
+	{
+		title: "Junior Frontend Developer",
+		company: "MKSKOM LLC",
+		location: "Remote",
+		period: "February 2021 — August 2021",
+		description: [
+			"Created responsive websites according to design specifications and introduced design improvements for UI/UX.",
+			"Worked with JavaScript, Vue.js, SCSS, and SPA architecture, based on Figma designs.",
+			"Developed a custom UI library that increased developer productivity and code reuse",
+		],
+		technologies: ["JavaScript", "Vue 2", "SCSS", "SPA"],
+	},
+];
+
+// Extract all unique tags from experiences
+const allTags = [...new Set(
+	experiences.flatMap(exp => exp.technologies || [])
+)].sort();
+
+const education = [
+	{
+		degree: "Bachelor of Computer Science",
+		institution: "Innopolis University",
+		location: "Innopolis",
+		period: "August 2017 — May 2021",
+		highlights: [
+			"Completed Advanced Enterprise Programming on JavaScript elective, deepening my expertise in modern JavaScript practices.",
+			"Passed electives in Product Design and Product Management, focusing on creating user-centric products and managing cross-functional teams.",
+			"Actively studying and applying UI/UX principles to enhance user experiences in my projects.",
+			"Developed expertise in Backend, Frontend, and Mobile development, building a well-rounded technical foundation.",
+			"Gained deep knowledge of Scrum, Agile, Waterfall, and Lean development methodologies, applying them in various project settings.",
+			"Strengthened problem-solving skills through intensive studies in Data Structures and Algorithms.",
+			"Developed a procedural solar system in Unity, showcasing proficiency in 3D graphics and game development.",
+			"Built a communication protocol for Arduino, reinforcing my understanding of hardware-software integration.",
+			"Created multiple Telegram chatbots, gaining hands-on experience in automation and messaging technologies.",
+			"Taught Android development to kids, fostering the next generation of developers.",
+			"Guided schoolchildren in building a Robotic manipulator for the bottle flip challenge, blending fun with hands-on learning.",
+			"Introduced kids to programming in Minecraft, making coding accessible and engaging.",
+		],
+	},
+];
+
+const achievements = [
+	{
+		title: "Digital Breakthrough 2020",
+		details: "Won the Digital Breakthrough 2020 (Northwest IT Hub) hackathon",
+		subDetails: "48 hours, among 280 teams",
+	},
+	{
+		title: "OpenSpaceHack 2020",
+		details: "Won the OpenSpaceHack 2020 hackathon",
+		subDetails: "48 hours, among 37 teams",
+	},
+	{
+		title: "InnoCTF 2018",
+		details: "4th place in InnoCTF 2018 cybersecurity competition",
+		subDetails: "10 hours, among ~30 teams",
+	},
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Lenar Gumerov - CV">
+	<div id="cv-content">
+		<Header {...personalInfo} />
+		
+		<div class="flex flex-col md:flex-row print:flex-row">
+			<div class="w-full md:w-[250px] print:w-[250px]">
+				<SocialLinks links={personalInfo.links} />
+				<Skills skills={skills} allTags={allTags} />
+			</div>
+			<div class="flex-1">
+				<Experience experiences={experiences} />
+				<Education education={education} />
+				<Achievements achievements={achievements} />
+			</div>
+		</div>
+	</div>
 </Layout>
