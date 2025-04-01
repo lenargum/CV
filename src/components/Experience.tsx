@@ -1,9 +1,27 @@
+import { useTranslation } from '../i18n/useTranslation';
+
+interface TranslatedText {
+  en: string;
+  ru: string;
+  [key: string]: string;
+}
+
+interface TranslatedArray {
+  en: string[];
+  ru: string[];
+  [key: string]: string[];
+}
+
+interface DateTranslations {
+  [date: string]: string;
+}
+
 interface ExperienceItem {
-  title: string;
-  company: string;
+  title: string | TranslatedText;
+  company: string | TranslatedText;
   location: string;
   period: string;
-  description: string[];
+  description: string[] | TranslatedArray;
   technologies?: string[];
 }
 
@@ -12,18 +30,36 @@ interface ExperienceProps {
 }
 
 export default function Experience({ experiences }: ExperienceProps) {
+  const { t, currentLang } = useTranslation();
+  
+  const getTranslatedValue = (value: string | TranslatedText): string => {
+    if (typeof value === 'string') return value;
+    return value[currentLang as keyof TranslatedText] || value.en;
+  };
+  
+  const getTranslatedArray = (value: string[] | TranslatedArray): string[] => {
+    if (Array.isArray(value)) return value;
+    return value[currentLang as keyof TranslatedArray] || value.en;
+  };
+  
+  // Translate dates using the translation mapping
+  const getTranslatedDate = (date: string): string => {
+    const dateTranslations = t?.experience?.dates as DateTranslations | undefined;
+    return dateTranslations?.[date] || date;
+  };
+
   return (
     <section className="cv-section">
-      <h2 className="section-title mb-8">Employment History</h2>
+      <h2 className="section-title mb-8">{t.sections.experience}</h2>
       <div className="space-y-8">
         {experiences.map((exp, index) => (
           <div key={index} className="subsection">
             <div className="flex flex-col mb-4">
-              <h3 className="mb-1">{exp.title}, {exp.company}, {exp.location}</h3>
-              <span className="period">{exp.period}</span>
+              <h3 className="mb-1">{getTranslatedValue(exp.title)}, {getTranslatedValue(exp.company)}, {exp.location}</h3>
+              <span className="period">{getTranslatedDate(exp.period)}</span>
             </div>
             <ul className="list-disc ml-5 space-y-1.5 pr-2">
-              {exp.description.map((item, idx) => (
+              {getTranslatedArray(exp.description).map((item, idx) => (
                 <li key={idx}>{item}</li>
               ))}
             </ul>

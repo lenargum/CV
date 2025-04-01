@@ -1,3 +1,11 @@
+import { useTranslation } from '../i18n/useTranslation';
+
+interface TranslatedText {
+  en: string;
+  ru: string;
+  [key: string]: string;
+}
+
 interface Skill {
   name: string;
   level: number; // 0-5
@@ -12,6 +20,8 @@ interface SkillsProps {
 }
 
 export default function Skills({ skills, allTags = [] }: SkillsProps) {
+  const { t } = useTranslation();
+  
   // Function to render 5 tiles based on skill level
   const renderSkillLevel = (level: number) => {
     const tiles = [];
@@ -32,7 +42,7 @@ export default function Skills({ skills, allTags = [] }: SkillsProps) {
 
   return (
     <section className="cv-section">
-      <h2 className="section-title">Skills</h2>
+      <h2 className="section-title">{t.sections.skills}</h2>
       <div className="space-y-8">
         {skills.map((category) => (
           <div key={category.category} className="subsection">

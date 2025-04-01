@@ -1,11 +1,9 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header';
-import Skills from '../components/Skills';
-import Experience from '../components/Experience';
-import Education from '../components/Education';
-import Achievements from '../components/Achievements';
-import SocialLinks from '../components/SocialLinks';
+import CVContent from '../components/CVContent';
+
+// Import translations (will be used client-side)
+import '../i18n/index.js';
 
 const personalInfo = {
 	name: "Lenar Gumerov",
@@ -19,6 +17,7 @@ const personalInfo = {
 	],
 };
 
+// This data does not need translation
 const skills = [
 	{
 		category: "Frontend",
@@ -45,52 +44,95 @@ const skills = [
 	},
 ];
 
+// Data that needs translation
 const experiences = [
 	{
-		title: "Middle+ Frontend Developer",
-		company: "Game platform in Telegram Mini Apps",
+		title: {
+			en: "Middle+ Frontend Developer",
+			ru: "Middle+ Фронтенд-разработчик"
+		},
+		company: {
+			en: "Game platform in Telegram Mini Apps",
+			ru: "Игровая платформа в Telegram Mini Apps"
+		},
 		location: "Remote",
 		period: "August 2024 — March 2025",
-		description: [
-			"Developed gaming platform using Telegram Mini Apps, React and Redux.",
-			"Developed SDK-overlay for the gaming platform, which allows to use the platform in other apps (rewards, shop, purchases, ads, etc.)",
-		],
+		description: {
+			en: [
+				"Developed gaming platform using Telegram Mini Apps, React and Redux.",
+				"Developed SDK-overlay for the gaming platform, which allows to use the platform in other apps (rewards, shop, purchases, ads, etc.)",
+			],
+			ru: [
+				"Разработал игровую платформу с использованием Telegram Mini Apps, React и Redux.",
+				"Разработал SDK-оверлей для игровой платформы, который позволяет использовать платформу в других приложениях (награды, магазин, покупки, реклама и т.д.)",
+			]
+		},
 		technologies: ["React", "Redux", "Telegram Mini Apps", "Framer Motion", "TypeScript", "Tailwind"],
 	},
 	{
-		title: "Middle+ Frontend Developer",
+		title: {
+			en: "Middle+ Frontend Developer",
+			ru: "Middle+ Фронтенд-разработчик"
+		},
 		company: "Incymo, SmartUA",
 		location: "Remote",
 		period: "June 2023 — September 2024",
-		description: [
-			"Led design, development, and maintenance of the entire frontend for SmartUA (Figma-like image and video editor) alongside a colleague.",
-			"Developed landing pages for Incymo projects, performed web analytics, and managed SEO strategies.",
-			"Utilized technologies such as JavaScript, TypeScript, Vue 3, Pinia, Tailwind, Vuetify, Google Tag Manager, Yandex Metrica, and Docker.",
-		],
+		description: {
+			en: [
+				"Led design, development, and maintenance of the entire frontend for SmartUA (Figma-like image and video editor) alongside a colleague.",
+				"Developed landing pages for Incymo projects, performed web analytics, and managed SEO strategies.",
+				"Utilized technologies such as JavaScript, TypeScript, Vue 3, Pinia, Tailwind, Vuetify, Google Tag Manager, Yandex Metrica, and Docker.",
+			],
+			ru: [
+				"Руководил дизайном, разработкой и поддержкой всего фронтенда для SmartUA (редактор изображений и видео, подобный Figma) вместе с коллегой.",
+				"Разрабатывал лендинги для проектов Incymo, выполнял веб-аналитику и управлял SEO-стратегиями.",
+				"Использовал такие технологии, как JavaScript, TypeScript, Vue 3, Pinia, Tailwind, Vuetify, Google Tag Manager, Яндекс Метрика и Docker.",
+			]
+		},
 		technologies: ["Vue 3", "TypeScript", "Pinia", "Tailwind", "Vuetify", "GTM", "Yandex Metrica", "Docker"],
 	},
 	{
-		title: "Junior+ Frontend Developer",
+		title: {
+			en: "Junior+ Frontend Developer",
+			ru: "Junior+ Фронтенд-разработчик"
+		},
 		company: "Icons8 LLC, Icons",
 		location: "Remote",
 		period: "October 2021 — June 2023",
-		description: [
-			"Developed the user collection system for icons, enabling downloads in multiple sizes and formats.",
-			"Implemented an accordion feature for selected icons with an editor while also working with Google Tag Manager and Docker.",
-			"Built product landing pages using JavaScript, Vue/Nuxt 2, Paper.js, and SVG, (Iconizer project) and integrated advertising across the website.",
-		],
+		description: {
+			en: [
+				"Developed the user collection system for icons, enabling downloads in multiple sizes and formats.",
+				"Implemented an accordion feature for selected icons with an editor while also working with Google Tag Manager and Docker.",
+				"Built product landing pages using JavaScript, Vue/Nuxt 2, Paper.js, and SVG, (Iconizer project) and integrated advertising across the website.",
+			],
+			ru: [
+				"Разработал систему пользовательских коллекций для иконок, обеспечивающую загрузку в различных размерах и форматах.",
+				"Реализовал функцию аккордеона для выбранных иконок с редактором, также работая с Google Tag Manager и Docker.",
+				"Создал лендинги продуктов с использованием JavaScript, Vue/Nuxt 2, Paper.js и SVG (проект Iconizer) и интегрировал рекламу по всему сайту.",
+			]
+		},
 		technologies: ["JavaScript", "Vue 2", "Nuxt 2", "Paper.js", "SVG", "GTM", "Docker"],
 	},
 	{
-		title: "Junior Frontend Developer",
+		title: {
+			en: "Junior Frontend Developer",
+			ru: "Junior Фронтенд-разработчик"
+		},
 		company: "MKSKOM LLC",
 		location: "Remote",
 		period: "February 2021 — August 2021",
-		description: [
-			"Created responsive websites according to design specifications and introduced design improvements for UI/UX.",
-			"Worked with JavaScript, Vue.js, SCSS, and SPA architecture, based on Figma designs.",
-			"Developed a custom UI library that increased developer productivity and code reuse",
-		],
+		description: {
+			en: [
+				"Created responsive websites according to design specifications and introduced design improvements for UI/UX.",
+				"Worked with JavaScript, Vue.js, SCSS, and SPA architecture, based on Figma designs.",
+				"Developed a custom UI library that increased developer productivity and code reuse",
+			],
+			ru: [
+				"Создавал адаптивные веб-сайты в соответствии с дизайн-спецификациями и вносил улучшения в дизайн для UI/UX.",
+				"Работал с JavaScript, Vue.js, SCSS и архитектурой SPA на основе дизайнов Figma.",
+				"Разработал пользовательскую UI-библиотеку, которая повысила продуктивность разработчиков и повторное использование кода.",
+			]
+		},
 		technologies: ["JavaScript", "Vue 2", "SCSS", "SPA"],
 	},
 ];
@@ -102,60 +144,93 @@ const allTags = [...new Set(
 
 const education = [
 	{
-		degree: "Bachelor of Computer Science",
+		degree: {
+			en: "Bachelor of Computer Science",
+			ru: "Бакалавр компьютерных наук"
+		},
 		institution: "Innopolis University",
 		location: "Innopolis",
 		period: "August 2017 — May 2021",
-		highlights: [
-			"Completed Advanced Enterprise Programming on JavaScript elective, deepening my expertise in modern JavaScript practices.",
-			"Passed electives in Product Design and Product Management, focusing on creating user-centric products and managing cross-functional teams.",
-			"Actively studying and applying UI/UX principles to enhance user experiences in my projects.",
-			"Developed expertise in Backend, Frontend, and Mobile development, building a well-rounded technical foundation.",
-			"Gained deep knowledge of Scrum, Agile, Waterfall, and Lean development methodologies, applying them in various project settings.",
-			"Strengthened problem-solving skills through intensive studies in Data Structures and Algorithms.",
-			"Developed a procedural solar system in Unity, showcasing proficiency in 3D graphics and game development.",
-			"Built a communication protocol for Arduino, reinforcing my understanding of hardware-software integration.",
-			"Created multiple Telegram chatbots, gaining hands-on experience in automation and messaging technologies.",
-			"Taught Android development to kids, fostering the next generation of developers.",
-			"Guided schoolchildren in building a Robotic manipulator for the bottle flip challenge, blending fun with hands-on learning.",
-			"Introduced kids to programming in Minecraft, making coding accessible and engaging.",
-		],
+		highlights: {
+			en: [
+				"Completed Advanced Enterprise Programming on JavaScript elective.",
+				"Passed electives in Product Design and Product Management.",
+				"Applied UI/UX principles in multiple projects.",
+				"Studied Backend, Frontend, and Mobile development.",
+				"Practiced Scrum, Agile, Waterfall, and Lean methodologies.",
+				"Intensive studies in Data Structures and Algorithms.",
+				"Developed a procedural solar system in Unity.",
+				"Built a communication protocol for Arduino.",
+				"Created multiple Telegram chatbots.",
+				"Taught Android development to kids.",
+				"Taught robotics basics to kids using a Robotic manipulator for the bottle flip challenge.",
+				"Taught programming to kids using Minecraft.",
+			],
+			ru: [
+				"Прошел курс Advanced Enterprise Programming на JavaScript.",
+				"Сдал элективы по Product Design и Product Management.",
+				"Применял принципы UI/UX в различных проектах.",
+				"Изучал Backend, Frontend и Mobile разработку.",
+				"Практиковал методологии Scrum, Agile, Waterfall и Lean.",
+				"Интенсивно изучал структуры данных и алгоритмы.",
+				"Разработал процедурную солнечную систему в Unity.",
+				"Создал протокол связи для Arduino.",
+				"Разработал много Telegram-ботов.",
+				"Преподавал Android-разработку детям.",
+				"Обучал детей основам робототехники, научив их на роботе-манипуляторе делать bottle flip челлендж.",
+				"Обучал детей программированию через Minecraft.",
+			]
+		},
 	},
 ];
 
 const achievements = [
 	{
-		title: "Digital Breakthrough 2020",
-		details: "Won the Digital Breakthrough 2020 (Northwest IT Hub) hackathon",
-		subDetails: "48 hours, among 280 teams",
+		title: "Цифровой прорыв (Digital Breakthrough) 2020",
+		details: {
+			en: "Won the Digital Breakthrough 2020 (Northwest IT Hub) hackathon",
+			ru: "Победил в хакатоне Цифровой прорыв 2020 (Северо-Западный IT-хаб)"
+		},
+		subDetails: {
+			en: "48 hours, among 280 teams",
+			ru: "48 часов, среди 280 команд"
+		}
 	},
 	{
 		title: "OpenSpaceHack 2020",
-		details: "Won the OpenSpaceHack 2020 hackathon",
-		subDetails: "48 hours, among 37 teams",
+		details: {
+			en: "Won the OpenSpaceHack 2020 hackathon",
+			ru: "Победил в хакатоне OpenSpaceHack 2020"
+		},
+		subDetails: {
+			en: "48 hours, among 37 teams",
+			ru: "48 часов, среди 37 команд"
+		}
 	},
 	{
 		title: "InnoCTF 2018",
-		details: "4th place in InnoCTF 2018 cybersecurity competition",
-		subDetails: "10 hours, among ~30 teams",
+		details: {
+			en: "4th place in InnoCTF 2018 cybersecurity competition",
+			ru: "4-е место в соревновании по кибербезопасности InnoCTF 2018"
+		},
+		subDetails: {
+			en: "10 hours, among ~30 teams",
+			ru: "10 часов, среди ~30 команд"
+		}
 	},
 ];
 ---
 
 <Layout title="Lenar Gumerov - CV">
-	<div id="cv-content">
-		<Header {...personalInfo} />
-		
-		<div class="flex flex-col md:flex-row print:flex-row">
-			<div class="w-full md:w-[250px] print:w-[250px]">
-				<SocialLinks links={personalInfo.links} />
-				<Skills skills={skills} allTags={allTags} />
-			</div>
-			<div class="flex-1">
-				<Experience experiences={experiences} />
-				<Education education={education} />
-				<Achievements achievements={achievements} />
-			</div>
-		</div>
+	<div id="cv-content" class="bg-white print:bg-white shadow-md print:shadow-none">
+		<CVContent 
+			client:load 
+			{personalInfo} 
+			{skills} 
+			{experiences} 
+			{education} 
+			{achievements} 
+			{allTags} 
+		/>
 	</div>
 </Layout>
