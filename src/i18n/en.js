@@ -10,17 +10,17 @@ export default {
     experience: "Experience",
     education: "Education",
     achievements: "Achievements",
+    technologies: "Technologies",
+    languages: "Languages"
+  },
+  languages: {
+    "English": "English",
+    "Russian": "Russian",
+    "Tatar": "Tatar"
   },
   experience: {
     period: "period",
     location: "location",
-    dates: {
-      "August 2024 — March 2025": "August 2024 — March 2025",
-      "June 2023 — September 2024": "June 2023 — September 2024",
-      "October 2021 — June 2023": "October 2021 — June 2023",
-      "February 2021 — August 2021": "February 2021 — August 2021",
-      "August 2017 — May 2021": "August 2017 — May 2021"
-    }
   },
   education: {
     period: "period",
@@ -31,4 +31,11 @@ export default {
   },
   language: "Language",
   changeLanguage: "Change Language",
+  dateFormat: {
+    locale: "en-US",
+    options: {
+      month: "long", 
+      year: "numeric"
+    }
+  }
 }; 

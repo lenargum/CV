@@ -28,7 +28,7 @@
 
 @layer components {
   .cv-section {
-    @apply p-8 border-t border-l border-border;
+    @apply p-8;
   }
   .skill-bar {
     @apply h-2 bg-gray-200 rounded-sm relative overflow-hidden;
@@ -56,7 +56,7 @@
 
 @media print {
   @page {
-    margin: 15mm;
+    margin: 10mm;
     size: A4;
   }
   body {
@@ -89,7 +89,7 @@
   }
   
   header > div:first-child {
-    width: 290px !important;
+    width: 250px !important;
     height: 250px !important;
     min-height: 250px !important;
     background-color: #FBEC5D !important; /* Match the yellow color from tailwind config */
@@ -128,7 +128,7 @@
   }
   
   #cv-content > div.flex > div:first-child {
-    width: 290px !important;
+    width: 250px !important;
   }
   
   #cv-content > div.flex > div:last-child {
@@ -139,34 +139,36 @@
   .cv-section {
     border-color: #E2E8F0 !important;
     padding: 15px !important;
+    /* Разрешаем разрывы между секциями */
+    page-break-inside: auto !important;
+    break-inside: auto !important;
   }
   
-  /* Reduce spacing between items */
-  .space-y-8 > * + * {
-    margin-top: 1.5rem !important;
+  /* Experience section settings */
+  #cv-content > div.flex > div:last-child > section:first-child {
+    page-break-before: auto !important;
+    break-before: auto !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
   }
   
-  .space-y-5 > * + * {
-    margin-top: 1rem !important;
+  /* Education section settings */
+  #cv-content > div.flex > div:last-child > section:nth-child(2) {
+    page-break-before: auto !important;
+    break-before: auto !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
   }
   
-  .space-y-4 > * + * {
-    margin-top: 0.75rem !important;
+  /* Achievements section */
+  #cv-content > div.flex > div:last-child > section:last-child {
+    page-break-before: auto !important;
+    break-before: auto !important;
+    page-break-after: auto !important;
+    break-after: auto !important;
   }
   
-  .mb-8 {
-    margin-bottom: 1.5rem !important;
-  }
-  
-  .mb-6 {
-    margin-bottom: 1rem !important;
-  }
-  
-  .mb-4 {
-    margin-bottom: 0.75rem !important;
-  }
-  
-  /* Individual job sections should stay together */
+  /* Individual job/education entries should stay together */
   .subsection {
     page-break-inside: avoid !important;
     break-inside: avoid !important;

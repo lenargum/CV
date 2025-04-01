@@ -1,4 +1,5 @@
 import { useTranslation } from '../i18n/useTranslation';
+import { formatDateRange } from '../utils/formatters';
 
 interface TranslatedText {
   en: string;
@@ -42,10 +43,14 @@ export default function Experience({ experiences }: ExperienceProps) {
     return value[currentLang as keyof TranslatedArray] || value.en;
   };
   
-  // Translate dates using the translation mapping
-  const getTranslatedDate = (date: string): string => {
-    const dateTranslations = t?.experience?.dates as DateTranslations | undefined;
-    return dateTranslations?.[date] || date;
+  // Форматируем даты с использованием локализации
+  const getFormattedDate = (period: string): string => {
+    const locale = t.dateFormat?.locale || (currentLang === 'ru' ? 'ru-RU' : 'en-US');
+    const options: Intl.DateTimeFormatOptions = { 
+      month: 'long', 
+      year: 'numeric' 
+    };
+    return formatDateRange(period, locale, options);
   };
 
   return (
@@ -56,7 +61,7 @@ export default function Experience({ experiences }: ExperienceProps) {
           <div key={index} className="subsection">
             <div className="flex flex-col mb-4">
               <h3 className="mb-1">{getTranslatedValue(exp.title)}, {getTranslatedValue(exp.company)}, {exp.location}</h3>
-              <span className="period">{getTranslatedDate(exp.period)}</span>
+              <span className="period">{getFormattedDate(exp.period)}</span>
             </div>
             <ul className="list-disc ml-5 space-y-1.5 pr-2">
               {getTranslatedArray(exp.description).map((item, idx) => (

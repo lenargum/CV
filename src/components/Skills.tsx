@@ -20,7 +20,7 @@ interface SkillsProps {
 }
 
 export default function Skills({ skills, allTags = [] }: SkillsProps) {
-  const { t } = useTranslation();
+  const { t, currentLang } = useTranslation();
   
   // Function to render 5 tiles based on skill level
   const renderSkillLevel = (level: number) => {
@@ -40,18 +40,36 @@ export default function Skills({ skills, allTags = [] }: SkillsProps) {
     );
   };
 
+  // Translate skill name if it's a language
+  const getTranslatedSkillName = (skillName: string, categoryName: string): string => {
+    if (categoryName === "Languages" || categoryName === "Языки") {
+      // Используем безопасную проверку наличия ключа
+      return t?.languages && skillName in (t.languages as Record<string, string>) 
+        ? (t.languages as Record<string, string>)[skillName] 
+        : skillName;
+    }
+    return skillName;
+  };
+
+  // Translate category name
+  const getTranslatedCategoryName = (categoryName: string): string => {
+    if (categoryName === "Languages") return t.sections.languages;
+    if (categoryName === "Frontend") return "Frontend"; // No translation needed
+    return categoryName;
+  };
+
   return (
     <section className="cv-section">
       <h2 className="section-title">{t.sections.skills}</h2>
       <div className="space-y-8">
         {skills.map((category) => (
           <div key={category.category} className="subsection">
-            <h3 className="mb-4">{category.category}</h3>
+            <h3 className="mb-4">{getTranslatedCategoryName(category.category)}</h3>
             <div className="space-y-5">
               {category.items.map((skill) => (
                 <div key={skill.name} className="mb-3">
                   <div className="mb-1">
-                    <span className="text-sm">{skill.name}</span>
+                    <span className="text-sm">{getTranslatedSkillName(skill.name, category.category)}</span>
                   </div>
                   {renderSkillLevel(skill.level)}
                 </div>
@@ -63,7 +81,7 @@ export default function Skills({ skills, allTags = [] }: SkillsProps) {
         {/* Display all unique tags from work experiences */}
         {allTags.length > 0 && (
           <div className="subsection">
-            <h3 className="mb-4">Technologies</h3>
+            <h3 className="mb-4">{t.sections.technologies}</h3>
             <div className="flex flex-wrap gap-2">
               {allTags.map((tag, index) => (
                 <span 
