@@ -12,7 +12,7 @@ export function getInitialLanguage() {
   if (typeof window !== 'undefined') {
     try {
       const storedLang = localStorage.getItem('cv-language');
-      return storedLang && (storedLang === 'en' || storedLang === 'ru') ? storedLang : 'en';
+      return storedLang && (storedLang === 'en' || storedLang === 'ru') ? storedLang : 'ru';
     } catch (error) {
       return 'en';
     }
