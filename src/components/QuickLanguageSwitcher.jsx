@@ -6,7 +6,7 @@ export default function QuickLanguageSwitcher() {
   const { currentLang, setLanguage } = useTranslation();
   
   return (
-    <div className="absolute top-4 right-4 flex gap-2 print:hidden">
+    <div className="absolute top-4 right-4 flex gap-2 print:hidden z-10">
       <button 
         onClick={() => setLanguage('en')}
         className={`px-3 py-1 rounded-md text-sm font-medium ${
