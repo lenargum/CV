@@ -45,7 +45,7 @@ const SocialIcon = ({ type }: { type: string }) => {
 export default function SocialLinks({ links }: SocialLinksProps) {
   const { t } = useTranslation();
   return (
-    <div className="cv-section">
+    <div className="cv-section pb-0">
       <h2 className="section-title">{t.sections.contacts}</h2>
       <div className="flex flex-col gap-1">
         {links.map((link) => (

@@ -146,7 +146,7 @@ export default function Experience({ experiences }: ExperienceProps) {
   return (
     <section className="cv-section">
       <div className="flex items-baseline">
-        <h2 className="section-title mb-8">{t.sections.experience}</h2>
+        <h2 className="section-title mb-6">{t.sections.experience}</h2>
         <span className="ml-3 text-text-tertiary text-sm">{totalExperienceText}</span>
       </div>
       <div className="space-y-8">
