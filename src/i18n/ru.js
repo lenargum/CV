@@ -6,6 +6,7 @@ export default {
     email: "lenargamgam@gmail.com",
   },
   sections: {
+    contacts: "Контакты",
     skills: "Навыки",
     experience: "Опыт работы",
     education: "Образование",
