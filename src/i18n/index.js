@@ -24,7 +24,7 @@ function detectBrowserLocale() {
   
   // Default to English if not Russian
   console.log('Defaulting to English language');
-  return 'en';
+  return 'ru';
 }
 
 // Function to get initial language from localStorage or browser locale
@@ -48,7 +48,7 @@ export function getInitialLanguage() {
   }
   
   // Default to English for SSR
-  return 'en';
+  return 'ru';
 }
 
 // Function to set language in localStorage
