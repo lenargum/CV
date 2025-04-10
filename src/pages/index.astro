@@ -85,7 +85,7 @@ const experiences = [
 				"Популяризировал Zustand как библиотеку управления состоянием.",
 			]
 		},
-		technologies: ["TypeScript", "React", "Redux", "Zustand", "Telegram Mini Apps", "Framer Motion", "Tailwind"],
+		technologies: ["TypeScript", "React", "Redux", "Zustand", "Telegram Mini Apps", "Framer Motion", "Tailwind", "Figma", "Cursor"],
 	},
 	{
 		title: {
@@ -108,7 +108,7 @@ const experiences = [
 				"Использовал такие технологии, как TypeScript, Vue 3, Pinia, Tailwind, Vuetify, Google Tag Manager, Яндекс Метрика и Docker.",
 			]
 		},
-		technologies: ["Vue 3", "TypeScript", "Pinia", "Tailwind", "Vuetify", "GTM", "Yandex Metrica", "Docker"],
+		technologies: ["Vue 3", "TypeScript", "Pinia", "Tailwind", "Vuetify", "GTM", "Yandex Metrica", "Docker", "Figma"],
 	},
 	{
 		title: {
@@ -133,7 +133,7 @@ const experiences = [
 				"Создал лендинги продуктов с использованием JavaScript, Vue/Nuxt 2, Paper.js и SVG (проект Iconizer) и интегрировал рекламу по всему сайту.",
 			]
 		},
-		technologies: ["JavaScript", "Vue 2", "Nuxt 2", "Vue 3", "Paper.js", "SVG", "GTM", "Docker"],
+		technologies: ["JavaScript", "Vue 2", "Nuxt 2", "Vue 3", "Paper.js", "SVG", "GTM", "Docker", "Figma"],
 	},
 	{
 		title: {
@@ -160,10 +160,29 @@ const experiences = [
 	},
 ];
 
+const manualTags = ["Next"]
+
 // Extract all unique tags from experiences
+// Extract all unique tags from experiences and prioritize key technologies
 const allTags = [...new Set(
-	experiences.flatMap(exp => exp.technologies || [])
-)].sort();
+	[...manualTags, ...experiences.flatMap(exp => exp.technologies || [])]
+)].sort((a, b) => {
+	// Priority technologies to appear first
+	const priority = ["JavaScript", "TypeScript", "React", "Next", "Zustand", "Redux", "Vue 2", "Vue 3", "Nuxt 2", "Nuxt 3", "Tailwind"];
+	const aPriority = priority.indexOf(a);
+	const bPriority = priority.indexOf(b);
+	
+	// If both are priority technologies, sort by their order in the priority array
+	if (aPriority !== -1 && bPriority !== -1) {
+		return aPriority - bPriority;
+	}
+	// If only a is a priority technology, it comes first
+	if (aPriority !== -1) return -1;
+	// If only b is a priority technology, it comes first
+	if (bPriority !== -1) return 1;
+	// Otherwise, sort alphabetically
+	return a.localeCompare(b);
+});
 
 const education = [
 	{

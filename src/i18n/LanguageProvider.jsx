@@ -3,8 +3,8 @@ import { LanguageContext, getInitialLanguage, setLanguage as setLangInStorage, g
 
 export default function LanguageProvider({ children }) {
   // State management
-  const [currentLang, setCurrentLang] = useState('en');
-  const [translations, setTranslations] = useState(getTranslation('en'));
+  const [currentLang, setCurrentLang] = useState('ru');
+  const [translations, setTranslations] = useState(getTranslation('ru'));
   const [forceUpdate, setForceUpdate] = useState(0);
 
   // Initialize from localStorage after component mounts
@@ -17,8 +17,8 @@ export default function LanguageProvider({ children }) {
       setTranslations(initialTranslations);
     } catch (error) {
       // Fallback to default language
-      setCurrentLang('en');
-      setTranslations(getTranslation('en'));
+      setCurrentLang('ru');
+      setTranslations(getTranslation('ru'));
     }
   }, []);
 
