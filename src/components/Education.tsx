@@ -13,15 +13,12 @@ interface TranslatedArray {
   [key: string]: string[];
 }
 
-interface DateTranslations {
-  [date: string]: string;
-}
-
 interface EducationItem {
   degree: string | TranslatedText;
   institution: string;
   location: string;
-  period: string;
+  date_start: Date;
+  date_end: Date;
   highlights: string[] | TranslatedArray;
   projects?: string[] | TranslatedArray;
 }
@@ -43,14 +40,14 @@ export default function Education({ education }: EducationProps) {
     return value[currentLang as keyof TranslatedArray] || value.en;
   };
   
-  // Форматируем даты с использованием локализации
-  const getFormattedDate = (period: string): string => {
-    const locale = t.dateFormat?.locale || (currentLang === 'ru' ? 'ru-RU' : 'en-US');
-    const options: Intl.DateTimeFormatOptions = { 
-      month: 'long', 
-      year: 'numeric' 
-    };
-    return formatDateRange(period, locale, options);
+  // Format date range using date objects - only show years for education
+  const getFormattedDateRange = (startDate: Date, endDate: Date): string => {
+    // For education, we only need years
+    const startYear = startDate.getFullYear();
+    const endYear = endDate.getFullYear();
+    
+    // Return simple year range
+    return `${startYear} — ${endYear}`;
   };
   
   return (
@@ -61,7 +58,7 @@ export default function Education({ education }: EducationProps) {
           <div key={index}>
             <div className="mb-4">
               <h3 className="mb-1">{getTranslatedValue(edu.degree)}, {edu.institution}, {edu.location}</h3>
-              <span className="period">{getFormattedDate(edu.period)}</span>
+              <span className="period">{getFormattedDateRange(edu.date_start, edu.date_end)}</span>
             </div>
             <ul className="list-disc ml-5 space-y-1.5 pr-2">
               {getTranslatedArray(edu.highlights).map((highlight, idx) => (

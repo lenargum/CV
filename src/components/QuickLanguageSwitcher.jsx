@@ -6,12 +6,12 @@ export default function QuickLanguageSwitcher() {
   const { currentLang, setLanguage } = useTranslation();
   
   return (
-    <div className="absolute top-4 right-4 flex gap-2 print:hidden z-10">
+    <div className="flex gap-2 print:hidden">
       <button 
         onClick={() => setLanguage('en')}
         className={`px-3 py-1 rounded-md text-sm font-medium ${
           currentLang === 'en' 
-            ? 'bg-blue-500 text-white' 
+            ? 'bg-primary text-text-primary' 
             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
         } transition-colors`}
       >
@@ -21,7 +21,7 @@ export default function QuickLanguageSwitcher() {
         onClick={() => setLanguage('ru')}
         className={`px-3 py-1 rounded-md text-sm font-medium ${
           currentLang === 'ru' 
-            ? 'bg-blue-500 text-white' 
+            ? 'bg-primary text-text-primary' 
             : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
         } transition-colors`}
       >

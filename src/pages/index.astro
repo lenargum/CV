@@ -56,18 +56,21 @@ const experiences = [
 			ru: "Игровая платформа в Telegram Mini Apps"
 		},
 		location: "Remote",
-		period: "August 2024 — March 2025",
+		date_start: new Date(2024, 8, 15), // September 15, 2024
+		date_end: new Date(2025, 2, 31), // March 31, 2025
 		description: {
 			en: [
 				"Developed gaming platform using Telegram Mini Apps, React and Redux.",
 				"Developed SDK-overlay for the gaming platform, which allows to use the platform in other apps (rewards, shop, purchases, ads, etc.)",
+				"Promoted Zustand as a state management library.",
 			],
 			ru: [
 				"Разработал игровую платформу с использованием Telegram Mini Apps, React и Redux.",
 				"Разработал SDK-оверлей для игровой платформы, который позволяет использовать платформу в других приложениях (награды, магазин, покупки, реклама и т.д.)",
+				"Популяризировал Zustand как библиотеку управления состоянием.",
 			]
 		},
-		technologies: ["React", "Redux", "Telegram Mini Apps", "Framer Motion", "TypeScript", "Tailwind"],
+		technologies: ["TypeScript", "React", "Redux", "Zustand", "Telegram Mini Apps", "Framer Motion", "Tailwind"],
 	},
 	{
 		title: {
@@ -76,17 +79,18 @@ const experiences = [
 		},
 		company: "Incymo, SmartUA",
 		location: "Remote",
-		period: "June 2023 — September 2024",
+		date_start: new Date(2023, 5, 1), // June 1, 2023
+		date_end: new Date(2024, 8, 15), // September 15, 2024
 		description: {
 			en: [
-				"Led design, development, and maintenance of the entire frontend for SmartUA (Figma-like image and video editor) alongside a colleague.",
-				"Developed landing pages for Incymo projects, performed web analytics, and managed SEO strategies.",
-				"Utilized technologies such as JavaScript, TypeScript, Vue 3, Pinia, Tailwind, Vuetify, Google Tag Manager, Yandex Metrica, and Docker.",
+				"Developed a Figma-like image and video editor for SmartUA.",
+				"Developed landing pages for Incymo projects, performed web analytics.",
+				"Utilized technologies such as TypeScript, Vue 3, Pinia, Tailwind, Vuetify, Google Tag Manager, Yandex Metrica, and Docker.",
 			],
 			ru: [
-				"Руководил дизайном, разработкой и поддержкой всего фронтенда для SmartUA (редактор изображений и видео, подобный Figma) вместе с коллегой.",
-				"Разрабатывал лендинги для проектов Incymo, выполнял веб-аналитику и управлял SEO-стратегиями.",
-				"Использовал такие технологии, как JavaScript, TypeScript, Vue 3, Pinia, Tailwind, Vuetify, Google Tag Manager, Яндекс Метрика и Docker.",
+				"Разрабатывал редактор изображений и видео, подобный Figma, для SmartUA.",
+				"Разрабатывал лендинги для проектов Incymo, выполнял веб-аналитику.",
+				"Использовал такие технологии, как TypeScript, Vue 3, Pinia, Tailwind, Vuetify, Google Tag Manager, Яндекс Метрика и Docker.",
 			]
 		},
 		technologies: ["Vue 3", "TypeScript", "Pinia", "Tailwind", "Vuetify", "GTM", "Yandex Metrica", "Docker"],
@@ -98,20 +102,23 @@ const experiences = [
 		},
 		company: "Icons8 LLC, Icons",
 		location: "Remote",
-		period: "October 2021 — June 2023",
+		date_start: new Date(2021, 9, 1), // October 1, 2021
+		date_end: new Date(2023, 5, 30), // June 30, 2023
 		description: {
 			en: [
 				"Developed the user collection system for icons, enabling downloads in multiple sizes and formats.",
-				"Implemented an accordion feature for selected icons with an editor while also working with Google Tag Manager and Docker.",
+				"Implemented an accordion feature for selected icons with an SVG editor (Iconizer project) while also working with Google Tag Manager and Docker.",
+				"Helped migrating from Vue 2 to Vue 3.",
 				"Built product landing pages using JavaScript, Vue/Nuxt 2, Paper.js, and SVG, (Iconizer project) and integrated advertising across the website.",
 			],
 			ru: [
 				"Разработал систему пользовательских коллекций для иконок, обеспечивающую загрузку в различных размерах и форматах.",
-				"Реализовал функцию аккордеона для выбранных иконок с редактором, также работая с Google Tag Manager и Docker.",
+				"Реализовал функцию аккордеона для выбранных иконок с SVG-редактором (проект Iconizer), также работая с Google Tag Manager и Docker.",
+				"Помогал переезжать с Vue 2 на Vue 3.",
 				"Создал лендинги продуктов с использованием JavaScript, Vue/Nuxt 2, Paper.js и SVG (проект Iconizer) и интегрировал рекламу по всему сайту.",
 			]
 		},
-		technologies: ["JavaScript", "Vue 2", "Nuxt 2", "Paper.js", "SVG", "GTM", "Docker"],
+		technologies: ["JavaScript", "Vue 2", "Nuxt 2", "Vue 3", "Paper.js", "SVG", "GTM", "Docker"],
 	},
 	{
 		title: {
@@ -120,7 +127,8 @@ const experiences = [
 		},
 		company: "MKSKOM LLC",
 		location: "Remote",
-		period: "February 2021 — August 2021",
+		date_start: new Date(2021, 1, 1), // February 1, 2021
+		date_end: new Date(2021, 7, 31), // August 31, 2021
 		description: {
 			en: [
 				"Created responsive websites according to design specifications and introduced design improvements for UI/UX.",
@@ -150,7 +158,8 @@ const education = [
 		},
 		institution: "Innopolis University",
 		location: "Innopolis",
-		period: "August 2017 — May 2021",
+		date_start: new Date(2017, 7, 1), // August 1, 2017
+		date_end: new Date(2021, 4, 31), // May 31, 2021
 		highlights: {
 			en: [
 				"Completed Advanced Enterprise Programming on JavaScript elective.",

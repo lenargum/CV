@@ -1,5 +1,7 @@
 import { useTranslation } from '../i18n/useTranslation';
 import { useEffect, useState, memo } from 'react';
+import React from 'react';
+import QuickLanguageSwitcher from './QuickLanguageSwitcher';
 
 interface HeaderProps {
   name: string;
@@ -52,8 +54,13 @@ const ContentSection = ({ name, title, location, email }: Omit<HeaderProps, 'lin
   const translatedLocation = t?.personalInfo?.location || location;
 
   return (
-    <div key={`header-content-${renderKey}-${currentLang}`} className="flex-1 p-10 flex flex-col justify-center bg-secondary">
-      <h1 className="mb-2">{translatedName}</h1>
+    <div key={`header-content-${renderKey}-${currentLang}`} className="flex-1 p-10 flex flex-col justify-center bg-secondary relative">
+      <div className="flex justify-between items-center mb-2">
+        <h1 className="mb-0">{translatedName}</h1>
+        <div className="absolute top-4 right-4">
+          <QuickLanguageSwitcher />
+        </div>
+      </div>
       <h2 className="mb-6">{translatedTitle}</h2>
       <div className="text-lg">
         <p>{translatedLocation}</p>
@@ -65,7 +72,7 @@ const ContentSection = ({ name, title, location, email }: Omit<HeaderProps, 'lin
 
 export default function Header({ name, title, location, email, links }: HeaderProps) {
   return (
-    <header className="flex flex-col md:flex-row print:flex-row">
+    <header className="flex flex-col md:flex-row print:flex-row relative">
       <AvatarSection name={name} />
       <ContentSection name={name} title={title} location={location} email={email} />
     </header>

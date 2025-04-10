@@ -1,6 +1,5 @@
 import React from 'react';
 import LanguageProvider from '../i18n/LanguageProvider';
-import QuickLanguageSwitcher from './QuickLanguageSwitcher';
 import Header from './Header';
 import SocialLinks from './SocialLinks';
 import Skills from './Skills';
@@ -11,9 +10,6 @@ import Achievements from './Achievements';
 export default function CVContent({ personalInfo, skills, experiences, education, achievements, allTags }) {
   return (
     <LanguageProvider>
-      {/* Language switcher */}
-      <QuickLanguageSwitcher />
-      
       {/* CV Content */}
       <Header {...personalInfo} />
       
