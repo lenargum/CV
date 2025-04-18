@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import NoiseBackground from '../components/NoiseBackground';
 
 interface Props {
 	title: string;
@@ -18,8 +19,9 @@ const { title } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body class="bg-gray-100 min-h-screen flex justify-center">
-		<main class="w-full max-w-[830px]">
+	<body class="min-h-screen flex justify-center bg-secondary">
+		<NoiseBackground client:only="react" />
+		<main class="w-full max-w-[830px] relative z-10">
 			<slot />
 		</main>
 	</body>

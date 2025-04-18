@@ -11,6 +11,8 @@ export default {
           secondary: '#4A5568', // Medium gray for body text
           tertiary: '#718096', // Lighter gray for less important text
         },
+        noise: '#f9e312',
+        noiseSecondary: '#F5F5F5',
         border: '#E2E8F0', // Light gray for borders
       },
     },
