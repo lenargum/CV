@@ -70,6 +70,5 @@ export function getTranslation(lang = 'en') {
 export const LanguageContext = createContext({
   currentLang: 'en',
   setLanguage: (lang) => {},
-  t: translations.en,
-  _forceUpdateCounter: 0
+  t: translations.en
 }); 

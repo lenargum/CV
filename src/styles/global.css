@@ -39,9 +39,7 @@
   .section-title {
     @apply text-2xl font-semibold text-text-primary mb-6;
   }
-  .subsection {
-    @apply mb-8;
-  }
+  
   .period {
     @apply text-text-secondary;
   }
@@ -50,8 +48,16 @@
   }
 }
 
-#cv-content {
-  @apply bg-white shadow-md max-w-[830px] mx-auto;
+section.cv-section + section.cv-section {
+  padding-top: 0;
+}
+
+.subsection + .subsection {
+  margin-top: 32px;
+}
+
+.tech-tag {
+  @apply px-2 py-1 text-xs rounded-md bg-primary text-text-primary;
 }
 
 @media print {

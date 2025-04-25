@@ -146,7 +146,7 @@ export default function Experience({ experiences }: ExperienceProps) {
   return (
     <section className="cv-section">
       <div className="flex items-baseline">
-        <h2 className="section-title mb-6">{t.sections.experience}</h2>
+        <h2 className="section-title">{t.sections.experience}</h2>
         <span className="ml-3 text-text-tertiary text-sm">{totalExperienceText}</span>
       </div>
       <div className="space-y-8">
@@ -169,7 +169,7 @@ export default function Experience({ experiences }: ExperienceProps) {
             {exp.technologies && exp.technologies.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-3">
                 {exp.technologies.map((tech, idx) => (
-                  <span key={idx} className="px-2 py-1 text-xs rounded-md bg-gray-100 text-text-secondary">
+                  <span key={idx} className="tech-tag">
                     {tech}
                   </span>
                 ))}

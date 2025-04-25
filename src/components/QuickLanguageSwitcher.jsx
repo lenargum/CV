@@ -12,9 +12,9 @@ export default function QuickLanguageSwitcher() {
         onClick={() => setLanguage('en')}
         className={`px-3 py-1 rounded-md text-sm font-medium ${
           currentLang === 'en' 
-            ? 'bg-primary text-text-primary' 
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-        } transition-colors`}
+            ? 'bg-gray-200 text-gray-600 md:bg-primary md:text-text-primary' 
+            : 'bg-primary text-text-primary md:bg-gray-200 md:text-gray-600 hover:bg-gray-100'
+        } transition-colors duration-300`}
       >
         EN
       </button>
@@ -22,9 +22,9 @@ export default function QuickLanguageSwitcher() {
         onClick={() => setLanguage('ru')}
         className={`px-3 py-1 rounded-md text-sm font-medium ${
           currentLang === 'ru' 
-            ? 'bg-primary text-text-primary' 
-            : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-        } transition-colors`}
+            ? 'bg-gray-200 text-gray-600  md:bg-primary md:text-text-primary' 
+            : 'bg-primary text-text-primary md:bg-gray-200 md:text-gray-600 hover:bg-gray-100'
+        } transition-colors duration-300`}
       >
         РУС
       </button>

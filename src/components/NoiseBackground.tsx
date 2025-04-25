@@ -4,21 +4,8 @@ import { createNoise3D } from 'simplex-noise';
 
 const NoiseBackground: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        // Check if device is mobile
-        const checkMobile = () => {
-            const mobileCheck = window.matchMedia('(max-width: 768px)');
-            setIsMobile(mobileCheck.matches);
-        };
-
-        // Run check immediately
-        checkMobile();
-
-        // Add listener for screen size changes
-        window.addEventListener('resize', checkMobile);
-
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -46,12 +33,6 @@ const NoiseBackground: React.FC = () => {
             // Draw background
             ctx.fillStyle = secondaryColor;
             ctx.fillRect(0, 0, width, height);
-
-            // Skip animation on mobile devices
-            if (isMobile) {
-                // For mobile: draw a static pattern or just leave the background color
-                return;
-            }
 
             // Parameters
             const timeStep = 0.002;
@@ -84,10 +65,7 @@ const NoiseBackground: React.FC = () => {
             ctx.putImageData(imageData, 0, 0);
             time += timeStep;
             
-            // Only continue animation if not mobile
-            if (!isMobile) {
-                animationFrame = requestAnimationFrame(draw);
-            }
+            animationFrame = requestAnimationFrame(draw);
         };
 
         // Setup and run
@@ -97,19 +75,11 @@ const NoiseBackground: React.FC = () => {
 
         return () => {
             window.removeEventListener('resize', resize);
-            window.removeEventListener('resize', checkMobile);
             if (animationFrame) {
                 cancelAnimationFrame(animationFrame);
             }
         };
-    }, [isMobile]); // Added isMobile as dependency
-
-    // If mobile, just return a simple colored background
-    if (isMobile) {
-        return (
-            <div className="block fixed left-0 top-0 w-full h-full bg-noiseSecondary" aria-hidden="true" />
-        );
-    }
+    }, []);
 
     return (
         <canvas ref={canvasRef} className="block fixed left-0 top-0 w-full h-full" aria-hidden="true" />

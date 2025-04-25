@@ -44,8 +44,7 @@ export default function LanguageProvider({ children }) {
   const contextValue = useMemo(() => ({
     currentLang,
     setLanguage: handleSetLanguage,
-    t: translations,
-    _forceUpdateCounter: forceUpdate
+    t: translations
   }), [currentLang, handleSetLanguage, translations, forceUpdate]);
 
   return (

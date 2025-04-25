@@ -19,6 +19,15 @@ export default {
     "Russian": "Русский",
     "Tatar": "Татарский"
   },
+  languageLevels: {
+    "Native": "Родной",
+    "C2": "Свободный (C2)",
+    "C1": "Продвинутый (C1)",
+    "B2": "Выше среднего (B2)",
+    "B1": "Средний (B1)",
+    "A2": "Базовый (A2)",
+    "A1": "Начальный (A1)"
+  },
   experience: {
     period: "период",
     location: "местоположение",
@@ -38,5 +47,9 @@ export default {
       month: "long", 
       year: "numeric"
     }
+  },
+  clipboard: {
+    copied: "Скопировано!",
+    failed: "Не удалось скопировать"
   }
 }; 
