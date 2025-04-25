@@ -1,14 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { hexToRgb } from '../utils/color';
 import { createNoise3D } from 'simplex-noise';
 
 const NoiseBackground: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    const primaryRgb = useRef({ r: 255, g: 255, b: 255 });
+
+    // Parse RGB strings directly using regex
+    const parseRgb = (rgbStr: string) => {
+        const matches = rgbStr.match(/rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)/);
+        if (matches) {
+            return {
+                r: parseInt(matches[1], 10),
+                g: parseInt(matches[2], 10),
+                b: parseInt(matches[3], 10)
+            };
+        }
+        return { r: 0, g: 0, b: 0 };
+    };
 
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
+        primaryRgb.current = parseRgb(getComputedStyle(canvas).color);
         const ctx = canvas.getContext('2d');
         if (!ctx) return;
 
@@ -23,15 +37,8 @@ const NoiseBackground: React.FC = () => {
         const draw = () => {
             ctx.clearRect(0, 0, width, height);
 
-            // Get colors
-            const root = document.documentElement;
-            const style = getComputedStyle(root);
-            const primaryColor = style.getPropertyValue('--color-noise').trim() || '#FBEC5D';
-            const secondaryColor = style.getPropertyValue('--color-noiseSecondary').trim() || '#F5F5F5';
-            const primaryRgb = hexToRgb(primaryColor);
-            
             // Draw background
-            ctx.fillStyle = secondaryColor;
+            ctx.fillStyle = canvasRef.current?.style.backgroundColor || '#F5F5F5';
             ctx.fillRect(0, 0, width, height);
 
             // Parameters
@@ -46,17 +53,17 @@ const NoiseBackground: React.FC = () => {
             // Process pixels
             for (let y = 0; y < height; y++) {
                 const scaledY = y * noiseScale;
-                
+
                 for (let x = 0; x < width; x++) {
                     // Get noise value
                     const noiseValue = noise3D(x * noiseScale, scaledY, time);
-                    
+
                     // Check threshold
                     if ((noiseValue + 1) * 0.5 > threshold) {
                         const i = (y * width + x) << 2; // Faster than multiplying by 4
-                        data[i] = primaryRgb.r;
-                        data[i + 1] = primaryRgb.g;
-                        data[i + 2] = primaryRgb.b;
+                        data[i] = primaryRgb.current.r;
+                        data[i + 1] = primaryRgb.current.g;
+                        data[i + 2] = primaryRgb.current.b;
                         data[i + 3] = 255;
                     }
                 }
@@ -64,7 +71,7 @@ const NoiseBackground: React.FC = () => {
 
             ctx.putImageData(imageData, 0, 0);
             time += timeStep;
-            
+
             animationFrame = requestAnimationFrame(draw);
         };
 
@@ -82,7 +89,7 @@ const NoiseBackground: React.FC = () => {
     }, []);
 
     return (
-        <canvas ref={canvasRef} className="block fixed left-0 top-0 w-full h-full print:hidden" aria-hidden="true" />
+        <canvas ref={canvasRef} className="block fixed left-0 top-0 w-full h-full print:hidden text-noise-primary bg-noise-secondary" aria-hidden="true" />
     );
 };
 
