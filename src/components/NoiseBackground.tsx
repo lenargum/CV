@@ -82,7 +82,7 @@ const NoiseBackground: React.FC = () => {
     }, []);
 
     return (
-        <canvas ref={canvasRef} className="block fixed left-0 top-0 w-full h-full" aria-hidden="true" />
+        <canvas ref={canvasRef} className="block fixed left-0 top-0 w-full h-full print:hidden" aria-hidden="true" />
     );
 };
 

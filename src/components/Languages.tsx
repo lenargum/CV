@@ -20,7 +20,7 @@ export default function Languages({ languages }: LanguagesProps) {
             );
         }
         return (
-            <div className="flex w-full md:w-1/2 gap-1">
+            <div className="flex w-full md:w-1/2 print:w-1/2 gap-1">
                 {tiles}
             </div>
         );
