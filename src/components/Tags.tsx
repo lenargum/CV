@@ -9,7 +9,7 @@ export default function Tags({ allTags = [] }: TagsProps) {
 
   return (
     <section className="cv-section">
-      <h2 className="section-title">{t.sections.technologies}</h2>
+      <h2 className="section-title mb-6">{t.sections.technologies}</h2>
       <div className="space-y-8">
         {allTags.length > 0 && (
           <div className="subsection">

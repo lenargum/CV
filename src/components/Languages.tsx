@@ -42,7 +42,7 @@ export default function Languages({ languages }: LanguagesProps) {
 
     return (
         <section className="cv-section">
-            <h2 className="section-title">{t.sections.languages}</h2>
+            <h2 className="section-title mb-6">{t.sections.languages}</h2>
             <div className="subsection">
                 <div className="space-y-5">
                     {languages.map((language) => (

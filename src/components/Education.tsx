@@ -52,7 +52,7 @@ export default function Education({ education }: EducationProps) {
   
   return (
     <section className="cv-section">
-      <h2 className="section-title">{t.sections.education}</h2>
+      <h2 className="section-title mb-6">{t.sections.education}</h2>
       <div>
         {education.map((edu, index) => (
           <div key={index}>

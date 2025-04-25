@@ -145,18 +145,18 @@ export default function Experience({ experiences }: ExperienceProps) {
 
   return (
     <section className="cv-section">
-      <div className="flex items-baseline">
+      <div className="flex flex-col md:flex-row md:items-baseline gap-x-3 mb-6">
         <h2 className="section-title">{t.sections.experience}</h2>
-        <span className="ml-3 text-text-tertiary text-sm">{totalExperienceText}</span>
+        <span className="text-text-tertiary text-sm">{totalExperienceText}</span>
       </div>
       <div className="space-y-8">
         {experiences.map((exp, index) => (
           <div key={index} className="subsection">
             <div className="flex flex-col mb-4">
               <h3 className="mb-1">{getTranslatedValue(exp.title)}, {getTranslatedValue(exp.company)}, {exp.location}</h3>
-              <div className="flex items-baseline">
+              <div className="flex flex-col md:flex-row md:items-baseline gap-x-3">
                 <span className="text-text-secondary">{getFormattedDateRange(exp.date_start, exp.date_end)}</span>
-                <span className="ml-3 text-text-tertiary text-sm">
+                <span className="text-text-tertiary text-sm">
                   {formatDuration(monthsBetween(exp.date_start, exp.date_end), currentLang)}
                 </span>
               </div>

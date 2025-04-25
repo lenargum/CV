@@ -33,7 +33,7 @@ section.cv-section + section.cv-section {
 }
 
 .section-title {
-  @apply text-2xl font-semibold text-text-primary mb-6;
+  @apply text-2xl font-semibold text-text-primary;
 }
 
 .subsection + .subsection {

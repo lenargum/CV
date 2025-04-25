@@ -26,7 +26,7 @@ export default function Achievements({ achievements }: AchievementsProps) {
   
   return (
     <section className="cv-section achievements-section">
-      <h2 className="section-title">{t.sections.achievements}</h2>
+      <h2 className="section-title mb-6">{t.sections.achievements}</h2>
       <div className="space-y-4 pr-2">
         {achievements.map((achievement, index) => (
           <div key={index} className="mb-4 achievement-item">
