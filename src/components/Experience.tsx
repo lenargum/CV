@@ -155,7 +155,7 @@ export default function Experience({ experiences }: ExperienceProps) {
             <div className="flex flex-col mb-4">
               <h3 className="mb-1">{getTranslatedValue(exp.title)}, {getTranslatedValue(exp.company)}, {exp.location}</h3>
               <div className="flex items-baseline">
-                <span className="period">{getFormattedDateRange(exp.date_start, exp.date_end)}</span>
+                <span className="text-text-secondary">{getFormattedDateRange(exp.date_start, exp.date_end)}</span>
                 <span className="ml-3 text-text-tertiary text-sm">
                   {formatDuration(monthsBetween(exp.date_start, exp.date_end), currentLang)}
                 </span>

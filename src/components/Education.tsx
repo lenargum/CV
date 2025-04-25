@@ -58,7 +58,7 @@ export default function Education({ education }: EducationProps) {
           <div key={index}>
             <div className="mb-4">
               <h3 className="mb-1">{getTranslatedValue(edu.degree)}, {edu.institution}, {edu.location}</h3>
-              <span className="period">{getFormattedDateRange(edu.date_start, edu.date_end)}</span>
+              <span className="text-text-secondary">{getFormattedDateRange(edu.date_start, edu.date_end)}</span>
             </div>
             <ul className="list-disc ml-5 space-y-1.5 pr-2">
               {getTranslatedArray(edu.highlights).map((highlight, idx) => (

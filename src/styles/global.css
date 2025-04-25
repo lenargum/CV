@@ -2,54 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    @apply text-text-secondary bg-gray-100;
-  }
-  h1 {
-    @apply text-4xl font-bold text-text-primary;
-  }
-  h2 {
-    @apply text-2xl font-semibold text-text-primary;
-  }
-  h3 {
-    @apply text-xl font-medium text-text-primary;
-  }
-  p {
-    @apply text-text-secondary;
-  }
-  li {
-    @apply text-text-secondary;
-  }
-  a {
-    @apply text-text-primary underline hover:text-primary transition-colors;
-  }
+body {
+  @apply text-text-secondary bg-gray-100;
+}
+h1 {
+  @apply text-4xl font-bold text-text-primary;
+}
+h2 {
+  @apply text-2xl font-semibold text-text-primary;
+}
+h3 {
+  @apply text-xl font-medium text-text-primary;
+}
+p {
+  @apply text-text-secondary;
+}
+li {
+  @apply text-text-secondary;
+}
+a {
+  @apply text-text-primary underline hover:text-primary transition-colors;
 }
 
-@layer components {
-  .cv-section {
-    @apply p-8;
-  }
-  .skill-bar {
-    @apply h-2 bg-gray-200 rounded-sm relative overflow-hidden;
-  }
-  .skill-level {
-    @apply h-full bg-primary rounded-sm absolute top-0 left-0;
-  }
-  .section-title {
-    @apply text-2xl font-semibold text-text-primary mb-6;
-  }
-  
-  .period {
-    @apply text-text-secondary;
-  }
-  .subtle-text {
-    @apply text-text-tertiary text-sm;
-  }
+section.cv-section {
+  @apply p-8;
 }
 
 section.cv-section + section.cv-section {
   padding-top: 0;
+}
+
+.section-title {
+  @apply text-2xl font-semibold text-text-primary mb-6;
 }
 
 .subsection + .subsection {

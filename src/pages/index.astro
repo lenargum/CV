@@ -20,11 +20,7 @@ const allTags = generateTags();
 ---
 
 <Layout title="Lenar Gumerov - CV">
-  <div
-    id="cv-content"
-    class="bg-white/80 backdrop-blur-sm print:bg-white shadow-md print:shadow-none my-0 md:my-6 max-w-[830px] mx-auto"
-  >
-    <CVContent
+  <CVContent
       client:load
       {personalInfo}
       {languages}
@@ -33,5 +29,5 @@ const allTags = generateTags();
       {achievements}
       {allTags}
     />
-  </div>
+  
 </Layout>

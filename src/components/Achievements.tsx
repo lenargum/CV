@@ -33,7 +33,7 @@ export default function Achievements({ achievements }: AchievementsProps) {
             <h3 className="mb-1">{achievement.title}</h3>
             <p>{getTranslatedValue(achievement.details)}</p>
             {achievement.subDetails && (
-              <p className="subtle-text mt-1">• {getTranslatedValue(achievement.subDetails)}</p>
+              <p className="text-text-tertiary text-sm mt-1">• {getTranslatedValue(achievement.subDetails)}</p>
             )}
           </div>
         ))}
