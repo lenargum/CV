@@ -111,16 +111,6 @@ section.cv-section + section.cv-section {
     padding: 2.5rem !important;
   }
   
-  /* Force main content flex layout */
-  #cv-content > div.flex {
-    display: flex !important;
-    flex-direction: row !important;
-  }
-  
-  #cv-content > div.flex > div:first-child {
-    width: 250px !important;
-  }
-  
   #cv-content > div.flex > div:last-child {
     flex: 1 !important;
   }
@@ -128,10 +118,14 @@ section.cv-section + section.cv-section {
   /* Make sections more compact for print */
   .cv-section {
     border-color: #E2E8F0 !important;
-    padding: 15px !important;
+    padding: 15px 0 !important;
     /* Разрешаем разрывы между секциями */
     page-break-inside: auto !important;
     break-inside: auto !important;
+  }
+
+  .cv-section:first-child {
+    padding-top: 30px !important;
   }
   
   /* Experience section settings */
@@ -183,12 +177,6 @@ section.cv-section + section.cv-section {
   }
   
   .achievement-item {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-  
-  /* Social links should stay at the top */
-  #cv-content > div.flex > div:first-child > div:first-child {
     page-break-inside: avoid !important;
     break-inside: avoid !important;
   }
