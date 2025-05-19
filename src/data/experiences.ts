@@ -5,8 +5,8 @@ export const experiences = [
 			ru: "Middle+ Frontend-разработчик",
 		},
 		company: {
-			en: "Game platform in Telegram Mini Apps",
-			ru: "Игровая платформа в Telegram Mini Apps",
+			en: 'Orbit, Game platform "Portal" in Telegram Mini Apps',
+			ru: 'Orbit, Игровая платформа "Portal" в Telegram Mini Apps',
 		},
 		location: "Remote",
 		date_start: new Date(2024, 8, 15), // September 15, 2024
@@ -14,12 +14,12 @@ export const experiences = [
 		description: {
 			en: [
 				"Developed gaming platform using Telegram Mini Apps, React and Redux.",
-				"Developed SDK-overlay for the gaming platform, which allows to use the platform in other apps (rewards, shop, purchases, ads, etc.)",
+				"Developed an SDK overlay with embedded UI components for the gaming platform, enabling integration of rewards, shop, purchases, ads, and more into third-party apps.",
 				"Promoted Zustand as a state management library.",
 			],
 			ru: [
 				"Разработал игровую платформу с использованием Telegram Mini Apps, React и Redux.",
-				"Разработал SDK-оверлей для игровой платформы, который позволяет использовать платформу в других приложениях (награды, магазин, покупки, реклама и т.д.)",
+				"Разработал SDK-оверлей с встроенными UI-компонентами для игровой платформы, позволяющий интегрировать вознаграждения, магазин, покупки, рекламу и другие функции в сторонние приложения.",
 				"Популяризировал Zustand как библиотеку управления состоянием.",
 			],
 		},
@@ -127,14 +127,14 @@ export const experiences = [
 			en: [
 				"Created responsive websites according to design specifications and introduced design improvements for UI/UX.",
 				"Worked with JavaScript, Vue.js, SCSS, and SPA architecture, based on Figma designs.",
-				"Developed a custom UI library that increased developer productivity and code reuse",
+				"Developed a custom UI library",
 			],
 			ru: [
 				"Создавал адаптивные веб-сайты в соответствии с дизайн-спецификациями и вносил улучшения в дизайн для UI/UX.",
 				"Работал с JavaScript, Vue.js, SCSS и архитектурой SPA на основе дизайнов Figma.",
-				"Разработал пользовательскую UI-библиотеку, которая повысила продуктивность разработчиков и повторное использование кода.",
+				"Разработал пользовательскую UI-библиотеку",
 			],
 		},
-		technologies: ["JavaScript", "Vue", "SCSS", "SPA", "HTML", "CSS"],
+		technologies: ["JavaScript", "Vue", "SCSS", "SPA", "Figma", "HTML", "CSS"],
 	},
 ]; 

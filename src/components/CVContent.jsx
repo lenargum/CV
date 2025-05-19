@@ -37,7 +37,7 @@ export default function CVContent({ personalInfo, languages, experiences, educat
         </motion.div>}
       </AnimatePresence>
       <button
-        className={`print:hidden absolute top-2 left-2 md:right-2 z-10 shadow-md w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-white/80 backdrop-blur-sm active:scale-110 hover:opacity-100 transition-all duration-300
+        className={`print:hidden absolute lg:fixed top-2 left-2 md:right-2 z-10 shadow-md w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-white/80 backdrop-blur-sm active:scale-110 hover:opacity-100 transition-all duration-300
           ${isContentHidden ? "opacity-5" : "opacity-60"}`}
         onClick={() => setIsContentHidden(prev => !prev)}
       >

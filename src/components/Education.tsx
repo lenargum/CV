@@ -65,14 +65,6 @@ export default function Education({ education }: EducationProps) {
                 <li key={idx}>{highlight}</li>
               ))}
             </ul>
-            
-            {edu.projects && (
-              <ul className="list-disc ml-5 space-y-1.5 mt-3 pr-2">
-                {getTranslatedArray(edu.projects).map((project, idx) => (
-                  <li key={idx}>{project}</li>
-                ))}
-              </ul>
-            )}
           </div>
         ))}
       </div>

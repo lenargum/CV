@@ -5,7 +5,6 @@ import QuickLanguageSwitcher from '../QuickLanguageSwitcher';
 interface HeaderProps {
   name: string;
   title: string;
-  location: string;
   email: string;
   links: {
     name: string;
@@ -15,7 +14,7 @@ interface HeaderProps {
   }[];
 }
 
-const Header = ({ name, title, location, email, links }: HeaderProps) => {
+const Header = ({ name, title, email, links }: HeaderProps) => {
   return (
     <header className="flex flex-col md:flex-row print:flex-row relative">
       <AvatarSection name={name} />

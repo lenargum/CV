@@ -21,7 +21,7 @@ li {
   @apply text-text-secondary;
 }
 a {
-  @apply text-text-primary underline hover:text-primary transition-colors;
+  @apply text-text-primary underline hover:text-black transition-colors;
 }
 
 section.cv-section {
