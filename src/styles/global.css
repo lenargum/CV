@@ -36,7 +36,7 @@ section.cv-section + section.cv-section {
   @apply text-2xl font-semibold text-text-primary;
 }
 
-.subsection + .subsection {
+.subsection + .subsection:not(.mt-0) {
   margin-top: 32px;
 }
 

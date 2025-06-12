@@ -11,7 +11,7 @@ export const education = [
 		highlights: {
 			en: [
 				"Completed **Advanced Enterprise Programming** on **JavaScript** elective.",
-				"Passed electives in **Product Design** and **Product Management**.",
+				"Completed electives in **Product Design** and **Product Management**.",
 				"Applied UI/UX principles in multiple projects.",
 				"Studied **Backend**, **Frontend**, and **Mobile** development.",
 				"Practiced **Scrum**, **Agile**, **Waterfall**, and **Lean** methodologies.",
@@ -25,7 +25,7 @@ export const education = [
 			],
 			ru: [
 				"Прошел курс **Advanced Enterprise Programming** на **JavaScript**.",
-				"Сдал элективы по **Product Design** и **Product Management**.",
+				"Прошел курсы по **Product Design** и **Product Management**.",
 				"Применял принципы UI/UX в различных проектах.",
 				"Изучал **Backend**, **Frontend** и **Mobile** разработку.",
 				"Практиковал методологии **Scrum**, **Agile**, **Waterfall** и **Lean**.",
