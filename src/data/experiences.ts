@@ -5,8 +5,8 @@ export const experiences = [
 			ru: "Middle+ Frontend-разработчик",
 		},
 		company: {
-			en: 'Orbit, Game platform "Portal" in Telegram Mini Apps',
-			ru: 'Orbit, Игровая платформа "Portal" в Telegram Mini Apps',
+			en: 'Orbit, Game platform "[Portal](https://t.me/orbit_portal_bot)" in Telegram Mini Apps',
+			ru: 'Orbit, Игровая платформа "[Portal](https://t.me/orbit_portal_bot)" в Telegram Mini Apps',
 		},
 		location: "Remote",
 		date_start: new Date(2024, 8, 15), // September 15, 2024
@@ -23,7 +23,7 @@ export const experiences = [
 				"Популяризировал Zustand как библиотеку управления состоянием.",
 			],
 		},
-		technologies: [			
+		technologies: [
 			"TypeScript",
 			"React",
 			"Redux",
@@ -44,7 +44,7 @@ export const experiences = [
 			en: "Middle+ Frontend Developer",
 			ru: "Middle+ Frontend-разработчик",
 		},
-		company: "Incymo, SmartUA",
+		company: "Incymo, [SmartUA](https://incymo.ai/smartua/)",
 		location: "Remote",
 		date_start: new Date(2023, 5, 1), // June 1, 2023
 		date_end: new Date(2024, 8, 15), // September 15, 2024
@@ -81,23 +81,31 @@ export const experiences = [
 			en: "Junior+ Frontend Developer",
 			ru: "Junior+ Frontend-разработчик",
 		},
-		company: "Icons8 LLC, Icons",
+		company: "Icons8 LLC, [Icons](https://icons8.com/icons/set/cat)",
 		location: "Remote",
 		date_start: new Date(2021, 9, 1), // October 1, 2021
 		date_end: new Date(2023, 5, 30), // June 30, 2023
 		description: {
 			en: [
-				"Developed the user collection system for icons, enabling downloads in multiple sizes and formats.",
-				"Implemented an accordion feature for selected icons with an SVG editor (Iconizer project) while also working with Google Tag Manager and Docker.",
-				"Helped migrating from Vue 2 to Vue 3.",
-				"Built product landing pages using JavaScript, Vue/Nuxt 2, Paper.js, and SVG, (Iconizer project) and integrated advertising across the website.",
+				"Developed the user collection system for icons.",
+				"Developed SVG editor for icons - [Iconizer project](https://icons8.com/iconizer).",
+				"Developed an accordion feature for selected icons with an SVG editor (Iconizer) and downloading in multiple sizes and formats.",
+				"Set up analytics with Google Tag Manager.",
+				"Supported and improved UI-kit.",
+				"Developed integrated advertising blocks across the website.",
+				"Helped migrating Icons project from Vue 2 to Vue 3.",
+				"Built product landing pages for Icons and Iconizer projects.",
 			],
 			ru: [
-				"Разработал систему пользовательских коллекций для иконок, обеспечивающую загрузку в различных размерах и форматах.",
-				"Реализовал функцию аккордеона для выбранных иконок с SVG-редактором (проект Iconizer), также работая с Google Tag Manager и Docker.",
-				"Помогал переезжать с Vue 2 на Vue 3.",
-				"Создал лендинги продуктов с использованием JavaScript, Vue/Nuxt 2, Paper.js и SVG (проект Iconizer) и интегрировал рекламу по всему сайту.",
-			],
+				"Разработал систему пользовательских коллекций иконок.",
+				"Создал SVG-редактор для иконок — [проект Iconizer](https://icons8.com/iconizer).",
+				"Разработал функциональность аккордеона для выбранных иконок в SVG-редакторе (Iconizer) с возможностью скачивания в нескольких размерах и форматах.",
+				"Настроил аналитику с использованием Google Tag Manager.",
+				"Поддерживал и улучшал UI-kit.",
+				"Разработал встроенные рекламные блоки на сайте.",
+				"Участвовал в миграции проекта Icons с Vue 2 на Vue 3.",
+				"Создавал лендинги для проектов Icons и Iconizer.",
+			]
 		},
 		technologies: [
 			"JavaScript",
@@ -119,7 +127,7 @@ export const experiences = [
 			en: "Junior Frontend Developer",
 			ru: "Junior Frontend-разработчик",
 		},
-		company: "MKSKOM LLC",
+		company: "[MKSKOM LLC](https://mkskom.ru/)",
 		location: "Remote",
 		date_start: new Date(2021, 1, 1), // February 1, 2021
 		date_end: new Date(2021, 7, 31), // August 31, 2021

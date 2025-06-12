@@ -1,5 +1,6 @@
 import { useTranslation } from '../i18n/useTranslation';
 import { formatDateRange } from '../utils/formatters';
+import { MarkdownText } from '../utils/markdown';
 
 interface TranslatedText {
   en: string;
@@ -153,7 +154,7 @@ export default function Experience({ experiences }: ExperienceProps) {
         {experiences.map((exp, index) => (
           <div key={index} className="subsection">
             <div className="flex flex-col mb-4">
-              <h3 className="mb-1">{getTranslatedValue(exp.title)}, {getTranslatedValue(exp.company)}, {exp.location}</h3>
+              <h3 className="mb-1"><MarkdownText>{`${getTranslatedValue(exp.title)}, ${getTranslatedValue(exp.company)}, ${exp.location}`}</MarkdownText></h3>
               <div className="flex flex-col md:flex-row md:items-baseline gap-x-3">
                 <span className="text-text-secondary">{getFormattedDateRange(exp.date_start, exp.date_end)}</span>
                 <span className="text-text-tertiary text-sm">
@@ -163,7 +164,9 @@ export default function Experience({ experiences }: ExperienceProps) {
             </div>
             <ul className="list-disc ml-5 space-y-1.5 pr-2">
               {getTranslatedArray(exp.description).map((item, idx) => (
-                <li key={idx}>{item}</li>
+                <li key={idx}>
+                  <MarkdownText>{item}</MarkdownText>
+                </li>
               ))}
             </ul>
             {exp.technologies && exp.technologies.length > 0 && (

@@ -2,8 +2,8 @@ export const achievements = [
 	{
 		title: "Цифровой прорыв (Digital Breakthrough) 2020",
 		details: {
-			en: "Won the Digital Breakthrough 2020 (Northwest IT Hub) hackathon",
-			ru: "Победил в хакатоне Цифровой прорыв 2020 (Северо-Западный IT-хаб)",
+			en: "**[Won](https://drive.google.com/file/d/10u1auqW_GVIgAfGYHz08xgryAYLmBhtv/view?usp=sharing)** the Digital Breakthrough 2020 (Northwest IT Hub) hackathon",
+			ru: "**[Победил](https://drive.google.com/file/d/10u1auqW_GVIgAfGYHz08xgryAYLmBhtv/view?usp=sharing)** в хакатоне Цифровой прорыв 2020 (Северо-Западный IT-хаб)",
 		},
 		subDetails: {
 			en: "48 hours, among 280 teams",
@@ -13,8 +13,8 @@ export const achievements = [
 	{
 		title: "OpenSpaceHack 2020",
 		details: {
-			en: "Won the OpenSpaceHack 2020 hackathon",
-			ru: "Победил в хакатоне OpenSpaceHack 2020",
+			en: "**[Won](https://drive.google.com/file/d/19JPJGf-PkWFJpKMI-nS9KoPa_w5A8K9C/view?usp=sharing)** the OpenSpaceHack 2020 hackathon",
+			ru: "**[Победил](https://drive.google.com/file/d/19JPJGf-PkWFJpKMI-nS9KoPa_w5A8K9C/view?usp=sharing)** в хакатоне OpenSpaceHack 2020",
 		},
 		subDetails: {
 			en: "48 hours, among 37 teams",

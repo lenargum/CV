@@ -1,4 +1,5 @@
 import { useTranslation } from '../i18n/useTranslation';
+import { MarkdownText } from '../utils/markdown';
 
 interface TranslatedText {
   en: string;
@@ -30,10 +31,16 @@ export default function Achievements({ achievements }: AchievementsProps) {
       <div className="space-y-4 pr-2">
         {achievements.map((achievement, index) => (
           <div key={index} className="mb-4 achievement-item">
-            <h3 className="mb-1">{achievement.title}</h3>
-            <p>{getTranslatedValue(achievement.details)}</p>
+            <h3 className="mb-1">
+              <MarkdownText>{achievement.title}</MarkdownText>
+            </h3>
+            <p>
+              <MarkdownText>{getTranslatedValue(achievement.details)}</MarkdownText>
+            </p>
             {achievement.subDetails && (
-              <p className="text-text-tertiary text-sm mt-1">• {getTranslatedValue(achievement.subDetails)}</p>
+              <p className="text-text-tertiary text-sm mt-1">
+                • <MarkdownText>{getTranslatedValue(achievement.subDetails)}</MarkdownText>
+              </p>
             )}
           </div>
         ))}

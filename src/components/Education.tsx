@@ -1,5 +1,6 @@
 import { useTranslation } from '../i18n/useTranslation';
 import { formatDateRange } from '../utils/formatters';
+import { MarkdownText } from '../utils/markdown';
 
 interface TranslatedText {
   en: string;
@@ -62,7 +63,9 @@ export default function Education({ education }: EducationProps) {
             </div>
             <ul className="list-disc ml-5 space-y-1.5 pr-2">
               {getTranslatedArray(edu.highlights).map((highlight, idx) => (
-                <li key={idx}>{highlight}</li>
+                <li key={idx}>
+                  <MarkdownText>{highlight}</MarkdownText>
+                </li>
               ))}
             </ul>
           </div>
