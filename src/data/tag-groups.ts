@@ -1,5 +1,5 @@
 /**
- * Tag group configuration for the Technologies section
+ * Tag group configuration for the Key Skills section
  * Edit these constants to modify tag categorization
  */
 
@@ -14,43 +14,95 @@ export interface TagGroupConfig {
  * Add/remove/modify groups as needed
  */
 export const TAG_GROUPS: Record<string, TagGroupConfig> = {
-    OTHERS: {
+    CORE: {
         name: {
-            en: 'Main',
+            en: 'Core',
             ru: 'Основные'
         },
-        tags: [], // Will be populated with remaining tags
+        tags: [
+            'TypeScript',
+            'JavaScript', 
+            'HTML',
+            'CSS',
+            'SCSS',
+            'Tailwind',
+            'Figma',
+            'Git',
+            'CI/CD',
+            'Docker'
+        ],
         priority: 1
     },
 
-    REACT: {
+    FRAMEWORKS: {
         name: {
-            en: 'React',
-            ru: 'React'
+            en: 'Frameworks',
+            ru: 'Фреймворки'
         },
         tags: [
             'React',
             'Redux',
             'Zustand',
             'Next',
-            'Motion.js'
-        ],
-        priority: 2
-    },
-
-    VUE: {
-        name: {
-            en: 'Vue',
-            ru: 'Vue'
-        },
-        tags: [
             'Vue',
             'VueX',
             'Pinia',
             'Nuxt',
             'Vuetify'
         ],
+        priority: 2
+    },
+
+    TOOLS: {
+        name: {
+            en: 'Tools',
+            ru: 'Инструменты'
+        },
+        tags: [
+            'Motion.js',
+            'Paper.js',
+            'SVG',
+            'SPA',
+            'SSR',
+            'SSG',
+            'Google Tag Manager',
+            'Yandex Metrica',
+            'Telegram Mini Apps'
+        ],
         priority: 3
+    },
+
+    CONCEPTS: {
+        name: {
+            en: 'Concepts',
+            ru: 'Концепции'
+        },
+        tags: [
+            'UI/UX',
+            'Design Systems',
+            'Accessibility',
+            'Performance Optimization',
+            'Component Architecture',
+            'Microfrontends',
+            'Motion & Interaction Design',
+            'Responsive & Fluid Layout Systems',
+            'Themability & Runtime Theming',
+            'Reusable UI components',
+            'Agile',
+            'Scrum',
+            'Waterfall',
+            'Lean'
+        ],
+        priority: 4
+    },
+
+    UNFILTERED: {
+        name: {
+            en: 'Others',
+            ru: 'Остальные'
+        },
+        tags: [], // Will be populated with remaining tags for debugging
+        priority: 5
     }
 };
 
@@ -62,11 +114,11 @@ export function getTagGroups(): TagGroupConfig[] {
 }
 
 /**
- * Check if a tag belongs to any specific group (excluding OTHERS)
+ * Check if a tag belongs to any specific group (excluding UNFILTERED)
  */
 export function isTagInSpecificGroup(tag: string): boolean {
     return Object.entries(TAG_GROUPS)
-        .filter(([key]) => key !== 'OTHERS')
+        .filter(([key]) => key !== 'UNFILTERED')
         .some(([, group]) => group.tags.includes(tag));
 }
 

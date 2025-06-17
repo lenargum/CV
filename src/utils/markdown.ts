@@ -156,12 +156,13 @@ export function renderMarkdown(text: string): React.ReactNode[] {
  * React component for rendering markdown text
  */
 interface MarkdownTextProps {
+  as?: 'span' | 'p';
   children: string;
   className?: string;
 }
 
-export function MarkdownText({ children, className = '' }: MarkdownTextProps): React.ReactElement {
+export function MarkdownText({ as = 'span', children, className = '' }: MarkdownTextProps): React.ReactElement {
   const elements = renderMarkdown(children);
   
-  return React.createElement('span', { className }, ...elements);
+  return React.createElement(as, { className }, ...elements);
 } 

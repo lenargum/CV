@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from '../i18n/useTranslation';
 import { TAG_GROUPS, isTagInSpecificGroup } from '../data/tag-groups';
 import type { TagGroupConfig } from '../data/tag-groups';
+import Tag from './Tag/Tag';
 
 interface TagsProps {
   allTags?: string[];
@@ -12,33 +13,51 @@ export default function Tags({ allTags = [] }: TagsProps) {
 
   // Categorize tags into groups
   const categorizedTags = React.useMemo(() => {
-    const reactTags = allTags.filter(tag => TAG_GROUPS.REACT.tags.includes(tag));
-    const vueTags = allTags.filter(tag => TAG_GROUPS.VUE.tags.includes(tag));
-    const otherTags = allTags.filter(tag => !isTagInSpecificGroup(tag));
+    const coreTags = allTags.filter(tag => TAG_GROUPS.CORE.tags.includes(tag));
+    const frameworkTags = allTags.filter(tag => TAG_GROUPS.FRAMEWORKS.tags.includes(tag));
+    const toolTags = allTags.filter(tag => TAG_GROUPS.TOOLS.tags.includes(tag));
+    const conceptTags = allTags.filter(tag => TAG_GROUPS.CONCEPTS.tags.includes(tag));
+    const unfilteredTags = allTags.filter(tag => !isTagInSpecificGroup(tag));
 
     const groups: Array<{ group: TagGroupConfig; tags: string[] }> = [];
 
-    // Add React group if has tags
-    if (reactTags.length > 0) {
+    // Add Core group if has tags
+    if (coreTags.length > 0) {
       groups.push({
-        group: TAG_GROUPS.REACT,
-        tags: reactTags
+        group: TAG_GROUPS.CORE,
+        tags: coreTags
       });
     }
 
-    // Add Vue group if has tags
-    if (vueTags.length > 0) {
+    // Add Frameworks group if has tags
+    if (frameworkTags.length > 0) {
       groups.push({
-        group: TAG_GROUPS.VUE,
-        tags: vueTags
+        group: TAG_GROUPS.FRAMEWORKS,
+        tags: frameworkTags
       });
     }
 
-    // Add Others group if has tags
-    if (otherTags.length > 0) {
+    // Add Tools group if has tags
+    if (toolTags.length > 0) {
       groups.push({
-        group: TAG_GROUPS.OTHERS,
-        tags: otherTags
+        group: TAG_GROUPS.TOOLS,
+        tags: toolTags
+      });
+    }
+
+    // Add Concepts group if has tags
+    if (conceptTags.length > 0) {
+      groups.push({
+        group: TAG_GROUPS.CONCEPTS,
+        tags: conceptTags
+      });
+    }
+
+    // Add Unfiltered group if has tags (for debugging)
+    if (unfilteredTags.length > 0 && false) {
+      groups.push({
+        group: TAG_GROUPS.UNFILTERED,
+        tags: unfilteredTags
       });
     }
 
@@ -53,30 +72,15 @@ export default function Tags({ allTags = [] }: TagsProps) {
   return (
     <section className="cv-section">
       <h2 className="section-title mb-6">{t.sections.technologies}</h2>
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        {categorizedTags.map(({ group, tags }, groupIndex) => {
-          // Determine column span: Others gets 2 columns, React and Vue get 1 each
-          const isOthers = group.priority === 1;
-          const colSpan = isOthers ? 'md:col-span-2' : 'md:col-span-1';
-          
-          return (
-            <div key={groupIndex} className={`subsection ${colSpan} mt-0`}>
-              <h3 className="text-lg font-medium text-text-primary mb-3">
-                {getTranslatedGroupName(group)}
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag, tagIndex) => (
-                  <span
-                    key={tagIndex}
-                    className="tech-tag"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+      <div className="space-y-4">
+        {categorizedTags.map(({ group, tags }, groupIndex) => (
+          <div key={groupIndex} className="subsection mt-0 flex flex-wrap gap-2 items-baseline">
+            <h3 className="text-lg font-medium text-text-primary">{getTranslatedGroupName(group)}:</h3>
+            {tags.map((tag, index) => (
+              <Tag key={index} tag={tag} />
+            ))}
+          </div>
+        ))}
       </div>
     </section>
   );

@@ -6,12 +6,13 @@ export default {
     email: "lenargamgam@gmail.com",
   },
   sections: {
+    summary: "About me",
     contacts: "Contacts",
     skills: "Skills",
     experience: "Experience",
     education: "Education",
-    achievements: "Achievements",
-    technologies: "Technologies",
+    achievements: "Highlights & Achievements",
+    technologies: "Key Skills",
     languages: "Languages"
   },
   languages: {

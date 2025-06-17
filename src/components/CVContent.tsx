@@ -1,5 +1,6 @@
 import LanguageProvider from '../i18n/LanguageProvider';
 import Header from './Header';
+import Summary from './Summary';
 import Tags from './Tags';
 import Experience from './Experience';
 import Education from './Education';
@@ -7,8 +8,24 @@ import Achievements from './Achievements';
 import Languages from './Languages';
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
+import type { PersonalInfo } from '../data/personal-info';
+import type { Summary as SummaryType } from '../data/summary';
+import type { Language as LanguageType } from '../data/languages';
+import type { ExperienceItem as ExperienceType } from '../data/experiences';
+import type { EducationItem as EducationType } from '../data/education';
+import type { Achievement as AchievementType } from '../data/achievements';
 
-export default function CVContent({ personalInfo, languages, experiences, education, achievements, allTags }) {
+interface CVContentProps {
+  personalInfo: PersonalInfo;
+  summary: SummaryType;
+  languages: LanguageType[];
+  experiences: ExperienceType[];
+  education: EducationType[];
+  achievements: AchievementType[];
+  allTags: string[];
+} 
+
+export default function CVContent({ personalInfo, summary, languages, experiences, education, achievements, allTags }: CVContentProps) {
   const [isContentHidden, setIsContentHidden] = useState(false);
 
   return (
@@ -27,6 +44,7 @@ export default function CVContent({ personalInfo, languages, experiences, educat
             <Header {...personalInfo} />
 
             <div className="flex flex-col bg-white/80 backdrop-blur-sm print:bg-white">
+              <Summary summary={summary} />
               <Tags allTags={allTags} />
               <Experience experiences={experiences} />
               <Education education={education} />

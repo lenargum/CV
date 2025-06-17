@@ -1,50 +1,34 @@
 import { useTranslation } from '../i18n/useTranslation';
 import { MarkdownText } from '../utils/markdown';
+import { type Achievement, type TranslatedText } from '../data/achievements';
 
-interface TranslatedText {
-  en: string;
-  ru: string;
-  [key: string]: string;
-}
-
-interface Achievement {
-  title: string;
-  details: string | TranslatedText;
-  subDetails?: string | TranslatedText;
-}
-
-interface AchievementsProps {
+export interface AchievementsProps {
   achievements: Achievement[];
 }
 
 export default function Achievements({ achievements }: AchievementsProps) {
   const { t, currentLang } = useTranslation();
-  
+
   const getTranslatedValue = (value: string | TranslatedText): string => {
     if (typeof value === 'string') return value;
     return value[currentLang as keyof TranslatedText] || value.en;
   };
-  
+
   return (
     <section className="cv-section achievements-section">
       <h2 className="section-title mb-6">{t.sections.achievements}</h2>
-      <div className="space-y-4 pr-2">
+      <ul className="list-disc ml-5 space-y-1.5 pr-2">
         {achievements.map((achievement, index) => (
-          <div key={index} className="mb-4 achievement-item">
-            <h3 className="mb-1">
-              <MarkdownText>{achievement.title}</MarkdownText>
-            </h3>
-            <p>
-              <MarkdownText>{getTranslatedValue(achievement.details)}</MarkdownText>
-            </p>
+          <li key={index} className="achievement-item">
+            <p><MarkdownText>{getTranslatedValue(achievement.details)}</MarkdownText></p>
             {achievement.subDetails && (
-              <p className="text-text-tertiary text-sm mt-1">
-                • <MarkdownText>{getTranslatedValue(achievement.subDetails)}</MarkdownText>
+              <p className="text-text-tertiary text-sm">
+                <MarkdownText>{getTranslatedValue(achievement.subDetails)}</MarkdownText>
               </p>
             )}
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 } 

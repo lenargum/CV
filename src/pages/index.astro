@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import CVContent from "../components/CVContent";
+import CVContent from "../components/CVContent.tsx";
 
 // Import translations (will be used client-side)
 import "../i18n/index.js";
@@ -12,7 +12,8 @@ import {
   experiences, 
   education, 
   achievements,
-  generateTags
+  generateTags,
+  summary
 } from "../data";
 
 // Generate tags
@@ -23,6 +24,7 @@ const allTags = generateTags();
   <CVContent
       client:load
       {personalInfo}
+      {summary}
       {languages}
       {experiences}
       {education}

@@ -1,4 +1,18 @@
-export const personalInfo = {
+export interface PersonalInfoLink {
+	name: string;
+	url: string;
+	icon: string;
+	displayText: string;
+}
+
+export interface PersonalInfo {
+	name: string;
+	title: string;
+	email: string;
+	links: PersonalInfoLink[];
+}
+
+export const personalInfo: PersonalInfo = {
 	name: "Lenar Gumerov",
 	title: "Frontend Developer",
 	email: "lenargamgam@gmail.com",

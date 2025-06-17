@@ -25,7 +25,7 @@ a {
 }
 
 section.cv-section {
-  @apply p-8;
+  @apply p-8 [&:not(:first-child)]:pb-14;
 }
 
 section.cv-section + section.cv-section {
