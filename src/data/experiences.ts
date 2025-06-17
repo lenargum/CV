@@ -76,6 +76,8 @@ export const experiences: ExperienceItem[] = [
 			"Responsive & Fluid Layout Systems",
 			"Component Architecture",
 			"Reusable UI components",
+			"Agile",
+			"Waterfall"
 		],
 	},
 	{
@@ -128,6 +130,8 @@ export const experiences: ExperienceItem[] = [
 			"Responsive & Fluid Layout Systems",
 			"Component Architecture",
 			"Reusable UI components",
+			"Agile",
+			"Waterfall"
 		],
 	},
 	{
@@ -180,6 +184,7 @@ export const experiences: ExperienceItem[] = [
 			"Responsive & Fluid Layout Systems",
 			"Component Architecture",
 			"Reusable UI components",
+			"Agile",
 			"Scrum"
 		],
 	},
