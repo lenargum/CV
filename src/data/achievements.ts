@@ -42,7 +42,7 @@ export const achievements: Achievement[] = [
 	},
 	{
 		details: {
-			en: "Taught high school students Android dev on Java, robotics on Python",
+			en: "Taught high school students Android dev on Java, [robotics on Python](https://www.instagram.com/p/BmgLLKwn_uf/)",
 			ru: "Обучал старшеклассников Android-разработке на Java, [робототехнике на Python](https://www.instagram.com/p/BmgLLKwn_uf/)"
 		},
 	},
