@@ -93,18 +93,18 @@ export const experiences: ExperienceItem[] = [
 		date_end: new Date(2024, 8, 15), // September 15, 2024
 		description: {
 			"en": [
-				"Developed a complex image/video editor with support for multi-layer editing, text/image/video batch imports, timeline and animation system",
-				"Designed and implemented features for generating ads with rich layouts and visual effects editable post-generation",
+				"Developed a complex image/video editor with multi-layer support, batch text/image/video imports, timeline and animation system",
+				"Designed and built a comprehensive ad banner generator with rich template system and post-generation editing capabilities",
 				"Created analytical dashboards aggregating advertising network stats into charts and visual summaries",
-				"Took charge of UI redesign from legacy Android-style interface to modern Material 3+ design system",
+				"Led complete UI redesign from legacy Android-style interface to modern Material 3+ design system",
 				"Delivered production-ready UI/UX and components under pressure while ensuring visual consistency and maintainability"
 			],
 			"ru": [
-				"Разработал сложный редактор изображений/видео с мультислоями, пакетной загрузкой и системой анимаций",
-				"Спроектировал генератор рекламных баннеров с богатыми шаблонами и возможностью редактирования",
-				"Создал аналитические дашборды, агрегирующие статистику рекламных сетей в графики и таблицы",
-				"Переработал устаревший интерфейс в стиле Android на современную Material 3+ дизайн-систему",
-				"Создавал продакшн-готовые UI и компоненты с соблюдением визуальной целостности и стабильности"
+				"Разработал сложный редактор изображений и видео с поддержкой мультислоёв, пакетной загрузки текста/изображений/видео, системой таймлайна и анимаций",
+				"Спроектировал и реализовал генератор рекламных баннеров с системой шаблонов и возможностью постредактирования",
+				"Создал аналитические дашборды, агрегирующие статистику рекламных сетей в виде графиков и визуальных сводок",
+				"Провёл полный редизайн интерфейса — от устаревшего Android-стиля до современной дизайн-системы Material 3+",
+				"Поставлял продакшн-готовые UI/UX и компоненты в условиях сжатых сроков, сохраняя визуальную целостность и поддерживаемость"
 			]
 		},
 		technologies: [
