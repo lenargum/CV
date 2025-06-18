@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from '../i18n/useTranslation';
-import { TAG_GROUPS, isTagInSpecificGroup } from '../data/tag-groups';
+import { TAG_GROUPS, getTagGroups, isTagInSpecificGroup } from '../data/tag-groups';
 import type { TagGroupConfig } from '../data/tag-groups';
 import Tag from './Tag/Tag';
 
@@ -13,47 +13,29 @@ export default function Tags({ allTags = [] }: TagsProps) {
 
   // Categorize tags into groups
   const categorizedTags = React.useMemo(() => {
-    const coreTags = allTags.filter(tag => TAG_GROUPS.CORE.tags.includes(tag));
-    const frameworkTags = allTags.filter(tag => TAG_GROUPS.FRAMEWORKS.tags.includes(tag));
-    const toolTags = allTags.filter(tag => TAG_GROUPS.TOOLS.tags.includes(tag));
-    const conceptTags = allTags.filter(tag => TAG_GROUPS.CONCEPTS.tags.includes(tag));
-    const unfilteredTags = allTags.filter(tag => !isTagInSpecificGroup(tag));
-
     const groups: Array<{ group: TagGroupConfig; tags: string[] }> = [];
 
-    // Add Core group if has tags
-    if (coreTags.length > 0) {
-      groups.push({
-        group: TAG_GROUPS.CORE,
-        tags: coreTags
-      });
-    }
+    // Get all tag groups and process them dynamically
+    const allTagGroups = getTagGroups();
+    
+    for (const group of allTagGroups) {
+      // Skip UNFILTERED group in normal processing
+      if (group === TAG_GROUPS.UNFILTERED) {
+        continue;
+      }
 
-    // Add Frameworks group if has tags
-    if (frameworkTags.length > 0) {
-      groups.push({
-        group: TAG_GROUPS.FRAMEWORKS,
-        tags: frameworkTags
-      });
-    }
-
-    // Add Tools group if has tags
-    if (toolTags.length > 0) {
-      groups.push({
-        group: TAG_GROUPS.TOOLS,
-        tags: toolTags
-      });
-    }
-
-    // Add Concepts group if has tags
-    if (conceptTags.length > 0) {
-      groups.push({
-        group: TAG_GROUPS.CONCEPTS,
-        tags: conceptTags
-      });
+      const groupTags = allTags.filter(tag => group.tags.includes(tag));
+      
+      if (groupTags.length > 0) {
+        groups.push({
+          group,
+          tags: groupTags
+        });
+      }
     }
 
     // Add Unfiltered group if has tags (for debugging)
+    const unfilteredTags = allTags.filter(tag => !isTagInSpecificGroup(tag));
     if (unfilteredTags.length > 0 && false) {
       groups.push({
         group: TAG_GROUPS.UNFILTERED,
@@ -61,8 +43,7 @@ export default function Tags({ allTags = [] }: TagsProps) {
       });
     }
 
-    // Sort by priority
-    return groups.sort((a, b) => a.group.priority - b.group.priority);
+    return groups;
   }, [allTags]);
 
   const getTranslatedGroupName = (group: TagGroupConfig): string => {

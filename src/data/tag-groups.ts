@@ -70,26 +70,41 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
       priority: 3
     },
   
-    CONCEPTS: {
+    UX_VISUAL: {
       name: {
-        en: 'Concepts',
-        ru: 'Концепции'
+        en: 'UX & Visual',
+        ru: 'UX и Визуал'
       },
       tags: [
-        // UX & visual
         'UI/UX',
         'Motion & Interaction Design',
         'Responsive & Fluid Layout Systems',
         'Themability & Runtime Theming',
-        'Accessibility',
-  
-        // Rendering
+        'Accessibility'
+      ],
+      priority: 4
+    },
+
+    RENDERING: {
+      name: {
+        en: 'Rendering',
+        ru: 'Рендеринг'
+      },
+      tags: [
         'SPA',
         'SSR',
         'SSG',
-        'CSR',
-  
-        // Architecture
+        'CSR'
+      ],
+      priority: 5
+    },
+
+    ARCHITECTURE: {
+      name: {
+        en: 'Architecture',
+        ru: 'Архитектура'
+      },
+      tags: [
         'Design Systems',
         'Reusable UI components',
         'Component Architecture',
@@ -101,21 +116,37 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         'State Management',
         'Microfrontends',
         'Flux',
-        'CQRS',
-  
-        // Principles
+        'CQRS'
+      ],
+      priority: 6
+    },
+
+    PRINCIPLES: {
+      name: {
+        en: 'Principles',
+        ru: 'Принципы'
+      },
+      tags: [
         'Performance Optimization',
         'SOLID',
         'DRY',
-        'KISS',
-  
-        // Process
+        'KISS'
+      ],
+      priority: 7
+    },
+
+    PROCESS: {
+      name: {
+        en: 'Process',
+        ru: 'Процессы'
+      },
+      tags: [
         'Agile',
         'Scrum',
         'Lean',
         'Waterfall'
       ],
-      priority: 4
+      priority: 8
     },
   
     UNFILTERED: {
@@ -124,7 +155,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Остальные'
       },
       tags: [],
-      priority: 5
+      priority: 9
     }
   };
   
