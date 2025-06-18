@@ -15,97 +15,119 @@ export interface TagGroupConfig {
  */
 export const TAG_GROUPS: Record<string, TagGroupConfig> = {
     CORE: {
-        name: {
-            en: 'Core',
-            ru: 'Основные'
-        },
-        tags: [
-            'TypeScript',
-            'JavaScript', 
-            'HTML',
-            'CSS',
-            'SCSS',
-            'Tailwind',
-            'Figma',
-            'Git',
-            'CI/CD',
-            'Docker'
-        ],
-        priority: 1
+      name: {
+        en: 'Core',
+        ru: 'Основные'
+      },
+      tags: [
+        'TypeScript',
+        'JavaScript',
+        'HTML',
+        'CSS',
+        'SCSS',
+        'Tailwind',
+        'Figma',
+        'Git',
+        'CI/CD',
+        'Docker'
+      ],
+      priority: 1
     },
-
+  
     FRAMEWORKS: {
-        name: {
-            en: 'Frameworks',
-            ru: 'Фреймворки'
-        },
-        tags: [
-            'React',
-            'Redux',
-            'Zustand',
-            'Next',
-            'Vue',
-            'VueX',
-            'Pinia',
-            'Nuxt',
-            'Vuetify'
-        ],
-        priority: 2
+      name: {
+        en: 'Frameworks',
+        ru: 'Фреймворки'
+      },
+      tags: [
+        'React',
+        'Redux',
+        'Zustand',
+        'Next',
+        'Vue',
+        'VueX',
+        'Pinia',
+        'Nuxt',
+        'Vuetify'
+      ],
+      priority: 2
     },
-
+  
     TOOLS: {
-        name: {
-            en: 'Tools',
-            ru: 'Инструменты'
-        },
-        tags: [
-            'Motion.js',
-            'Paper.js',
-            'Chart.js',
-            'SVG',
-            'SPA',
-            'SSR',
-            'SSG',
-            'Google Tag Manager',
-            'Yandex Metrica',
-            'Telegram Mini Apps'
-        ],
-        priority: 3
+      name: {
+        en: 'Tools',
+        ru: 'Инструменты'
+      },
+      tags: [
+        'Motion.js',
+        'Paper.js',
+        'Chart.js',
+        'SVG',
+        'Google Tag Manager',
+        'Yandex Metrica',
+        'Telegram Mini Apps'
+      ],
+      priority: 3
     },
-
+  
     CONCEPTS: {
-        name: {
-            en: 'Concepts',
-            ru: 'Концепции'
-        },
-        tags: [
-            'UI/UX',
-            'Design Systems',
-            'Accessibility',
-            'Performance Optimization',
-            'Component Architecture',
-            'Microfrontends',
-            'Motion & Interaction Design',
-            'Responsive & Fluid Layout Systems',
-            'Themability & Runtime Theming',
-            'Reusable UI components',
-            'Agile',
-            'Scrum',
-            'Waterfall',
-            'Lean'
-        ],
-        priority: 4
+      name: {
+        en: 'Concepts',
+        ru: 'Концепции'
+      },
+      tags: [
+        // UX & visual
+        'UI/UX',
+        'Motion & Interaction Design',
+        'Responsive & Fluid Layout Systems',
+        'Themability & Runtime Theming',
+        'Accessibility',
+  
+        // Rendering
+        'SPA',
+        'SSR',
+        'SSG',
+        'CSR',
+  
+        // Architecture
+        'Design Systems',
+        'Reusable UI components',
+        'Component Architecture',
+        'Feature-Sliced Design',
+        'Atomic Design',
+        'Clean Architecture',
+        'MVC',
+        'MVVM',
+        'State Management',
+        'Microfrontends',
+        'Flux',
+        'CQRS',
+  
+        // Principles
+        'Performance Optimization',
+        'SOLID',
+        'DRY',
+        'KISS',
+  
+        // Process
+        'Agile',
+        'Scrum',
+        'Lean',
+        'Waterfall'
+      ],
+      priority: 4
     },
-
+  
     UNFILTERED: {
-        name: {
-            en: 'Others',
-            ru: 'Остальные'
-        },
-        tags: [], // Will be populated with remaining tags for debugging
-        priority: 5
+      name: {
+        en: 'Others',
+        ru: 'Остальные'
+      },
+      tags: [],
+      priority: 5
     }
-};
+  };
+  
 
 /**
  * Get all defined tag groups sorted by priority

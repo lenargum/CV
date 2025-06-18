@@ -69,6 +69,14 @@ export const experiences: ExperienceItem[] = [
 			"CSS",
 			"JavaScript",
 			"SCSS",
+
+			"CSR",
+
+			"SOLID",
+			"KISS",
+			"DRY",
+
+			"Atomic Design",
 			"Design Systems",
 			"Performance Optimization",
 			"Motion & Interaction Design",
@@ -76,8 +84,13 @@ export const experiences: ExperienceItem[] = [
 			"Responsive & Fluid Layout Systems",
 			"Component Architecture",
 			"Reusable UI components",
+
+			"Clean Architecture",
+			"Feature-Sliced Design",
+			"Flux",
+
 			"Agile",
-			"Waterfall"
+			"Waterfall",
 		],
 	},
 	{
@@ -125,12 +138,25 @@ export const experiences: ExperienceItem[] = [
 			"CSS",
 			"JavaScript",
 			"SCSS",
+
+			"CSR",
+
+			"SOLID",
+			"KISS",
+			"DRY",
+
 			"Design Systems",
 			"Performance Optimization",
 			"Motion & Interaction Design",
 			"Responsive & Fluid Layout Systems",
 			"Component Architecture",
 			"Reusable UI components",
+
+			"Clean Architecture",
+			"CQRS",
+			"Feature-Sliced Design",
+			"Atomic Design",
+
 			"Agile",
 			"Waterfall"
 		],
@@ -179,12 +205,24 @@ export const experiences: ExperienceItem[] = [
 			"Figma",
 			"HTML",
 			"CSS",
+			"CSR",
+			"Microfrontends",
+
+			"SOLID",
+			"DRY",
+			"KISS",
+
 			"Design Systems",
 			"Performance Optimization",
 			"Motion & Interaction Design",
 			"Responsive & Fluid Layout Systems",
 			"Component Architecture",
 			"Reusable UI components",
+			"Clean Architecture",
+			"Atomic Design",
+			"Feature-Sliced Design",
+			"Flux",
+
 			"Agile",
 			"Scrum"
 		],
@@ -224,10 +262,22 @@ export const experiences: ExperienceItem[] = [
 			"Figma",
 			"HTML",
 			"CSS",
+			"CSR",
 			"Design Systems",
 			"Responsive & Fluid Layout Systems",
 			"Component Architecture",
 			"Reusable UI components",
+
+			"Modular Frontend",
+			"Clean Architecture",
+			"Atomic Design",
+			"MVC",
+
+			"DRY",
+			"KISS",
+			"SOLID",
+
+			"Waterfall"
 		],
 	},
 ]; 
