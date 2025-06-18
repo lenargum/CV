@@ -115,6 +115,7 @@ export const experiences: ExperienceItem[] = [
 			"Pinia",
 			"Tailwind",
 			"Vuetify",
+			"Chart.js",
 			"SPA",
 			"Google Tag Manager",
 			"Yandex Metrica",

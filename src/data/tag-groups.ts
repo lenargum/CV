@@ -61,6 +61,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         tags: [
             'Motion.js',
             'Paper.js',
+            'Chart.js',
             'SVG',
             'SPA',
             'SSR',

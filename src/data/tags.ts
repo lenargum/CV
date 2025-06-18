@@ -8,7 +8,7 @@ export const manualTags = [
   "React", "Redux", "Zustand", "Next", "Vue", "VueX", "Pinia", "Nuxt", "Vuetify",
   
   // Tools
-  "Google Tag Manager", "Yandex Metrica", "Paper.js", "Motion.js", "Telegram Mini Apps",
+  "Google Tag Manager", "Yandex Metrica", "Paper.js", "Motion.js", "Chart.js", "Telegram Mini Apps",
   
   // Concepts
   "UI/UX", "SPA", "Design Systems", "Accessibility", "Performance Optimization", 
@@ -43,6 +43,7 @@ const priorityTechnologies = [
   
   "Motion.js",
   "Paper.js",
+  "Chart.js",
   "SVG",
   "SPA",
   "SSR",
