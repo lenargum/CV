@@ -130,7 +130,8 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         'Performance Optimization',
         'SOLID',
         'DRY',
-        'KISS'
+        'KISS',
+        'YAGNI'
       ],
       priority: 7
     },

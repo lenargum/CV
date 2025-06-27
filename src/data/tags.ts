@@ -40,7 +40,8 @@ export const manualTags = [
   "SOLID",
   "DRY",
   "KISS",
-
+  "YAGNI",
+  
   "Agile",
   "Scrum",
   "Lean",
@@ -112,6 +113,7 @@ const priorityTechnologies = [
   "SOLID",
   "DRY",
   "KISS",
+  "YAGNI",
 
   // Processes
   "Agile",
