@@ -32,7 +32,6 @@ export const manualTags = [
 
   "Performance Optimization",
   "State Management",
-  "CQRS",
   "Flux",
 
   "SOLID",
@@ -102,7 +101,6 @@ const priorityTechnologies = [
   "State Management",
   "Microfrontends",
   "Flux",
-  "CQRS",
 
   // Principles
   "Performance Optimization",

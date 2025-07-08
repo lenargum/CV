@@ -153,7 +153,6 @@ export const experiences: ExperienceItem[] = [
 			"Responsive & Fluid Layout Systems",
 
 			"Clean Architecture",
-			"CQRS",
 			"Feature-Sliced Design",
 			"Atomic Design",
 

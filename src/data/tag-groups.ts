@@ -114,7 +114,6 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         'State Management',
         'Microfrontends',
         'Flux',
-        'CQRS'
       ],
       priority: 6
     },
