@@ -59,7 +59,7 @@ export const experiences: ExperienceItem[] = [
 			"TypeScript",
 			"Redux",
 			"Zustand",
-			"SPA",
+			
 			"Telegram Mini Apps",
 			"Motion.js",
 			"Tailwind",
@@ -70,11 +70,13 @@ export const experiences: ExperienceItem[] = [
 			"JavaScript",
 			"SCSS",
 
+			"SPA",
 			"CSR",
 
 			"SOLID",
 			"KISS",
 			"DRY",
+			"YAGNI",
 
 			"Atomic Design",
 			"Design Systems",
@@ -82,7 +84,6 @@ export const experiences: ExperienceItem[] = [
 			"Motion & Interaction Design",
 			"Themability & Runtime Theming",
 			"Responsive & Fluid Layout Systems",
-			"Component Architecture",
 			"Reusable UI components",
 
 			"Clean Architecture",
@@ -129,7 +130,7 @@ export const experiences: ExperienceItem[] = [
 			"Tailwind",
 			"Vuetify",
 			"Chart.js",
-			"SPA",
+			
 			"Google Tag Manager",
 			"Yandex Metrica",
 			"Docker",
@@ -139,17 +140,18 @@ export const experiences: ExperienceItem[] = [
 			"JavaScript",
 			"SCSS",
 
+			"SPA",
 			"CSR",
 
 			"SOLID",
 			"KISS",
 			"DRY",
+			"YAGNI",
 
 			"Design Systems",
 			"Performance Optimization",
 			"Motion & Interaction Design",
 			"Responsive & Fluid Layout Systems",
-			"Component Architecture",
 			"Reusable UI components",
 
 			"Clean Architecture",
@@ -192,20 +194,22 @@ export const experiences: ExperienceItem[] = [
 		},
 		technologies: [
 			"Vue",
-			"JavaScript",
 			"VueX",
 			"Nuxt",
-			"SSR",
-			"SSG",
+			
 			"SVG",
 			"Paper.js",
 			"SCSS",
 			"Google Tag Manager",
 			"Docker",
 			"Figma",
+
 			"HTML",
 			"CSS",
-			"CSR",
+			"JavaScript",
+			
+			"SSG",
+			"SSR",
 			"Microfrontends",
 
 			"SOLID",
@@ -216,7 +220,6 @@ export const experiences: ExperienceItem[] = [
 			"Performance Optimization",
 			"Motion & Interaction Design",
 			"Responsive & Fluid Layout Systems",
-			"Component Architecture",
 			"Reusable UI components",
 			"Clean Architecture",
 			"Atomic Design",
@@ -265,7 +268,6 @@ export const experiences: ExperienceItem[] = [
 			"CSR",
 			"Design Systems",
 			"Responsive & Fluid Layout Systems",
-			"Component Architecture",
 			"Reusable UI components",
 
 			"Modular Frontend",

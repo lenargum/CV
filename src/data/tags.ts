@@ -25,7 +25,6 @@ export const manualTags = [
 
   "Design Systems",
   "Reusable UI components",
-  "Component Architecture",
   "Feature-Sliced Design",
   "Atomic Design",
   "Clean Architecture",
@@ -97,7 +96,6 @@ const priorityTechnologies = [
   "Design Systems",
 
   // Architecture & Patterns
-  "Component Architecture",
   "Feature-Sliced Design",
   "Atomic Design",
   "Clean Architecture",

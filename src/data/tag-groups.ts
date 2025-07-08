@@ -107,7 +107,6 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
       tags: [
         'Design Systems',
         'Reusable UI components',
-        'Component Architecture',
         'Feature-Sliced Design',
         'Atomic Design',
         'Clean Architecture',
