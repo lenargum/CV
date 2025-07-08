@@ -90,7 +90,7 @@ export const experiences: ExperienceItem[] = [
 			"Flux",
 
 			"Agile",
-			"Waterfall",
+			"Cowboy",
 		],
 	},
 	{
@@ -217,7 +217,7 @@ export const experiences: ExperienceItem[] = [
 			"Performance Optimization",
 			"Motion & Interaction Design",
 			"Responsive & Fluid Layout Systems",
-			
+
 			"Feature-Sliced Design",
 			"Clean Architecture",
 			"Atomic Design",

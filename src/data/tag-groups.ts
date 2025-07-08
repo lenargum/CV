@@ -142,7 +142,8 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         'Agile',
         'Scrum',
         'Lean',
-        'Waterfall'
+        'Waterfall',
+        'Cowboy'
       ],
       priority: 8
     },

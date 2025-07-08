@@ -42,7 +42,8 @@ export const manualTags = [
   "Agile",
   "Scrum",
   "Lean",
-  "Waterfall"
+  "Waterfall",
+  "Cowboy",
 ];
 
 const priorityTechnologies = [
