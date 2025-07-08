@@ -85,8 +85,8 @@ export const experiences: ExperienceItem[] = [
 			"Themability & Runtime Theming",
 			"Responsive & Fluid Layout Systems",
 
-			"Clean Architecture",
 			"Feature-Sliced Design",
+			"Clean Architecture",
 			"Flux",
 
 			"Agile",
@@ -152,8 +152,8 @@ export const experiences: ExperienceItem[] = [
 			"Motion & Interaction Design",
 			"Responsive & Fluid Layout Systems",
 
-			"Clean Architecture",
 			"Feature-Sliced Design",
+			"Clean Architecture",
 			"Atomic Design",
 
 			"Agile",
@@ -217,9 +217,10 @@ export const experiences: ExperienceItem[] = [
 			"Performance Optimization",
 			"Motion & Interaction Design",
 			"Responsive & Fluid Layout Systems",
+			
+			"Feature-Sliced Design",
 			"Clean Architecture",
 			"Atomic Design",
-			"Feature-Sliced Design",
 			"Flux",
 
 			"Agile",
