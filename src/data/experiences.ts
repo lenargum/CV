@@ -155,6 +155,7 @@ export const experiences: ExperienceItem[] = [
 			"Feature-Sliced Design",
 			"Clean Architecture",
 			"Atomic Design",
+			"Flux",
 
 			"Agile",
 			"Waterfall"
