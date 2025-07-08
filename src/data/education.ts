@@ -77,6 +77,7 @@ export const education: EducationItem[] = [
 			"Scrum",
 			"Waterfall",
 			"Lean",
+			"Cowboy",
 
 			"Backend",
 			"CI/CD",
