@@ -84,7 +84,6 @@ export const experiences: ExperienceItem[] = [
 			"Motion & Interaction Design",
 			"Themability & Runtime Theming",
 			"Responsive & Fluid Layout Systems",
-			"Reusable UI components",
 
 			"Clean Architecture",
 			"Feature-Sliced Design",
@@ -152,7 +151,6 @@ export const experiences: ExperienceItem[] = [
 			"Performance Optimization",
 			"Motion & Interaction Design",
 			"Responsive & Fluid Layout Systems",
-			"Reusable UI components",
 
 			"Clean Architecture",
 			"CQRS",
@@ -220,7 +218,6 @@ export const experiences: ExperienceItem[] = [
 			"Performance Optimization",
 			"Motion & Interaction Design",
 			"Responsive & Fluid Layout Systems",
-			"Reusable UI components",
 			"Clean Architecture",
 			"Atomic Design",
 			"Feature-Sliced Design",
@@ -268,7 +265,6 @@ export const experiences: ExperienceItem[] = [
 			"CSR",
 			"Design Systems",
 			"Responsive & Fluid Layout Systems",
-			"Reusable UI components",
 
 			"Modular Frontend",
 			"Clean Architecture",

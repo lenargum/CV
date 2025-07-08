@@ -72,7 +72,6 @@ export const education: EducationItem[] = [
 			"Design Systems",
 			"Accessibility",
 			"Responsive & Fluid Layout Systems",
-			"Reusable UI components",
 
 			"Agile",
 			"Scrum",

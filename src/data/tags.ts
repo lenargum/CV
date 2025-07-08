@@ -24,7 +24,6 @@ export const manualTags = [
   "Microfrontends",
 
   "Design Systems",
-  "Reusable UI components",
   "Feature-Sliced Design",
   "Atomic Design",
   "Clean Architecture",
@@ -92,7 +91,6 @@ const priorityTechnologies = [
   "Responsive & Fluid Layout Systems",
   "Themability & Runtime Theming",
   "Accessibility",
-  "Reusable UI components",
   "Design Systems",
 
   // Architecture & Patterns
