@@ -1,7 +1,7 @@
 export { personalInfo } from './personal-info';
-export { languages } from './languages';
+export { summary } from './summary';
+export { generateTags, manualTags } from './tags';
 export { experiences } from './experiences';
 export { education } from './education';
 export { achievements } from './achievements';
-export { generateTags, manualTags } from './tags';
-export { summary } from './summary';
+export { languages } from './languages';

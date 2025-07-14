@@ -8,13 +8,13 @@ export const summary = {
     content: {
         ru: "Frontend-разработчик с опытом работы 4+ года, создающий комплексные UI-продукты, включая редакторы SVG/изображений/видео и мини-приложения Telegram." +
             "\n\n" +
-            "Силен в архитектуре, оптимизации производительности и создании надежных интерфейсов в условиях ограничений. Глубоко забочусь об эстетике и интерактивности интерфейса — от анимаций до визуального оформления — и создаю их с учетом масштабируемости и поддерживаемости. " +
+            "Стараюсь, чтобы интерфейсы были не только красивыми, но и логично устроенными внутри. Легко адаптируюсь — как в технологиях, так и в командной работе. Умею разбираться в чужом коде, выстраивать архитектуру и внедрять системные подходы." +
             "\n\n" +
-            "Ищу команду, где ценят визуальное качество, удобство и продуманную архитектуру",
+            "Ищу команду, где смогу взять ответственность за результат и развивать и визуальную, и инженерную стороны интерфейсов.",
         en: "Frontend developer with 4+ years of experience building UI-heavy products, including SVG/image/video editors and Telegram Mini Apps." +
             "\n\n" +
-            "Strong in architecture, performance optimization, and delivering reliable interfaces under constraints. I care deeply about interface aesthetics and interactivity — from animations to visual theming — and build them with scalability and maintainability in mind." +
+            "I strive to make interfaces not only beautiful but also logically structured internally. I adapt easily — both in technologies and in teamwork. I can understand legacy code, build architecture, and implement systematic approaches." +
             "\n\n" +
-            "Seeking a team that values visual quality, usability, and clean architecture"
+            "Looking for a team where I can take responsibility for results and develop both the visual and engineering sides of interfaces."
     }
 };
