@@ -2,6 +2,7 @@ import { useTranslation } from '../i18n/useTranslation';
 import { MarkdownText } from '../utils/markdown';
 import { type EducationItem, type TranslatedText, type TranslatedArray } from '../data/education';
 import Tag from './Tag/Tag';
+import { withBasePath } from '../lib/utils';
 
 export interface EducationProps {
   education: EducationItem[];
@@ -32,22 +33,22 @@ export default function Education({ education }: EducationProps) {
 
   return (
     <section className="cv-section">
-      <h2 className="section-title mb-6">{t.sections.education}</h2>
+      <h2 className="section-title">{t.sections.education}</h2>
       <div>
         {education.map((edu, index) => (
           <div key={index}>
-            <div className="flex flex-row items-start md:items-center gap-x-3 mb-4">
-              <img src={edu.icon} alt={getTranslatedValue(edu.institution)} className="md:w-20 md:h-20 w-10 h-10 rounded-xl flex-shrink-0 mt-2 md:mt-0" />
+            <div className="flex flex-row items-start md:items-center gap-x-3 md:mb-4">
+              <img src={withBasePath(edu.icon || '')} alt={getTranslatedValue(edu.institution)} className="md:w-20 md:h-20 w-10 h-10 rounded-xl flex-shrink-0 mt-2 md:mt-0" />
               <div className="flex flex-col">
-                <h3 className="mb-1">
+                <h3 className="md:mb-1">
                   {getTranslatedValue(edu.degree)}
                   {edu.specialization && <span className="font-normal">, {getTranslatedValue(edu.specialization)}</span>}
                 </h3>
                 <MarkdownText as="span" className="font-normal">{getTranslatedValue(edu.institution)}</MarkdownText>
-                <span className="text-text-secondary">{getFormattedDateRange(edu.date_start, edu.date_end)}</span>
+                <span className="text-text-tertiary text-sm">{getFormattedDateRange(edu.date_start, edu.date_end)}</span>
               </div>
             </div>
-            <ul className="list-disc ml-5 space-y-1.5 pr-2">
+            <ul className="list-disc">
               {getTranslatedArray(edu.highlights).map((highlight, idx) => (
                 <li key={idx}>
                   <MarkdownText>{highlight}</MarkdownText>

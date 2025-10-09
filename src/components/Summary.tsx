@@ -13,9 +13,9 @@ export default function Summary({ summary }: SummaryProps) {
 
     return (
         <section className="cv-section">
-            <h2 className="section-title mb-6">{t.sections.summary}</h2>
-            <div className="subsection mt-0">
-                <MarkdownText as="p" className="text-text-secondary leading-relaxed whitespace-pre-line">{translatedContent}</MarkdownText>
+            <h2 className="section-title">{t.sections.summary}</h2>
+            <div className="subsection">
+                <MarkdownText as="div" className="text-text-primary leading-relaxed whitespace-pre-line">{translatedContent}</MarkdownText>
             </div>
         </section>
     );

@@ -1,4 +1,5 @@
 import React, { memo } from 'react';
+import { withBasePath } from '../../lib/utils';
 
 interface AvatarSectionProps {
   name: string;
@@ -6,10 +7,10 @@ interface AvatarSectionProps {
 
 // Мемоизированный компонент для аватара, который не должен перерисовываться при смене языка
 const AvatarSection = memo(({ name }: AvatarSectionProps) => {
-  const imgSrc = `/CV/resume_photo.png`;
+  const imgSrc = withBasePath('resume_photo.png');
   
   return (
-    <div className="w-full md:w-[250px] print:w-[250px] bg-primary relative min-h-[250px]" style={{ height: '250px' }}>
+    <div className="w-full md:w-[250px] bg-primary relative min-h-[250px] print:min-h-[100px] print:h-[100px] print:w-[150px] print:rounded-lg">
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img 
           src={imgSrc}

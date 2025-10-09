@@ -44,13 +44,13 @@ export const education: EducationItem[] = [
 		highlights: {
 			en: [
 				"Advanced Enterprise Programming on JavaScript course",
-				"Courses in Product Design & Management (Agile, Scrum, Waterfall, Lean)",
+				"Courses in Product Design & Management",
 				"Practiced backend/frontend/mobile development, studied data structures and algorithms",
 				"Built procedurally generated solar system in Unity (algorithms used in [resume-site](https://lenargum.github.io/CV/) animation)"
 			],
 			ru: [
 				"Продвинутый курс по JS (Advanced Enterprise Programming on JavaScript)",
-				"Курсы по продуктовому дизайну и менеджменту (Agile, Scrum, Waterfall, Lean)",
+				"Курсы по продуктовому дизайну и менеджменту",
 				"Практиковал backend/frontend/mobile-разработку, изучал структуры данных и алгоритмы",
 				"Создал процедурно-генерируемую солнечную систему в Unity (алгоритмы используются в анимации на [сайте-резюме](https://lenargum.github.io/CV/))"
 			],
@@ -62,13 +62,15 @@ export const education: EducationItem[] = [
 			"HTML",
 			"CSS",
 			"SCSS",
+			"Git",
+			"CI/CD",
+			"Docker",
+			"Figma",
 			"React",
 			"Redux",
-			"Figma",
-			"Git",
 			
-			"UI/UX",
 			"SPA",
+			"UI/UX",
 			"Design Systems",
 			"Accessibility",
 			"Responsive & Fluid Layout Systems",
@@ -80,8 +82,6 @@ export const education: EducationItem[] = [
 			"Cowboy",
 
 			"Backend",
-			"CI/CD",
-			"Docker",
 			"Python Flask",
 			"Python FastAPI",
 			"Python Django",
@@ -93,6 +93,7 @@ export const education: EducationItem[] = [
 
 			"Data Structures & Algorithms",
 
+			"Game Development",
 			"C#",
 			"Unity",
 		],

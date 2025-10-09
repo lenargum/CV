@@ -2,6 +2,8 @@ import { useTranslation } from '../i18n/useTranslation';
 import { MarkdownText } from '../utils/markdown';
 import { type ExperienceItem, type TranslatedText, type TranslatedArray } from '../data/experiences';
 import Tag from './Tag/Tag';
+import { withBasePath } from '../lib/utils';
+import { PRIORITY_TECHNOLOGIES } from '../data/tags';
 
 
 interface ExperienceProps {
@@ -124,20 +126,29 @@ export default function Experience({ experiences }: ExperienceProps) {
   const totalExperienceMonths = calculateTotalExperience();
   const totalExperienceText = formatDuration(totalExperienceMonths, currentLang);
 
+  const compareByPriority = (a: string, b: string) => {
+    const ai = PRIORITY_TECHNOLOGIES.indexOf(a);
+    const bi = PRIORITY_TECHNOLOGIES.indexOf(b);
+    if (ai !== -1 && bi !== -1) return ai - bi;
+    if (ai !== -1) return -1;
+    if (bi !== -1) return 1;
+    return a.localeCompare(b);
+  };
+
   return (
     <section className="cv-section">
-      <div className="flex flex-col md:flex-row md:items-baseline gap-x-3 mb-6">
-        <h2 className="section-title">{t.sections.experience}</h2>
-        <span className="text-text-tertiary text-sm">{totalExperienceText}</span>
+      <div className="flex flex-col md:flex-row md:items-baseline gap-x-3">
+        <h2 className="section-title max-md:mb-0">{t.sections.experience}</h2>
+        <span className="text-text-tertiary text-sm max-md:mb-6 print:max-md:mb-0">{totalExperienceText}</span>
       </div>
-      <div className="space-y-8">
+      <div className="space-y-8 print:space-y-2">
         {experiences.map((exp, index) => (
           <div key={index} className="subsection">
-            <div className="flex flex-row items-start md:items-center gap-x-3 mb-4">
-              <img src={exp.icon} alt={getTranslatedValue(exp.company)} className="md:w-20 md:h-20 w-10 h-10 backdrop-blur-[2px] rounded-xl flex-shrink-0 mt-2 md:mt-0" />
+            <div className="flex flex-row items-start md:items-center gap-x-3 mb-4 print:mb-0">
+              <img src={withBasePath(exp.icon || '')} alt={getTranslatedValue(exp.company)} className="md:w-20 md:h-20 w-10 h-10 rounded-xl flex-shrink-0 mt-2 md:mt-0" />
               <div className="flex flex-col">
-                <h3 className="mb-1"><MarkdownText>{getTranslatedValue(exp.title)}</MarkdownText></h3>
-                <h4 className="mb-1"><MarkdownText>{`${getTranslatedValue(exp.company)}, ${getTranslatedValue(exp.location)}`}</MarkdownText></h4>
+                <h3 className="md:mb-1"><MarkdownText>{getTranslatedValue(exp.title)}</MarkdownText></h3>
+                <h4 className="md:mb-1"><MarkdownText>{`${getTranslatedValue(exp.company)}, ${getTranslatedValue(exp.location)}`}</MarkdownText></h4>
 
                 <div className="flex flex-row items-baseline gap-x-2">
                   <span className="text-text-tertiary text-sm">{getFormattedDateRange(exp.date_start, exp.date_end)}</span>
@@ -147,16 +158,16 @@ export default function Experience({ experiences }: ExperienceProps) {
                 </div>
               </div>
             </div>
-            <ul className="list-disc ml-5 space-y-1.5 pr-2">
+            {exp.description && <ul className="list-disc">
               {getTranslatedArray(exp.description).map((item, idx) => (
                 <li key={idx}>
                   <MarkdownText>{item}</MarkdownText>
                 </li>
               ))}
-            </ul>
+            </ul>}
             {exp.technologies && exp.technologies.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-3">
-                {exp.technologies.map((tech, idx) => (
+                {[...exp.technologies].sort(compareByPriority).map((tech, idx) => (
                   <Tag key={idx} tag={tech} />
                 ))}
               </div>

@@ -1,44 +1,85 @@
 import { experiences } from './experiences';
 
-export const manualTags = [
-  // Core technologies
-  "TypeScript", "JavaScript", "HTML", "CSS", "SCSS", "Tailwind", "Figma", "Git", "CI/CD", "Docker",
+// Core concepts
+export const CORE_TAGS = [
+  "Frontend",
+  "Backend",
+  "Mobile",
+  "Data Structures & Algorithms",
+  "Game Development"
+];
 
-  // Frameworks
-  "React", "Redux", "Zustand", "Next", "Vue", "VueX", "Pinia", "Nuxt", "Vuetify",
+// Frontend Core technologies
+export const FRONTEND_CORE_TAGS = [
+  "TypeScript",
+  "JavaScript",
+  "HTML",
+  "CSS",
+  "SCSS",
+  "Git",
+  "CI/CD",
+];
 
-  // Tools
-  "Google Tag Manager", "Yandex Metrica", "Paper.js", "Motion.js", "Chart.js", "Telegram Mini Apps",
+// Ecosystems
+export const REACT_ECOSYSTEM_TAGS = ["React", "Redux", "Zustand", "Next"];
+export const VUE_ECOSYSTEM_TAGS = ["Vue", "VueX", "Pinia", "Nuxt", "Vuetify"];
 
-  // Concepts
+// Tools & visualization
+export const TOOLING_TAGS = [
+  "Tailwind",
+  "Figma",
+  "Docker",
+  "Telegram Mini Apps",
+  "Google Tag Manager",
+  "Yandex Metrica",
+  "Shadcn",
+  "Motion.js",
+  "Aceternity UI",
+  "Paper.js",
+  "Chart.js",
+  "SVG",
+  "Cursor",
+  "Claude",
+  "ChatGPT",
+];
+
+// Rendering types
+export const RENDERING_TAGS = ["SPA", "SSR", "SSG", "CSR"];
+
+// UI / Visual concepts
+export const UI_VISUAL_TAGS = [
   "UI/UX",
   "Motion & Interaction Design",
   "Responsive & Fluid Layout Systems",
   "Themability & Runtime Theming",
   "Accessibility",
+];
 
-  "SPA",
-  "SSR",
-  "SSG",
-  "CSR",
-  "Microfrontends",
-
+// Architecture & patterns
+export const ARCHITECTURE_TAGS = [
   "Design Systems",
   "Feature-Sliced Design",
   "Atomic Design",
   "Clean Architecture",
   "MVC",
   "MVVM",
-
-  "Performance Optimization",
   "State Management",
   "Flux",
+  "Microfrontends",
+  "Modular Frontend",
+];
 
+// Principles
+export const PRINCIPLES_TAGS = [
+  "Performance Optimization",
   "SOLID",
   "DRY",
   "KISS",
   "YAGNI",
-  
+];
+
+// Processes
+export const PROCESS_TAGS = [
   "Agile",
   "Scrum",
   "Lean",
@@ -46,75 +87,32 @@ export const manualTags = [
   "Cowboy",
 ];
 
-const priorityTechnologies = [
-  // Core Tech
-  "TypeScript",
-  "JavaScript",
-  "HTML",
-  "CSS",
-  "SCSS",
-  "Tailwind",
-  "Figma",
-  "Git",
-  "CI/CD",
-  "Docker",
+// Manual tags composed from building blocks
+export const manualTags = [
+  ...CORE_TAGS,
+  ...FRONTEND_CORE_TAGS,
+  ...REACT_ECOSYSTEM_TAGS,
+  ...VUE_ECOSYSTEM_TAGS,
+  ...TOOLING_TAGS,
+  ...UI_VISUAL_TAGS,
+  ...RENDERING_TAGS,
+  ...ARCHITECTURE_TAGS,
+  ...PRINCIPLES_TAGS,
+  ...PROCESS_TAGS,
+];
 
-  // Frameworks & State
-  "React",
-  "Redux",
-  "Zustand",
-  "Next",
-  "Vue",
-  "VueX",
-  "Pinia",
-  "Nuxt",
-  "Vuetify",
-
-  // Visualization & Tools
-  "Motion.js",
-  "Paper.js",
-  "Chart.js",
-  "SVG",
-  "Google Tag Manager",
-  "Yandex Metrica",
-  "Telegram Mini Apps",
-
-  // Rendering Types
-  "SPA",
-  "SSR",
-  "SSG",
-  "CSR",
-
-  // UI / Visual Concepts
-  "UI/UX",
-  "Motion & Interaction Design",
-  "Responsive & Fluid Layout Systems",
-  "Themability & Runtime Theming",
-  "Accessibility",
-  "Design Systems",
-
-  // Architecture & Patterns
-  "Feature-Sliced Design",
-  "Atomic Design",
-  "Clean Architecture",
-  "MVC",
-  "MVVM",
-  "State Management",
-  "Microfrontends",
-  "Flux",
-
-  // Principles
-  "Performance Optimization",
-  "SOLID",
-  "DRY",
-  "KISS",
-  "YAGNI",
-
-  // Processes
-  "Agile",
-  "Scrum",
-  "Lean",
-  "Waterfall"
+// Priority list determines ordering weight during sorting
+export const PRIORITY_TECHNOLOGIES = [
+  ...CORE_TAGS,
+  ...FRONTEND_CORE_TAGS,
+  ...REACT_ECOSYSTEM_TAGS,
+  ...VUE_ECOSYSTEM_TAGS,
+  ...RENDERING_TAGS,
+  ...TOOLING_TAGS,
+  ...UI_VISUAL_TAGS,
+  ...ARCHITECTURE_TAGS,
+  ...PRINCIPLES_TAGS,
+  ...PROCESS_TAGS,
 ];
 
 // Function to extract and sort tags from experiences
@@ -122,20 +120,16 @@ export const generateTags = () => {
   return [...new Set([
     ...manualTags,
     ...experiences.flatMap((exp) => exp.technologies || []),
-
   ])].sort((a, b) => {
-    const aPriority = priorityTechnologies.indexOf(a);
-    const bPriority = priorityTechnologies.indexOf(b);
+    const aPriority = PRIORITY_TECHNOLOGIES.indexOf(a);
+    const bPriority = PRIORITY_TECHNOLOGIES.indexOf(b);
 
-    // If both are priority technologies, sort by their order in the priority array
     if (aPriority !== -1 && bPriority !== -1) {
       return aPriority - bPriority;
     }
-    // If only a is a priority technology, it comes first
     if (aPriority !== -1) return -1;
-    // If only b is a priority technology, it comes first
     if (bPriority !== -1) return 1;
-    // Otherwise, sort alphabetically
     return a.localeCompare(b);
   });
-}; 
+};
+

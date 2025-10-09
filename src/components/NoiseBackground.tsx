@@ -4,7 +4,6 @@ import { createNoise3D } from 'simplex-noise';
 const NoiseBackground: React.FC = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const primaryRgb = useRef({ r: 255, g: 255, b: 255 });
-    const mousePos = useRef({ x: 0, y: 0 });
     const targetOffset = useRef({ x: 0, y: 0 });
     const currentOffset = useRef({ x: 0, y: 0 });
     const targetScrollOffset = useRef(0);
@@ -49,6 +48,18 @@ const NoiseBackground: React.FC = () => {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         };
+
+        // Respect prefers-reduced-motion: render a static frame and skip animation
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        if (prefersReducedMotion.matches) {
+            resize();
+            // Fill background only to avoid motion
+            ctx.fillStyle = canvasRef.current?.style.backgroundColor || '#F5F5F5';
+            ctx.fillRect(0, 0, width, height);
+            return () => {
+                // No listeners or animation to clean up in reduced motion mode
+            };
+        }
 
         const handleMouseMove = (e: MouseEvent) => {
             const centerX = width * 0.5;
@@ -117,26 +128,50 @@ const NoiseBackground: React.FC = () => {
             }
 
             ctx.putImageData(imageData, 0, 0);
-            time += timeStep;
+            time = (time + timeStep) % 100000; // prevent unbounded growth
 
             animationFrame = requestAnimationFrame(draw);
         };
 
         // Setup and run
         resize();
+        const handleVisibility = () => {
+            if (document.hidden) {
+                if (animationFrame) cancelAnimationFrame(animationFrame);
+            } else {
+                animationFrame = requestAnimationFrame(draw);
+            }
+        };
+
         window.addEventListener('resize', resize);
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('scroll', handleScroll, { passive: true });
+        document.addEventListener('visibilitychange', handleVisibility);
         draw();
 
         return () => {
             window.removeEventListener('resize', resize);
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('scroll', handleScroll);
+            document.removeEventListener('visibilitychange', handleVisibility);
             if (animationFrame) {
                 cancelAnimationFrame(animationFrame);
             }
         };
+    }, []);
+
+    const [lavaOn, setLavaOn] = useState<boolean>(false);
+
+    useEffect(() => {
+        const handler = (e: Event) => {
+            const detail = (e as CustomEvent).detail as { on?: boolean } | undefined;
+            if (typeof detail?.on === 'boolean') setLavaOn(detail.on);
+            else setLavaOn(document.body.classList.contains('lava-mode'));
+        };
+        window.addEventListener('lava-mode-change', handler as EventListener);
+        // init sync
+        setLavaOn(document.body.classList.contains('lava-mode'));
+        return () => window.removeEventListener('lava-mode-change', handler as EventListener);
     }, []);
 
     return (

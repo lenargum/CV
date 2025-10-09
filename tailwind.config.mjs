@@ -1,19 +1,22 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  content: ['./src/**/*.{astro,html,js,jsx,md,mdx,ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        primary: '#FBEC5D', // Primary yellow
-        secondary: '#F5F5F5', // Light gray (neutral)
+        primary: {
+          default: '#0A0A0A', // Primary black
+          bg: '#0A0A0A' // White
+        },
+        secondary: '#222222', // Dark gray (neutral)
         text: {
-          primary: '#2D3748', // Dark gray for headings and important text
-          secondary: '#4A5568', // Medium gray for body text
+          primary: '#FFFFFF', // White
+          secondary: '#FFFFFF', // Medium gray for body text
           tertiary: '#718096', // Lighter gray for less important text
         },
         noise: {
-          primary: '#FBEC5D',
-          secondary: '#F5F5F5',
+          primary: '#FFFFFF',
+          secondary: '#000000',
         },
         border: '#E2E8F0', // Light gray for borders
       },

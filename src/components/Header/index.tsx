@@ -16,7 +16,7 @@ interface HeaderProps {
 
 const Header = ({ name, title, email, links }: HeaderProps) => {
   return (
-    <header className="flex flex-col md:flex-row print:flex-row relative">
+    <header className="flex flex-col md:flex-row print:flex-row print:items-center relative">
       <AvatarSection name={name} />
       <ContentSection name={name} title={title} email={email} links={links} />
       

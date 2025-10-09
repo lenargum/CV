@@ -2,13 +2,9 @@
 import Layout from "../layouts/Layout.astro";
 import CVContent from "../components/CVContent.tsx";
 
-// Import translations (will be used client-side)
-import "../i18n/index.js";
-
 // Import data from data files
 import { 
-  personalInfo, 
-  languages, 
+  personalInfo,
   experiences, 
   education, 
   achievements,
@@ -16,20 +12,25 @@ import {
   summary
 } from "../data";
 
+// SSR language detection from Accept-Language header (guarded for SSG)
+const acceptLang = (Astro as any)?.request?.headers?.get?.('accept-language') || '';
+const prefersRu = acceptLang.toLowerCase().startsWith('ru');
+const initialLang = prefersRu ? 'ru' : 'en';
+
 // Generate tags
 const allTags = generateTags();
 ---
 
 <Layout title="Lenar Gumerov - CV">
   <CVContent
-      client:load
+      client:visible
       {personalInfo}
       {summary}
-      {languages}
       {experiences}
       {education}
       {achievements}
       {allTags}
+      initialLang={initialLang}
     />
   
 </Layout>

@@ -4,4 +4,3 @@ export { generateTags, manualTags } from './tags';
 export { experiences } from './experiences';
 export { education } from './education';
 export { achievements } from './achievements';
-export { languages } from './languages';

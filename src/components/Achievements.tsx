@@ -16,8 +16,8 @@ export default function Achievements({ achievements }: AchievementsProps) {
 
   return (
     <section className="cv-section achievements-section">
-      <h2 className="section-title mb-6">{t.sections.achievements}</h2>
-      <ul className="list-disc ml-5 space-y-1.5 pr-2">
+      <h2 className="section-title">{t.sections.achievements}</h2>
+      <ul className="list-disc">
         {achievements.map((achievement, index) => (
           <li key={index} className="achievement-item">
             <p><MarkdownText>{getTranslatedValue(achievement.details)}</MarkdownText></p>

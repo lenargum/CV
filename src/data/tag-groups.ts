@@ -13,24 +13,25 @@ export interface TagGroupConfig {
  * Editable tag group constants
  * Add/remove/modify groups as needed
  */
+import {
+  FRONTEND_CORE_TAGS,
+  REACT_ECOSYSTEM_TAGS,
+  VUE_ECOSYSTEM_TAGS,
+  TOOLING_TAGS,
+  UI_VISUAL_TAGS,
+  RENDERING_TAGS,
+  ARCHITECTURE_TAGS,
+  PRINCIPLES_TAGS,
+  PROCESS_TAGS,
+} from '@/data/tags';
+
 export const TAG_GROUPS: Record<string, TagGroupConfig> = {
     CORE: {
       name: {
         en: 'Core',
         ru: 'Основные'
       },
-      tags: [
-        'TypeScript',
-        'JavaScript',
-        'HTML',
-        'CSS',
-        'SCSS',
-        'Tailwind',
-        'Figma',
-        'Git',
-        'CI/CD',
-        'Docker'
-      ],
+      tags: FRONTEND_CORE_TAGS,
       priority: 1
     },
   
@@ -39,50 +40,8 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         en: 'Frameworks',
         ru: 'Фреймворки'
       },
-      tags: [
-        'React',
-        'Redux',
-        'Zustand',
-        'Next',
-        'Vue',
-        'VueX',
-        'Pinia',
-        'Nuxt',
-        'Vuetify'
-      ],
+      tags: [...REACT_ECOSYSTEM_TAGS, ...VUE_ECOSYSTEM_TAGS],
       priority: 2
-    },
-  
-    TOOLS: {
-      name: {
-        en: 'Tools',
-        ru: 'Инструменты'
-      },
-      tags: [
-        'Motion.js',
-        'Paper.js',
-        'Chart.js',
-        'SVG',
-        'Google Tag Manager',
-        'Yandex Metrica',
-        'Telegram Mini Apps'
-      ],
-      priority: 3
-    },
-  
-    UX_VISUAL: {
-      name: {
-        en: 'UX & Visual',
-        ru: 'UX и Визуал'
-      },
-      tags: [
-        'UI/UX',
-        'Motion & Interaction Design',
-        'Responsive & Fluid Layout Systems',
-        'Themability & Runtime Theming',
-        'Accessibility'
-      ],
-      priority: 4
     },
 
     RENDERING: {
@@ -90,31 +49,36 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         en: 'Rendering',
         ru: 'Рендеринг'
       },
-      tags: [
-        'SPA',
-        'SSR',
-        'SSG',
-        'CSR'
-      ],
+      tags: RENDERING_TAGS,
+      priority: 3
+    },
+  
+    TOOLS: {
+      name: {
+        en: 'Tools',
+        ru: 'Инструменты'
+      },
+      tags: TOOLING_TAGS,
+      priority: 4
+    },
+  
+    UX_VISUAL: {
+      name: {
+        en: 'UX & Visual',
+        ru: 'UX и Визуал'
+      },
+      tags: UI_VISUAL_TAGS,
       priority: 5
     },
+
+    
 
     ARCHITECTURE: {
       name: {
         en: 'Architecture',
         ru: 'Архитектура'
       },
-      tags: [
-        'Design Systems',
-        'Feature-Sliced Design',
-        'Clean Architecture',
-        'Atomic Design',
-        'MVC',
-        'MVVM',
-        'State Management',
-        'Microfrontends',
-        'Flux',
-      ],
+      tags: ARCHITECTURE_TAGS,
       priority: 6
     },
 
@@ -123,13 +87,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         en: 'Principles',
         ru: 'Принципы'
       },
-      tags: [
-        'Performance Optimization',
-        'SOLID',
-        'DRY',
-        'KISS',
-        'YAGNI'
-      ],
+      tags: PRINCIPLES_TAGS,
       priority: 7
     },
 
@@ -138,13 +96,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         en: 'Process',
         ru: 'Процессы'
       },
-      tags: [
-        'Agile',
-        'Scrum',
-        'Lean',
-        'Waterfall',
-        'Cowboy'
-      ],
+      tags: PROCESS_TAGS,
       priority: 8
     },
   

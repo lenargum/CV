@@ -74,7 +74,6 @@ To customize the CV content, edit the files in the `src/data/` directory:
 - `experiences.ts`: Your work experience
 - `education.ts`: Your educational background
 - `achievements.ts`: Your achievements and awards
-- `languages.ts`: Your known languages
 - `tags.ts`: Your used technologies
 
 ### Translations

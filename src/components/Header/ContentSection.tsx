@@ -91,12 +91,12 @@ const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
   };
 
   return (
-    <div className="flex-1 p-10 flex justify-between items-center bg-secondary/80 relative">
+    <div className="flex-1 p-8 md:p-10 print:py-0 flex justify-between items-center bg-secondary/80 relative">
       <div className="flex flex-col justify-center">
         <div className="flex justify-between items-center mb-2">
           <h1 className="mb-0">{translatedName}</h1>
         </div>
-        <h2 className="mb-8">{translatedTitle}</h2>
+        <h2 className="mb-8 print:mb-1">{translatedTitle}</h2>
         <div className="text-lg">
           <div
             ref={containerRef}
@@ -117,7 +117,7 @@ const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
                   <SocialIcon type="email" />
                 </div>
               </button>
-              <span className="text-text-primary text-md print:inline-block hidden">{email}</span>
+              <span className="text-text-primary text-md print:inline-block hidden">Telegram: {links.filter(link => link.name === 'Telegram')[0].displayText}</span>
 
               <AnimatePresence>
                 {copyStatus && (
@@ -140,12 +140,12 @@ const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
               </AnimatePresence>
             </div>
 
-            <div className="flex items-center gap-6">
+            <div className="flex items-center gap-6 print:hidden">
               {links.map((link, index) => (
                 <a
                   key={link.name}
                   ref={setButtonRef(index + 1)}
-                  className="inline-flex items-center bg-transparent border-0 p-0 transition-all duration-300 print:hidden"
+                  className="inline-flex items-center bg-transparent border-0 p-0 transition-all duration-300"
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"

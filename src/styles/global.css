@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  @apply text-text-secondary bg-gray-100;
+  @apply text-text-primary bg-gray-100;
 }
 h1 {
   @apply text-4xl font-bold text-text-primary;
@@ -14,18 +14,12 @@ h2 {
 h3 {
   @apply text-xl font-medium text-text-primary;
 }
-p {
-  @apply text-text-secondary;
-}
-li {
-  @apply text-text-secondary;
-}
 a {
-  @apply text-text-primary underline hover:text-black transition-colors;
+  @apply text-text-primary underline hover:text-blue-600 transition-colors;
 }
 
 section.cv-section {
-  @apply p-8 [&:not(:first-child)]:pb-14;
+  @apply p-8 [&:not(:first-child)]:pb-14 print:p-0 print:[&:not(:first-child)]:pb-2;
 }
 
 section.cv-section + section.cv-section {
@@ -33,15 +27,11 @@ section.cv-section + section.cv-section {
 }
 
 .section-title {
-  @apply text-2xl font-semibold text-text-primary;
+  @apply text-2xl font-semibold text-text-primary mb-6 print:mb-2;
 }
 
-.subsection + .subsection:not(.mt-0) {
-  margin-top: 32px;
-}
-
-.tech-tag {
-  @apply px-2 py-1 text-xs rounded-md bg-primary text-text-primary;
+.list-disc {
+  @apply ml-5 space-y-1.5 print:space-y-0;
 }
 
 @media print {
@@ -56,135 +46,13 @@ section.cv-section + section.cv-section {
     print-color-adjust: exact !important;
     color-adjust: exact !important;
   }
-  #cv-content {
-    box-shadow: none !important;
-    max-width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  
-  /* Force background colors to print */
-  .bg-primary, .bg-gray-100, .bg-gray-200, [class*="text-"], .bg-secondary {
-    print-color-adjust: exact !important;
-    -webkit-print-color-adjust: exact !important;
-    color-adjust: exact !important;
-  }
-  
-  /* Header must be complete and not break */
-  header {
-    display: flex !important;
-    flex-direction: row !important;
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-  
-  header > div:first-child {
-    width: 250px !important;
-    height: 250px !important;
-    min-height: 250px !important;
-    background-color: #FBEC5D !important; /* Match the yellow color from tailwind config */
-    position: relative !important;
-    overflow: hidden !important;
-  }
-  
-  /* Fix header image container */
-  header > div:first-child > div {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    overflow: hidden !important;
-  }
-  
-  /* Fix header image */
-  header img {
-    display: block !important;
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-    object-position: center !important;
-  }
-  
-  header > div:last-child {
-    flex: 1 !important;
-    background-color: #F5F5F5 !important;
-    padding: 2.5rem !important;
-  }
-  
-  #cv-content > div.flex > div:last-child {
-    flex: 1 !important;
-  }
-  
-  /* Make sections more compact for print */
-  .cv-section {
-    border-color: #E2E8F0 !important;
-    padding: 15px 0 !important;
-    /* Разрешаем разрывы между секциями */
-    page-break-inside: auto !important;
-    break-inside: auto !important;
+
+  .text-text-primary:not(.bg-primary-bg) {
+    color: #000000 !important;
   }
 
-  .cv-section:first-child {
-    padding-top: 30px !important;
-  }
-  
-  /* Experience section settings */
-  #cv-content > div.flex > div:last-child > section:first-child {
-    page-break-before: auto !important;
-    break-before: auto !important;
-    page-break-after: auto !important;
-    break-after: auto !important;
-  }
-  
-  /* Education section settings */
-  #cv-content > div.flex > div:last-child > section:nth-child(2) {
-    page-break-before: auto !important;
-    break-before: auto !important;
-    page-break-after: auto !important;
-    break-after: auto !important;
-  }
-  
-  /* Achievements section */
-  #cv-content > div.flex > div:last-child > section:last-child {
-    page-break-before: auto !important;
-    break-before: auto !important;
-    page-break-after: auto !important;
-    break-after: auto !important;
-  }
-  
-  /* Individual job/education entries should stay together */
-  .subsection {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-  
-  /* Allow page breaks before major section titles to prevent awkward breaks */
-  h2.section-title {
-    page-break-before: auto !important;
-    break-before: auto !important;
-    page-break-after: avoid !important;
-    break-after: avoid !important;
-    margin-bottom: 1rem !important;
-  }
-
-  .achievements-section {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-    page-break-before: auto !important;
-    break-before: auto !important;
-    page-break-after: avoid !important;
-    break-after: avoid !important;
-  }
-  
-  .achievement-item {
-    page-break-inside: avoid !important;
-    break-inside: avoid !important;
-  }
-  
-  /* Make sure links print properly with their URLs */
-  a {
-    text-decoration: underline !important;
-    color: #2D3748 !important;
+  .bg-secondary\/80, .bg-primary-bg\/80 {
+    background-color: transparent !important;
   }
   
   /* Make sure all colors print */

@@ -7,7 +7,7 @@ export const translations = {
   ru
 };
 
-// Function to detect browser locale
+// Function to detect browser locale (client only)
 function detectBrowserLocale() {
   if (typeof window !== 'undefined' && window.navigator) {
     const browserLang = window.navigator.language || window.navigator.userLanguage;
@@ -24,7 +24,7 @@ function detectBrowserLocale() {
   
   // Default to English if not Russian
   console.log('Defaulting to English language');
-  return 'ru';
+  return 'en';
 }
 
 // Function to get initial language from localStorage or browser locale
@@ -47,8 +47,8 @@ export function getInitialLanguage() {
     }
   }
   
-  // Default to English for SSR
-  return 'ru';
+  // Default to English for SSR (can be overridden by server)
+  return 'en';
 }
 
 // Function to set language in localStorage
@@ -71,4 +71,4 @@ export const LanguageContext = createContext({
   currentLang: 'en',
   setLanguage: (lang) => {},
   t: translations.en
-}); 
+});
