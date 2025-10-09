@@ -6,8 +6,7 @@ import Experience from './Experience';
 import Education from './Education';
 import Achievements from './Achievements';
 import { useEffect, useState } from 'react';
-import { AnimatePresence, motion } from 'motion/react';
-import { withBasePath } from '../lib/utils';
+import { motion } from 'motion/react';
 import type { PersonalInfo } from '../data/personal-info';
 import type { Summary as SummaryType } from '../data/summary';
 import type { ExperienceItem as ExperienceType } from '../data/experiences';
@@ -42,29 +41,27 @@ export default function CVContent({ personalInfo, summary, experiences, educatio
 
   return (
     <>
-      <AnimatePresence>
-        {!isContentHidden && <motion.div
-          id="cv-content"
-          className="shadow-md print:shadow-none my-0 md:my-6 max-w-[830px] mx-auto print:max-w-full print:m-0"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-        >
-          <LanguageProvider initialLang={initialLang}>
-            {/* CV Content */}
-            <Header {...personalInfo} />
+      <motion.div
+        id="cv-content"
+        className={`shadow-md print:shadow-none my-0 md:my-6 max-w-[830px] mx-auto print:max-w-full print:m-0 ${isContentHidden ? 'pointer-events-none select-none' : ''}`}
+        initial={{opacity: 0}}
+        animate={{ opacity: isContentHidden ? 0 : 1 }}
+        transition={{ duration: 1, ease: 'easeInOut' }}
+        aria-hidden={isContentHidden}
+      >
+        <LanguageProvider initialLang={initialLang}>
+          {/* CV Content */}
+          <Header {...personalInfo} />
 
-            <div className="flex flex-col bg-primary-bg/90 backdrop-blur-sm print:bg-white">
-              <Summary summary={summary} />
-              <Tags allTags={allTags} />
-              <Experience experiences={experiences} />
-              <Education education={education} />
-              <Achievements awards={awards} teaching={teaching} />
-            </div>
-          </LanguageProvider>
-        </motion.div>}
-      </AnimatePresence>
+          <div className="flex flex-col bg-primary-bg/90 backdrop-blur-sm print:bg-white">
+            <Summary summary={summary} />
+            <Tags allTags={allTags} />
+            <Experience experiences={experiences} />
+            <Education education={education} />
+            <Achievements awards={awards} teaching={teaching} />
+          </div>
+        </LanguageProvider>
+      </motion.div>
       {/* toggle button moved to Layout */}
     </>
   );
