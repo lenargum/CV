@@ -56,6 +56,7 @@ export const experiences: ExperienceItem[] = [
 			"HTML",
 			"CSS",
 			"JavaScript",
+			"CI/CD",
 			"Go",
 			"PostgreSQL",
 			"Redis",
