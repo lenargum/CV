@@ -3,4 +3,4 @@ export { summary } from './summary';
 export { generateTags, manualTags } from './tags';
 export { experiences } from './experiences';
 export { education } from './education';
-export { achievements } from './achievements';
+export { awards, teaching } from './achievements';

@@ -10,7 +10,8 @@ export default {
     skills: "Навыки",
     experience: "Опыт работы",
     education: "Образование",
-    achievements: "Достижения и награды",
+    awards: "Награды",
+    teaching: "Преподавание",
     technologies: "Ключевые навыки",
   },
   dateFormat: {

@@ -19,12 +19,13 @@ interface CVContentProps {
   summary: SummaryType;
   experiences: ExperienceType[];
   education: EducationType[];
-  achievements: AchievementType[];
+  awards: AchievementType[];
+  teaching: AchievementType[];
   allTags: string[];
   initialLang?: 'en' | 'ru';
 } 
 
-export default function CVContent({ personalInfo, summary, experiences, education, achievements, allTags, initialLang }: CVContentProps) {
+export default function CVContent({ personalInfo, summary, experiences, education, awards, teaching, allTags, initialLang }: CVContentProps) {
   const [isContentHidden, setIsContentHidden] = useState(false);
 
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function CVContent({ personalInfo, summary, experiences, educatio
               <Tags allTags={allTags} />
               <Experience experiences={experiences} />
               <Education education={education} />
-              <Achievements achievements={achievements} />
+              <Achievements awards={awards} teaching={teaching} />
             </div>
           </LanguageProvider>
         </motion.div>}

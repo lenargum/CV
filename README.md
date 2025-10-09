@@ -73,7 +73,7 @@ To customize the CV content, edit the files in the `src/data/` directory:
 - `personal-info.ts`: Your personal information and social links
 - `experiences.ts`: Your work experience
 - `education.ts`: Your educational background
-- `achievements.ts`: Your achievements and awards
+- `achievements.ts`: Your achievements
 - `tags.ts`: Your used technologies
 
 ### Translations
@@ -90,7 +90,7 @@ To add a new language, create a new file (e.g., `fr.js`) and update the `index.j
 The project uses Tailwind CSS for styling. The main configuration is in `tailwind.config.mjs`.
 
 The color scheme can be customized by editing:
-- Primary color (yellow): `#FBEC5D`
+- Primary color (black): `#0A0A0A`
 - Secondary color (light gray): `#F5F5F5`
 
 ## 🔄 Translation System

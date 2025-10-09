@@ -10,7 +10,8 @@ export default {
     skills: "Skills",
     experience: "Experience",
     education: "Education",
-    achievements: "Highlights & Achievements",
+    awards: "Awards",
+    teaching: "Teaching",
     technologies: "Key Skills",
   },
   dateFormat: {

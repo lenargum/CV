@@ -9,7 +9,7 @@ export interface Achievement {
 	subDetails?: string | TranslatedText;
 }
 
-export const achievements: Achievement[] = [
+export const awards: Achievement[] = [
 	{
 		details: {
 			en: "**[Winner](https://drive.google.com/file/d/10u1auqW_GVIgAfGYHz08xgryAYLmBhtv/view?usp=sharing)**, Digital Breakthrough 2020 (Northwest IT Hub) hackathon",
@@ -39,7 +39,10 @@ export const achievements: Achievement[] = [
 			en: "10 hours, among ~30 teams",
 			ru: "10 часов, среди ~30 команд",
 		},
-	},
+	}
+];
+
+export const teaching: Achievement[] = [
 	{
 		details: {
 			en: "Taught high school students Android dev on Java, [robotics on Python](https://www.instagram.com/p/BmgLLKwn_uf/)",
@@ -52,4 +55,4 @@ export const achievements: Achievement[] = [
 			ru: "Обучал детей программированию на Python в Minecraft"
 		},
 	}
-]; 
+]

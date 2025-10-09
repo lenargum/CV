@@ -79,7 +79,6 @@ export const education: EducationItem[] = [
 			"Scrum",
 			"Waterfall",
 			"Lean",
-			"Cowboy",
 
 			"Backend",
 			"Python Flask",

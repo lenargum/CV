@@ -22,7 +22,7 @@ export const FRONTEND_CORE_TAGS = [
 
 // Ecosystems
 export const REACT_ECOSYSTEM_TAGS = ["React", "Redux", "Zustand", "Next"];
-export const VUE_ECOSYSTEM_TAGS = ["Vue", "VueX", "Pinia", "Nuxt", "Vuetify"];
+export const VUE_ECOSYSTEM_TAGS = ["Vue", "Vuex", "Pinia", "Nuxt", "Vuetify"];
 
 // Tools & visualization
 export const TOOLING_TAGS = [
@@ -32,7 +32,7 @@ export const TOOLING_TAGS = [
   "Telegram Mini Apps",
   "Google Tag Manager",
   "Yandex Metrica",
-  "Shadcn",
+  "shadcn/ui",
   "Motion.js",
   "Aceternity UI",
   "Paper.js",
@@ -83,8 +83,7 @@ export const PROCESS_TAGS = [
   "Agile",
   "Scrum",
   "Lean",
-  "Waterfall",
-  "Cowboy",
+  "Waterfall"
 ];
 
 // Manual tags composed from building blocks
