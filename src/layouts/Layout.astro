@@ -1,81 +1,143 @@
 ---
-import '../styles/global.css';
-import NoiseBackground from '../components/NoiseBackground';
-import { withBasePath } from '../lib/utils';
+import "../styles/global.css";
+import NoiseBackground from "../components/NoiseBackground";
+import { withBasePath } from "../lib/utils";
 
 interface Props {
-	title: string;
+  title: string;
 }
 
 const { title } = Astro.props;
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Professional CV">
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href={withBasePath(`favicon.svg`)} />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title}</title>
-	</head>
-	<body class="flex justify-center bg-secondary" style="min-height: 100dvh">
-		<NoiseBackground client:idle />
-		<button
-			id="lava-toggle"
-			class="print:hidden absolute lg:fixed top-2 left-2 md:right-2 z-[100] shadow-md w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-black/80 backdrop-blur-sm active:scale-110 hover:opacity-100 transition-all duration-300 opacity-60"
-			aria-label="Toggle lava lamp"
-			type="button"
-		>
-			<img src={withBasePath('lava-lamp.png')} alt="lava-lamp" class="w-3/4 h-3/4 object-cover" />
-		</button>
-		<main class="w-full max-w-[830px] z-10">
-			<slot />
-		</main>
-	</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Primary -->
+    <title>{title}</title>
+    <meta
+      name="description"
+      content="Frontend 5+ yrs. Complex UI: editors & Telegram Mini Apps. Owns outcomes, cleans architecture."
+    />
+    <link rel="canonical" href="https://lenargum.github.io/CV/" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Lenar Gumerov — Frontend Developer" />
+    <meta
+      property="og:description"
+      content="Frontend 5+ yrs. Complex UI: editors & Telegram Mini Apps. Owns outcomes, cleans architecture."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://lenargum.github.io/CV/" />
+    <meta property="og:site_name" content="Lenar Gumerov — CV" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- OG images (rect + square) -->
+    <meta
+      property="og:image"
+	  content={withBasePath(`cover-1200x630.png?v=1`)}
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Lenar Gumerov — Frontend Developer"
+    />
+
+    <meta
+      property="og:image"
+      content={withBasePath(`avatar-1024.png?v=1`)}
+    />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="1024" />
+    <meta
+      property="og:image:alt"
+      content="Lenar Gumerov — Frontend Developer"
+    />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Lenar Gumerov — Frontend Developer" />
+    <meta
+      name="twitter:description"
+      content="Frontend 5+ yrs. Complex UI: editors & Telegram Mini Apps. Owns outcomes, cleans architecture."
+    />
+    <meta
+      name="twitter:image"
+      content={withBasePath(`cover-1200x630.png?v=1`)}
+    />
+
+    <link rel="icon" type="image/svg+xml" href={withBasePath(`favicon.svg`)} />
+
+    <!-- Robots -->
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+  </head>
+  <body class="flex justify-center bg-secondary" style="min-height: 100dvh">
+    <NoiseBackground client:idle />
+    <button
+      id="lava-toggle"
+      class="print:hidden absolute lg:fixed top-2 left-2 md:right-2 z-[100] shadow-md w-10 h-10 rounded-full overflow-hidden flex items-center justify-center bg-black/80 backdrop-blur-sm active:scale-110 hover:opacity-100 transition-all duration-300 opacity-60"
+      aria-label="Toggle lava lamp"
+      type="button"
+    >
+      <img
+        src={withBasePath("lava-lamp.png")}
+        alt="lava-lamp"
+        class="w-3/4 h-3/4 object-cover"
+      />
+    </button>
+    <main class="w-full max-w-[830px] z-10">
+      <slot />
+    </main>
+  </body>
 </html>
 
 <style>
-	html {
-		height: 100dvh;
-		overflow-y: scroll;
-	}
-	
-	@media print {
-		body {
-			background-color: white !important;
-			padding: 0 !important;
-			margin: 0 !important;
-		}
-		main {
-			max-width: 100% !important;
-			box-shadow: none !important;
-		}
-	}
+  html {
+    height: 100dvh;
+    overflow-y: scroll;
+  }
+
+  @media print {
+    body {
+      background-color: white !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    main {
+      max-width: 100% !important;
+      box-shadow: none !important;
+    }
+  }
 </style>
 
 <script>
-  const btn = document.getElementById('lava-toggle');
+  const btn = document.getElementById("lava-toggle");
   const updateButton = () => {
-    const on = document.body.classList.contains('lava-mode');
-    btn?.classList.toggle('opacity-60', !on);
-    btn?.classList.toggle('opacity-30', on);
-	btn?.classList.toggle('absolute', !on);
-	btn?.classList.toggle('fixed', on);
+    const on = document.body.classList.contains("lava-mode");
+    btn?.classList.toggle("opacity-60", !on);
+    btn?.classList.toggle("opacity-30", on);
+    btn?.classList.toggle("absolute", !on);
+    btn?.classList.toggle("fixed", on);
   };
   const toggle = () => {
-    document.body.classList.toggle('lava-mode');
-    const on = document.body.classList.contains('lava-mode');
-    window.dispatchEvent(new CustomEvent('lava-mode-change', { detail: { on } }));
+    document.body.classList.toggle("lava-mode");
+    const on = document.body.classList.contains("lava-mode");
+    window.dispatchEvent(
+      new CustomEvent("lava-mode-change", { detail: { on } })
+    );
     updateButton();
-	if (on) {
-		document.documentElement.style.overflow = 'hidden';
-	} else {
-		document.documentElement.style.overflow = '';
-	}
+    if (on) {
+      document.documentElement.style.overflow = "hidden";
+    } else {
+      document.documentElement.style.overflow = "";
+    }
   };
-  btn?.addEventListener('click', toggle);
+  btn?.addEventListener("click", toggle);
   // ensure initial state styles
   updateButton();
 </script>
