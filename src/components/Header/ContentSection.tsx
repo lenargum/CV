@@ -91,7 +91,7 @@ const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
   };
 
   return (
-    <div className="flex-1 p-8 md:p-10 print:py-0 flex justify-between items-center bg-secondary/80 relative">
+    <div className="flex-1 p-6 md:p-10 print:py-0 flex justify-between items-center bg-secondary/80 relative">
       <div className="flex flex-col justify-center">
         <div className="flex justify-between items-center mb-2">
           <h1 className="mb-0">{translatedName}</h1>

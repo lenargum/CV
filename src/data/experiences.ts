@@ -85,14 +85,14 @@ export const experiences: ExperienceItem[] = [
 				"Built a drop-in TMA (Telegram Mini Apps) SDK providing embeddable UI widgets and cross-game services (auth/profile, balance & inventory sync, leaderboards) for partner games",
 				"Delivered rich animated interactions using Motion.js, custom particle systems, and Spline-based lootbox animations",
 				"Implemented full visual theming integration based on user-selected Telegram styles, ensuring seamless UX alignment",
-				"Optimized for Telegram Mini Apps constraints: **cut initial JS payload by ~55% (≈1.1 MB → 490 KB gz)** via code-splitting, tree-shaking, and asset deduping",
+				"Optimized for Telegram Mini Apps constraints: **cut initial JS payload by 55% (from 1.1 MB to 490 KB gz)** via code-splitting, tree-shaking, and asset deduping",
 			],
 			"ru": [
 				"Возглавил фронтенд [игровой платформы в Telegram](https://t.me/orbit_portal_bot): от prelaunch до 1M пользователей; отвечал за UI и ключевую логику (награды, покупки, реклама)",
 				"Разработал drop-in SDK для TMA (Telegram Mini Apps) с встраиваемыми UI-виджетами и межигровыми сервисами (аутентификация/профиль, синхронизация баланса и инвентаря, лидерборды) для партнёрских игр",
 				"Реализовал насыщенные анимации с помощью Motion.js, кастомных частиц и анимаций с Spline",
 				"Интегрировал визуальные темы на основе пользовательских настроек Telegram для целостного UX",
-				"Оптимизировал под ограничения TMA: **сократил initial JS ~на 55% (≈1.1 MB → 490 KB gz)** благодаря code-splitting, tree-shaking и дедупликации ассетов",
+				"Оптимизировал под ограничения TMA: **сократил initial JS на 55% (с 1.1 MB до 490 KB gz)** благодаря code-splitting, tree-shaking и дедупликации ассетов",
 			]
 		},
 		technologies: [

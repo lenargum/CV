@@ -10,7 +10,7 @@ export default function QuickLanguageSwitcher() {
   const inactiveClasses = 'bg-black hover:bg-white/10';
   
   return (
-    <div className="flex gap-2 p-1 md:p-0 rounded-md md:padding-0 bg-black md:bg-transparent">
+    <div className="flex gap-2 p-1 md:p-0 rounded-lg md:padding-0 bg-black md:bg-transparent">
       <button 
         onClick={() => setLanguage('en')}
         className={`px-3 py-1 rounded-md text-sm font-medium ${

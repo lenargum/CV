@@ -7,6 +7,7 @@ const NoiseBackground: React.FC = () => {
     const currentOffset = useRef({ x: 0, y: 0 });
     const targetScrollOffset = useRef(0);
     const currentScrollOffset = useRef(0);
+    const [isReady, setIsReady] = useState(false);
 
     // Ease-out function (cubic-bezier equivalent of ease-out)
     const easeOut = (t: number): number => {
@@ -29,6 +30,8 @@ const NoiseBackground: React.FC = () => {
     useEffect(() => {
         const canvas = canvasRef.current;
         if (!canvas) return;
+        let idleId: number | null = null;
+        let timeoutId: number | null = null;
 
         // Resolve colors from CSS for consistency
         primaryRgb.current = parseRgb(getComputedStyle(canvas).color);
@@ -61,6 +64,7 @@ const NoiseBackground: React.FC = () => {
                 ctx2d.fillStyle = getComputedStyle(canvas).backgroundColor || 'transparent';
                 ctx2d.fillRect(0, 0, logicalWidth, logicalHeight);
             }
+            setIsReady(true);
             return () => {};
         }
 
@@ -73,6 +77,7 @@ const NoiseBackground: React.FC = () => {
         let width = 0, height = 0, dpr = 1, toScreen = 1;
         let animationFrame = 0;
         let time = 0;
+        let hasShown = false;
 
         // Shaders
         const vertexSrc = `#version 300 es\nprecision highp float;\nconst vec2 pos[3] = vec2[3](\n  vec2(-1.0, -1.0),\n  vec2( 3.0, -1.0),\n  vec2(-1.0,  3.0)\n);\nvoid main(){\n  gl_Position = vec4(pos[gl_VertexID], 0.0, 1.0);\n}`;
@@ -84,7 +89,7 @@ uniform vec2 u_resolution;\nuniform float u_time;\nuniform vec3 u_color;\nunifor
 // Simplex noise helpers\nvec3 mod289(vec3 x){ return x - floor(x * (1.0 / 289.0)) * 289.0; }\nvec4 mod289(vec4 x){ return x - floor(x * (1.0 / 289.0)) * 289.0; }\nvec4 permute(vec4 x){ return mod289(((x*34.0)+1.0)*x); }\nvec4 taylorInvSqrt(vec4 r){ return 1.79284291400159 - 0.85373472095314 * r; }\n
 float snoise(vec3 v){\n  const vec2  C = vec2(1.0/6.0, 1.0/3.0);\n  const vec4  D = vec4(0.0, 0.5, 1.0, 2.0);\n\n  // First corner\n  vec3 i  = floor(v + dot(v, C.yyy));\n  vec3 x0 = v - i + dot(i, C.xxx);\n\n  // Other corners\n  vec3 g = step(x0.yzx, x0.xyz);\n  vec3 l = 1.0 - g;\n  vec3 i1 = min( g.xyz, l.zxy );\n  vec3 i2 = max( g.xyz, l.zxy );\n\n  // x0 = x0 - 0.0 + 0.0 * C.xxx;\n  // x1 = x0 - i1 + 1.0 * C.xxx;\n  // x2 = x0 - i2 + 2.0 * C.xxx;\n  // x3 = x0 - 1.0 + 3.0 * C.xxx;\n  vec3 x1 = x0 - i1 + C.xxx;\n  vec3 x2 = x0 - i2 + C.yyy; // 2.0*C.x = 1/3 = C.y\n  vec3 x3 = x0 - D.yyy;      // -1.0 + 3.0*C.x = -0.5 = -D.y\n\n  // Permutations\n  i = mod289(i);\n  vec4 p = permute( permute( permute(\n             i.z + vec4(0.0, i1.z, i2.z, 1.0 ))\n           + i.y + vec4(0.0, i1.y, i2.y, 1.0 ))\n           + i.x + vec4(0.0, i1.x, i2.x, 1.0 ));\n\n  // Gradients: 7x7 points over a square, mapped onto an octahedron.\n  float n_ = 0.142857142857; // 1.0/7.0\n  vec3  ns = n_ * D.wyz - D.xzx;\n\n  vec4 j = p - 49.0 * floor(p * ns.z * ns.z);   // mod(p,7*7)\n\n  vec4 x_ = floor(j * ns.z);\n  vec4 y_ = floor(j - 7.0 * x_ );    // mod(j,N)\n\n  vec4 x = x_ *ns.x + ns.yyyy;\n  vec4 y = y_ *ns.x + ns.yyyy;\n  vec4 h = 1.0 - abs(x) - abs(y);\n\n  vec4 b0 = vec4( x.xy, y.xy );\n  vec4 b1 = vec4( x.zw, y.zw );\n\n  vec4 s0 = floor(b0)*2.0 + 1.0;\n  vec4 s1 = floor(b1)*2.0 + 1.0;\n  vec4 sh = -step(h, vec4(0.0));\n\n  vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy ;\n  vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww ;\n\n  vec3 p0 = vec3(a0.xy,h.x);\n  vec3 p1 = vec3(a0.zw,h.y);\n  vec3 p2 = vec3(a1.xy,h.z);\n  vec3 p3 = vec3(a1.zw,h.w);\n\n  // Normalise gradients\n  vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));\n  p0 *= norm.x;\n  p1 *= norm.y;\n  p2 *= norm.z;\n  p3 *= norm.w;\n\n  // Mix contributions from the four corners\n  vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);\n  m = m * m;\n  return 42.0 * dot( m*m, vec4( dot(p0,x0), dot(p1,x1),\n                                dot(p2,x2), dot(p3,x3) ) );\n}\n
 void main(){\n  // Map pixel to screen space (CSS px) using u_toScreen\n  vec2 screenPx = gl_FragCoord.xy * u_toScreen;\n  vec2 pos = screenPx + u_offset + vec2(0.0, u_scroll);\n  float n = snoise(vec3(pos * u_noiseScale, u_time));\n  // Map to 0..1
-  float v = 0.5 * (n + 1.0);\n  float mask = step(u_threshold, v);\n  outColor = vec4(u_color, mask);\n}`;
+  float v = 0.5 * (n + 1.0);\n  if (v < u_threshold) { discard; }\n  outColor = vec4(u_color, 1.0);\n}`;
 
         const createShader = (type: number, src: string) => {
             const sh = gl.createShader(type)!;
@@ -151,7 +156,7 @@ void main(){\n  // Map pixel to screen space (CSS px) using u_toScreen\n  vec2 s
             toScreen = 1 / dpr;
 
             gl.viewport(0, 0, width, height);
-            gl.clearColor(bg.r, bg.g, bg.b, 0.0); // keep transparent to let CSS bg show
+            gl.clearColor(bg.r, bg.g, bg.b, 1.0); // opaque clear helps on iOS compositing
         };
 
         const handleMouseMove = (e: MouseEvent) => {
@@ -192,6 +197,8 @@ void main(){\n  // Map pixel to screen space (CSS px) using u_toScreen\n  vec2 s
 
             gl.drawArrays(gl.TRIANGLES, 0, 3);
 
+            if (!hasShown) { setIsReady(true); hasShown = true; }
+
             time = (time + 0.0005) % 100000.0;
             animationFrame = requestAnimationFrame(draw);
         };
@@ -210,7 +217,12 @@ void main(){\n  // Map pixel to screen space (CSS px) using u_toScreen\n  vec2 s
         window.addEventListener('mousemove', handleMouseMove);
         window.addEventListener('scroll', handleScroll, { passive: true });
         document.addEventListener('visibilitychange', handleVisibility);
-        animationFrame = requestAnimationFrame(draw);
+        const ric: any = (window as any).requestIdleCallback;
+        if (typeof ric === 'function') {
+            idleId = ric(() => { animationFrame = requestAnimationFrame(draw); }, { timeout: 1200 });
+        } else {
+            timeoutId = window.setTimeout(() => { animationFrame = requestAnimationFrame(draw); }, 0);
+        }
 
         return () => {
             window.removeEventListener('resize', resize);
@@ -218,6 +230,9 @@ void main(){\n  // Map pixel to screen space (CSS px) using u_toScreen\n  vec2 s
             window.removeEventListener('scroll', handleScroll);
             document.removeEventListener('visibilitychange', handleVisibility);
             if (animationFrame) cancelAnimationFrame(animationFrame);
+            const cic: any = (window as any).cancelIdleCallback;
+            if (idleId && typeof cic === 'function') cic(idleId);
+            if (timeoutId) clearTimeout(timeoutId);
             gl.bindVertexArray(null);
             gl.useProgram(null);
             gl.deleteVertexArray(vao);
@@ -242,7 +257,7 @@ void main(){\n  // Map pixel to screen space (CSS px) using u_toScreen\n  vec2 s
     }, []);
 
     return (
-        <canvas ref={canvasRef} className={`block fixed left-0 top-0 w-full h-full print:hidden text-noise-primary bg-noise-secondary ${lavaOn ? '' : ''}`} aria-hidden="true" />
+        <canvas ref={canvasRef} className={`block fixed left-0 top-0 w-full h-full print:hidden text-noise-primary bg-noise-secondary transition-opacity duration-700 ${isReady ? 'opacity-100' : 'opacity-0'}`} aria-hidden="true" />
     );
 };
 

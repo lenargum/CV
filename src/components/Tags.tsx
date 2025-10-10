@@ -88,16 +88,18 @@ export default function Tags({ allTags = [] }: TagsProps) {
     // Simple, deterministic layout tuned for 8 groups
     switch (index) {
       case 0: return 'col-span-6 md:col-span-4 print:col-span-4'; // Core
-      case 1: return 'col-span-6 md:col-span-3 print:col-span-3'; // React ecosystem
-      case 2: return 'col-span-6 md:col-span-3 print:col-span-3'; // Vue ecosystem
+      case 1: return 'col-span-6 md:col-span-4 print:col-span-4'; // React ecosystem
+      case 2: return 'col-span-6 md:col-span-4 print:col-span-4'; // Vue ecosystem
+
       case 3: return 'col-span-6 md:col-span-2 print:col-span-2'; // Rendering
+      case 4: return 'col-span-12 md:col-span-10 print:col-span-10'; // Tools
 
-      case 4: return 'col-span-6 md:col-span-7 print:col-span-6'; // Tools
-      case 5: return 'col-span-6 md:col-span-5 print:col-span-6'; // UX & Visual
+      case 5: return 'col-span-12 md:col-span-5 print:col-span-5'; // UX & Visual
+      case 6: return 'col-span-12 md:col-span-7 print:col-span-7'; // Architecture
 
-      case 6: return 'col-span-12 md:col-span-5 print:col-span-6'; // Architecture
-      case 7: return 'col-span-6 md:col-span-4 print:col-span-3'; // Principles
-      case 8: return 'col-span-6 md:col-span-3 print:col-span-3'; // Process
+      case 7: return 'col-span-6 md:col-span-7 print:col-span-7'; // Principles
+      case 8: return 'col-span-6 md:col-span-5 print:col-span-5'; // Process
+
       default: return 'col-span-6 md:col-span-6 print:col-span-6';
     }
   };
@@ -105,7 +107,7 @@ export default function Tags({ allTags = [] }: TagsProps) {
   return (
     <section className="cv-section">
       <h2 className="section-title">{t.sections.technologies}</h2>
-      <div className="grid grid-cols-12 gap-3 print:gap-2">
+      <div className="grid grid-cols-12 gap-3 print:gap-2 -mx-4 md:m-0 print:m-0">
         {categorizedTags.map(({ group, tags }, groupIndex) => (
           <div
             key={groupIndex}

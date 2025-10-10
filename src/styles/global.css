@@ -19,7 +19,7 @@ a {
 }
 
 section.cv-section {
-  @apply p-8 [&:not(:first-child)]:pb-10 print:p-0 print:[&:not(:first-child)]:pb-2;
+  @apply p-6 md:p-8 [&:not(:first-child)]:pb-10 print:p-0 print:[&:not(:first-child)]:pb-2;
 }
 
 section.cv-section + section.cv-section {
