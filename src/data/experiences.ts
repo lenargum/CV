@@ -38,6 +38,20 @@ export const experiences: ExperienceItem[] = [
 		},
 		date_start: new Date(2025, 1, 0), // January 1, 2025
 		date_end: null,
+		description: {
+			"en": [
+				"Developed web applications with React/Next.js (previously Vue/Nuxt), including Telegram Mini Apps and bots.",
+				"Built UI and backend logic (Go, PostgreSQL, Redis, CI/CD).",
+				"Delivered landing pages, catalogs, stores, and analytics dashboards.",
+				"Designed architecture and optimized performance and UX.",
+			],
+			"ru": [
+				"Разработка веб-приложений на React/Next.js (ранее Vue/Nuxt), включая Telegram Mini Apps и ботов.",
+				"Создание интерфейсов и серверной логики (Go, PostgreSQL, Redis, CI/CD).",
+				"Лендинги, каталоги, магазины и аналитические дашборды под ключ.",
+				"Проектирование архитектуры, оптимизация производительности и UX.",
+			]
+		},
 		technologies: [
 			"React",
 			"TypeScript",
