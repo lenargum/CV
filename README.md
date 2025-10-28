@@ -1,6 +1,8 @@
 # Interactive CV
 
-A modern, interactive CV/résumé website built with Astro and React, featuring a clean design, interactive elements, and multi-language support.
+A modern, interactive CV/resume website built with Astro and React, featuring a clean design, interactive elements, and multi-language support.
+
+![CV Preview](public/cover-1200x630.png)
 
 <!-- 
 To add a preview image, place a screenshot of your CV in the public directory:
