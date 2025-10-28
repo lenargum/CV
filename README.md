@@ -23,7 +23,7 @@ public/cv-preview.png
 - **[TypeScript](https://www.typescriptlang.org/)**: For type-safe code
 - **[Tailwind CSS](https://tailwindcss.com/)**: For styling
 - **[Motion](https://motion.dev/)**: For smooth animations and transitions
-- **[Simplex Noise](https://www.npmjs.com/package/simplex-noise)**: For the animated background effect
+- **WebGL2 (GLSL shaders)**: GPU-accelerated background animation
 
 ## 🚀 Getting Started
 
@@ -35,20 +35,38 @@ public/cv-preview.png
 ### Installation
 
 1. Install dependencies:
+
    ```bash
    pnpm install
    ```
 
 2. Start the development server:
+
    ```bash
    pnpm dev
    ```
 
 3. Open your browser and navigate to `http://localhost:4321/CV/`
 
+## 🫧 Background Animation (WebGL)
+
+The background is rendered on a `<canvas>` using WebGL2 and a GLSL fragment shader that generates animated simplex noise. It runs efficiently on the GPU, supports subtle parallax to mouse and scroll, and respects accessibility and performance best practices.
+
+- **Implementation**: See `src/components/NoiseBackground.tsx`. It renders a fullscreen triangle and shades fragments with 3D simplex noise, thresholded to produce a soft bubble pattern. Mounted in `src/layouts/Layout.astro` via `<NoiseBackground client:idle />`.
+- **Interaction**: Mouse movement and page scroll apply a light parallax effect. Animation starts on browser idle and pauses when the tab is not visible.
+- **Accessibility & Fallbacks**:
+  - Honors `prefers-reduced-motion` by rendering a static frame.
+  - If WebGL2 is unavailable, the component falls back to the page’s CSS background (no script errors).
+  - Hidden in print via `print:hidden`.
+- **Customization**:
+  - **Colors**: Controlled via the canvas classes `text-noise-primary` and `bg-noise-secondary` (see Tailwind setup). Update these theme colors to restyle the effect.
+  - **Density/Scale**: Tweak `u_threshold` and `u_noiseScale` in `NoiseBackground.tsx` to change blob density and size.
+  - **Parallax feel**: Adjust `parallaxIntensity`, `scrollParallaxIntensity`, and `lerpFactor` constants in `NoiseBackground.tsx`.
+- **Disable**: Remove or comment out `<NoiseBackground client:idle />` in `src/layouts/Layout.astro` if you want a static background.
+
 ## 📋 Project Structure
 
-```
+```text
 /
 ├── public/            # Static assets
 ├── src/
@@ -90,6 +108,7 @@ To add a new language, create a new file (e.g., `fr.js`) and update the `index.j
 The project uses Tailwind CSS for styling. The main configuration is in `tailwind.config.mjs`.
 
 The color scheme can be customized by editing:
+
 - Primary color (black): `#0A0A0A`
 - Secondary color (light gray): `#F5F5F5`
 
@@ -117,6 +136,7 @@ The CV is optimized for printing to PDF:
 ## 📱 Responsive Design
 
 The CV is fully responsive and optimized for:
+
 - Mobile phones
 - Tablets
 - Desktops
