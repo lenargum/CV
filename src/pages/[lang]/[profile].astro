@@ -1,0 +1,52 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import CVContent from "../../components/CVContent.tsx";
+import { composeCv } from "../../lib/composeCv";
+import { PROFILES, LANGS } from "../../lib/types";
+import type { ProfileType, LangType } from "../../lib/types";
+
+export function getStaticPaths() {
+  return PROFILES.flatMap(profile =>
+    LANGS.map(lang => ({
+      params: { lang, profile },
+      props: { lang, profile }
+    }))
+  );
+}
+
+interface Props {
+  lang: LangType;
+  profile: ProfileType;
+}
+
+const { lang, profile } = Astro.props;
+
+// Compose CV data for the specific profile and language
+const cv = composeCv(profile, lang);
+
+// Get tags for this profile
+const allTags = cv.tags;
+
+// Page title based on profile
+const pageTitle = `${cv.personalInfo.name} - ${cv.personalInfo.title}`;
+---
+
+<Layout
+  title={pageTitle}
+  description={cv.personalInfo.description}
+  lang={lang}
+  profile={profile}
+>
+  <CVContent
+    client:visible
+    personalInfo={cv.personalInfo}
+    summary={cv.summary}
+    experiences={cv.experiences}
+    education={cv.education}
+    awards={cv.awards}
+    teaching={cv.teaching}
+    allTags={allTags}
+    initialLang={lang}
+    profile={profile}
+  />
+</Layout>

@@ -1,14 +1,6 @@
-export interface TranslatedText {
-	en: string;
-	ru: string;
-	[key: string]: string;
-}
+import type { ProfiledBullet, ProfiledTechnologies, TranslatedText, TranslatedArray } from '../lib/types';
 
-export interface TranslatedArray {
-	en: string[];
-	ru: string[];
-	[key: string]: string[];
-}
+export type { TranslatedText, TranslatedArray };
 
 export interface EducationItem {
 	icon?: string;
@@ -17,12 +9,10 @@ export interface EducationItem {
 	institution: string | TranslatedText;
 	date_start: Date;
 	date_end: Date;
-	highlights: string[] | TranslatedArray;
-	projects?: string[] | TranslatedArray;
-	technologies: string[];
+	highlights: ProfiledBullet[] | TranslatedArray;
+	projects?: ProfiledBullet[] | TranslatedArray;
+	technologies: string[] | ProfiledTechnologies;
 }
-
-
 
 export const education: EducationItem[] = [
 	{
@@ -41,60 +31,150 @@ export const education: EducationItem[] = [
 		},
 		date_start: new Date(2017, 7, 1), // August 1, 2017
 		date_end: new Date(2021, 4, 31), // May 31, 2021
-		highlights: {
-			en: [
-				"Advanced Enterprise Programming on JavaScript course",
-				"Courses in Product Design & Management",
-				"Practiced backend/frontend/mobile development, studied data structures and algorithms",
-				"Built procedurally generated solar system in Unity (algorithms used in [resume-site](https://lenargum.github.io/CV/) animation)"
-			],
-			ru: [
-				"Продвинутый курс по JS (Advanced Enterprise Programming on JavaScript)",
-				"Курсы по продуктовому дизайну и менеджменту",
-				"Практиковал backend/frontend/mobile-разработку, изучал структуры данных и алгоритмы",
-				"Создал процедурно-генерируемую солнечную систему в Unity (алгоритмы используются в анимации на [сайте-резюме](https://lenargum.github.io/CV/))"
-			],
-		},
-		technologies: [
-			"Frontend",
-			"JavaScript",
-			"TypeScript",
-			"HTML",
-			"CSS",
-			"SCSS",
-			"Git",
-			"CI/CD",
-			"Docker",
-			"Figma",
-			"React",
-			"Redux",
-			
-			"SPA",
-			"UI/UX",
-			"Accessibility",
-			"Responsive & Fluid Layout Systems",
-			"Design Systems",
+		highlights: [
+			// === ALL — полная версия для сайта ===
+			{
+				base: {
+					en: "Advanced Enterprise Programming on JavaScript course",
+					ru: "Продвинутый курс по JavaScript (Advanced Enterprise Programming on JavaScript)"
+				},
+				showIn: ['all'],
+			},
+			{
+				base: {
+					en: "Courses in Product Design & Management",
+					ru: "Курсы по продуктовому дизайну и менеджменту"
+				},
+				showIn: ['all'],
+			},
+			{
+				base: {
+					en: "Hands-on backend, frontend, and mobile development; data structures and algorithms",
+					ru: "Практика backend / frontend / mobile-разработки, структуры данных и алгоритмы"
+				},
+				showIn: ['all'],
+			},
+			{
+				base: {
+					en: "Project: procedurally generated solar system in Unity (algorithms reused in [resume-site](https://lenargum.github.io/CV/) animation)",
+					ru: "Проект: процедурно-генерируемая солнечная система в Unity (алгоритмы используются в анимации [сайта-резюме](https://lenargum.github.io/CV/))"
+				},
+				showIn: ['all'],
+			},
 
-			"Agile",
-			"Scrum",
-			"Waterfall",
-			"Lean",
+			// === REACT / VUE — фокус на JS, дизайн, DSA ===
+			{
+				base: {
+					en: "Advanced JavaScript coursework",
+					ru: "Продвинутый курс по JavaScript"
+				},
+				showIn: ['react', 'vue'],
+			},
+			{
+				base: {
+					en: "Product design and management fundamentals",
+					ru: "Продуктовый дизайн и менеджмент"
+				},
+				showIn: ['react', 'vue'],
+			},
+			{
+				base: {
+					en: "Data structures and algorithms",
+					ru: "Структуры данных и алгоритмы"
+				},
+				showIn: ['react', 'vue'],
+			},
+			{
+				base: {
+					en: "Frontend and UI-focused academic projects",
+					ru: "Учебные проекты по frontend и UI/UX"
+				},
+				showIn: ['react', 'vue'],
+			},
 
-			"Backend",
-			"Python Flask",
-			"Python FastAPI",
-			"Python Django",
-			"Java Spring",
-
-			"Mobile",
-			"Android development",
-			"Flutter",
-
-			"Data Structures & Algorithms",
-
-			"Game Development",
-			"C#",
-			"Unity",
+			// === FULLSTACK — чуть шире ===
+			{
+				base: {
+					en: "Advanced JavaScript and application architecture",
+					ru: "Продвинутый JavaScript и архитектура приложений"
+				},
+				showIn: ['fullstack'],
+			},
+			{
+				base: {
+					en: "Frontend and backend development practice",
+					ru: "Практика frontend и backend-разработки"
+				},
+				showIn: ['fullstack'],
+			},
+			{
+				base: {
+					en: "Data structures and algorithms",
+					ru: "Структуры данных и алгоритмы"
+				},
+				showIn: ['fullstack'],
+			},
+			{
+				base: {
+					en: "Academic and applied projects",
+					ru: "Учебные и прикладные проекты"
+				},
+				showIn: ['fullstack'],
+			},
 		],
+		technologies: {
+			base: [],
+			byProfile: {
+				react: [],
+				vue: [],
+				fullstack: [],
+				all: [
+					"JavaScript",
+					"TypeScript",
+					"HTML",
+					"CSS",
+					"SCSS",
+					"Git",
+					"CI/CD",
+					"Docker",
+					"Figma",
+					"React",
+					"Redux",
+
+					"SPA",
+					"UI/UX",
+					"Accessibility",
+					"Responsive & Fluid Layout Systems",
+					"Design Systems",
+
+					"Agile",
+					"Scrum",
+					"Waterfall",
+					"Lean",
+
+					"REST API",
+					"SQL",
+					"PostgreSQL",
+					"MySQL",
+					"SQLite",
+					"NoSQL",
+					"Redis",
+					"MongoDB",
+					"Python Flask",
+					"Python FastAPI",
+					"Python Django",
+					"Java Spring",
+
+					"Android",
+					"Flutter",
+
+					"Data Structures & Algorithms",
+
+					"Game Dev",
+					"C#",
+					"Unity",
+				]
+			}
+		},
 	},
-]; 
+];

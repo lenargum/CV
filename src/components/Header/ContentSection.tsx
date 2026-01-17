@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from '../../i18n/useTranslation';
 import SocialIcon from './SocialIcon';
 import QRCode from './QRCode';
+import type { ProfileType } from '../../lib/types';
 
 interface ContentSectionProps {
   name: string;
@@ -14,9 +15,10 @@ interface ContentSectionProps {
     icon: string;
     displayText: string;
   }[];
+  profile: ProfileType;
 }
 
-const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
+const ContentSection = ({ name, title, email, links, profile }: ContentSectionProps) => {
   const { t } = useTranslation();
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
@@ -24,9 +26,8 @@ const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<(HTMLElement | null)[]>([]);
 
-  // Get translated values with defensive coding
+  // Name from i18n (translatable), title from props (profile-specific from composeCv)
   const translatedName = t?.personalInfo?.name || name;
-  const translatedTitle = t?.personalInfo?.title || title;
 
   const copyEmailToClipboard = () => {
     navigator.clipboard.writeText(email)
@@ -47,7 +48,7 @@ const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
-    
+
     const rect = containerRef.current.getBoundingClientRect();
     setMousePosition({
       x: e.clientX - rect.left,
@@ -57,26 +58,26 @@ const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
 
   const getButtonScale = (buttonEl: HTMLElement | null): string => {
     if (!isHovering || !buttonEl) return '';
-    
+
     const buttonRect = buttonEl.getBoundingClientRect();
     if (!containerRef.current) return '';
-    
+
     const containerRect = containerRef.current.getBoundingClientRect();
-    
+
     // Calculate the center of the button relative to the container
     const buttonCenterX = buttonRect.left + buttonRect.width / 2 - containerRect.left;
     const buttonCenterY = buttonRect.top + buttonRect.height / 2 - containerRect.top;
-    
+
     // Calculate the distance between mouse and button center
     const distance = Math.sqrt(
-      Math.pow(mousePosition.x - buttonCenterX, 2) + 
+      Math.pow(mousePosition.x - buttonCenterX, 2) +
       Math.pow(mousePosition.y - buttonCenterY, 2)
     );
-    
+
     // Maximum distance for scaling effect (adjust as needed)
     const maxDistance = 200;
     const hoverDistance = 15;
-    
+
     if (distance > maxDistance) {
       return '';
     } else if (distance < hoverDistance) {
@@ -96,7 +97,7 @@ const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
         <div className="flex justify-between items-center mb-2">
           <h1 className="mb-0">{translatedName}</h1>
         </div>
-        <h2 className="mb-8 print:mb-1">{translatedTitle}</h2>
+        <h2 className="text-text-primary mb-8 print:mb-1">{title}</h2>
         <div className="text-lg">
           <div
             ref={containerRef}
@@ -117,7 +118,10 @@ const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
                   <SocialIcon type="email" />
                 </div>
               </button>
-              <span className="text-text-primary text-md print:inline-block hidden">Telegram: {links.filter(link => link.name === 'Telegram')[0].displayText}</span>
+              <div className="hidden print:flex print:flex-row print:items-center print:gap-x-2">
+                <span className="text-text-primary text-sm ">telegram: {links.filter(link => link.name === 'Telegram')[0].displayText},</span>
+                <span className="text-text-primary text-sm ">email: {email}</span>
+              </div>
 
               <AnimatePresence>
                 {copyStatus && (
@@ -161,7 +165,7 @@ const ContentSection = ({ name, title, email, links }: ContentSectionProps) => {
           </div>
         </div>
       </div>
-      <QRCode />
+      <QRCode profile={profile} />
     </div>
   );
 };

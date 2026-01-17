@@ -46,7 +46,7 @@ const NoiseBackground: React.FC = () => {
 
         // Parallax configuration
         const parallaxIntensity = 0.1;
-        const scrollParallaxIntensity = 0.3;
+        const scrollParallaxIntensity = 0.1;
         const lerpFactor = 0.08;
         const scrollEaseFactor = 0.2;
         // No DPR/pixel cap in WebGL path

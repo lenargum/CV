@@ -1,0 +1,16 @@
+---
+// Redirect /CV/en and /CV/ru to /CV/en/all and /CV/ru/all respectively
+export function getStaticPaths() {
+  return [
+    { params: { lang: 'en' } },
+    { params: { lang: 'ru' } }
+  ];
+}
+
+const { lang } = Astro.params;
+const base = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+
+return Astro.redirect(`${base}${lang}/all/`);
+---

@@ -2,16 +2,27 @@
 import "../styles/global.css";
 import NoiseBackground from "../components/NoiseBackground";
 import { withBasePath } from "../lib/utils";
+import type { LangType, ProfileType } from "../lib/types";
+
+const localeMap: Record<LangType, string> = {
+  en: "en_US",
+  ru: "ru_RU",
+};
 
 interface Props {
   title: string;
+  description: string;
+  lang?: LangType;
+  profile?: ProfileType;
 }
 
-const { title } = Astro.props;
+const { title, description, lang = "en", profile = "all" } = Astro.props as Props;
+const canonicalUrl = withBasePath(`${lang}/${profile}/`);
+const ogLocale = localeMap[lang];
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -19,22 +30,16 @@ const { title } = Astro.props;
 
     <!-- Primary -->
     <title>{title}</title>
-    <meta
-      name="description"
-      content="Frontend 5+ yrs. Complex UI: editors & Telegram Mini Apps. Owns outcomes, cleans architecture."
-    />
-    <link rel="canonical" href="https://lenargum.github.io/CV/" />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Lenar Gumerov — Frontend Developer" />
-    <meta
-      property="og:description"
-      content="Frontend 5+ yrs. Complex UI: editors & Telegram Mini Apps. Owns outcomes, cleans architecture."
-    />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://lenargum.github.io/CV/" />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:site_name" content="Lenar Gumerov — CV" />
-    <meta property="og:locale" content="en_US" />
+    <meta property="og:locale" content={ogLocale} />
 
     <!-- OG images (rect + square) -->
     <meta
@@ -45,7 +50,7 @@ const { title } = Astro.props;
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="Lenar Gumerov — Frontend Developer"
+      content={title}
     />
 
     <meta
@@ -56,16 +61,13 @@ const { title } = Astro.props;
     <meta property="og:image:height" content="1024" />
     <meta
       property="og:image:alt"
-      content="Lenar Gumerov — Frontend Developer"
+      content={title}
     />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Lenar Gumerov — Frontend Developer" />
-    <meta
-      name="twitter:description"
-      content="Frontend 5+ yrs. Complex UI: editors & Telegram Mini Apps. Owns outcomes, cleans architecture."
-    />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <meta
       name="twitter:image"
       content={withBasePath(`cover-1200x630.png?v=2`)}

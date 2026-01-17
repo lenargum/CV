@@ -1,38 +1,25 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import CVContent from "../components/CVContent.tsx";
-
-// Import data from data files
-import { 
-  personalInfo,
-  experiences, 
-  education, 
-  awards,
-  teaching,
-  generateTags,
-  summary
-} from "../data";
-
-// SSR language detection from Accept-Language header (guarded for SSG)
-const acceptLang = (Astro as any)?.request?.headers?.get?.('accept-language') || '';
-const prefersRu = acceptLang.toLowerCase().startsWith('ru');
-const initialLang = prefersRu ? 'ru' : 'en';
-
-// Generate tags
-const allTags = generateTags();
+// Client-side redirect based on browser language
 ---
 
-<Layout title="Lenar Gumerov - CV">
-  <CVContent
-      client:visible
-      {personalInfo}
-      {summary}
-      {experiences}
-      {education}
-      {awards}
-      {teaching}
-      {allTags}
-      initialLang={initialLang}
-    />
-  
-</Layout>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Redirecting...</title>
+  <script>
+    // Detect browser language and redirect
+    function detectBrowserLanguage() {
+      const browserLang = navigator.language || navigator.userLanguage || 'en';
+      return browserLang.toLowerCase().startsWith('ru') ? 'ru' : 'en';
+    }
+
+    // Redirect to the appropriate language page
+    const base = '/CV';
+    const lang = detectBrowserLanguage();
+    window.location.href = `${base}/${lang}/all/`;
+  </script>
+</head>
+<body>
+  <p>Redirecting to your preferred language...</p>
+</body>
+</html>

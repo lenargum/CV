@@ -7,25 +7,40 @@ import Education from './Education';
 import Achievements from './Achievements';
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import type { PersonalInfo } from '../data/personal-info';
-import type { Summary as SummaryType } from '../data/summary';
-import type { ExperienceItem as ExperienceType } from '../data/experiences';
-import type { EducationItem as EducationType } from '../data/education';
-import type { Achievement as AchievementType } from '../data/achievements';
+import type { 
+  ComposedPersonalInfo, 
+  ComposedExperience, 
+  ComposedEducation, 
+  ComposedAchievement,
+  ProfileType,
+  LangType
+} from '../lib/types';
 
 interface CVContentProps {
-  personalInfo: PersonalInfo;
-  summary: SummaryType;
-  experiences: ExperienceType[];
-  education: EducationType[];
-  awards: AchievementType[];
-  teaching: AchievementType[];
+  personalInfo: ComposedPersonalInfo;
+  summary: string;
+  experiences: ComposedExperience[];
+  education: ComposedEducation[];
+  awards: ComposedAchievement[];
+  teaching: ComposedAchievement[];
   allTags: string[];
-  initialLang?: 'en' | 'ru';
+  initialLang?: LangType;
+  profile?: ProfileType;
 } 
 
-export default function CVContent({ personalInfo, summary, experiences, education, awards, teaching, allTags, initialLang }: CVContentProps) {
+export default function CVContent({ 
+  personalInfo, 
+  summary, 
+  experiences, 
+  education, 
+  awards, 
+  teaching, 
+  allTags, 
+  initialLang = 'en',
+  profile = 'all'
+}: CVContentProps) {
   const [isContentHidden, setIsContentHidden] = useState(false);
+  const { name, title, email, links } = personalInfo;
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -51,13 +66,13 @@ export default function CVContent({ personalInfo, summary, experiences, educatio
       >
         <LanguageProvider initialLang={initialLang}>
           {/* CV Content */}
-          <Header {...personalInfo} />
+          <Header name={name} title={title} email={email} links={links} profile={profile} />
 
           <div className="flex flex-col bg-primary-bg/90 backdrop-blur-sm print:bg-white">
             <Summary summary={summary} />
-            <Tags allTags={allTags} />
-            <Experience experiences={experiences} />
-            <Education education={education} />
+            <Tags allTags={allTags} profile={profile} />
+            <Experience experiences={experiences} profile={profile} />
+            <Education education={education} profile={profile} />
             <Achievements awards={awards} teaching={teaching} />
           </div>
         </LanguageProvider>
@@ -65,4 +80,4 @@ export default function CVContent({ personalInfo, summary, experiences, educatio
       {/* toggle button moved to Layout */}
     </>
   );
-} 
+}

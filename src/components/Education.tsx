@@ -1,25 +1,16 @@
 import { useTranslation } from '../i18n/useTranslation';
 import { MarkdownText } from '../utils/markdown';
-import { type EducationItem, type TranslatedText, type TranslatedArray } from '../data/education';
+import type { ComposedEducation, ProfileType } from '../lib/types';
 import Tag from './Tag/Tag';
 import { withBasePath } from '../lib/utils';
 
 export interface EducationProps {
-  education: EducationItem[];
+  education: ComposedEducation[];
+  profile: ProfileType;
 }
 
-export default function Education({ education }: EducationProps) {
-  const { t, currentLang } = useTranslation();
-
-  const getTranslatedValue = (value: string | TranslatedText): string => {
-    if (typeof value === 'string') return value;
-    return value[currentLang as keyof TranslatedText] || value.en;
-  };
-
-  const getTranslatedArray = (value: string[] | TranslatedArray): string[] => {
-    if (Array.isArray(value)) return value;
-    return value[currentLang as keyof TranslatedArray] || value.en;
-  };
+export default function Education({ education, profile }: EducationProps) {
+  const { t } = useTranslation();
 
   // Format date range using date objects - only show years for education
   const getFormattedDateRange = (startDate: Date, endDate: Date): string => {
@@ -38,31 +29,33 @@ export default function Education({ education }: EducationProps) {
         {education.map((edu, index) => (
           <div key={index}>
             <div className="flex flex-row items-start md:items-center gap-x-3 md:mb-4">
-              <img src={withBasePath(edu.icon || '')} alt={getTranslatedValue(edu.institution)} className="md:w-20 md:h-20 w-10 h-10 rounded-xl flex-shrink-0 mt-2 md:mt-0" />
+              <img src={withBasePath(edu.icon || '')} alt={edu.institution} className="md:w-20 md:h-20 w-10 h-10 rounded-xl flex-shrink-0 mt-2 md:mt-0" />
               <div className="flex flex-col">
                 <h3 className="md:mb-1">
-                  {getTranslatedValue(edu.degree)}
-                  {edu.specialization && <span className="font-normal">, {getTranslatedValue(edu.specialization)}</span>}
+                  {edu.degree}
+                  {edu.specialization && <span className="font-normal">, {edu.specialization}</span>}
                 </h3>
-                <MarkdownText as="span" className="font-normal">{getTranslatedValue(edu.institution)}</MarkdownText>
-                <span className="text-text-tertiary text-sm">{getFormattedDateRange(edu.date_start, edu.date_end)}</span>
+                <div className="flex flex-col print:flex-row print:items-baseline print:gap-x-2">
+                  <MarkdownText as="span" className="font-normal">{edu.institution}</MarkdownText>
+                  <span className="text-text-tertiary text-sm">{getFormattedDateRange(edu.dateStart, edu.dateEnd)}</span>
+                </div>
               </div>
             </div>
             <ul className="list-disc">
-              {getTranslatedArray(edu.highlights).map((highlight, idx) => (
+              {edu.highlights.map((highlight, idx) => (
                 <li key={idx}>
                   <MarkdownText>{highlight}</MarkdownText>
                 </li>
               ))}
             </ul>
-            <div className="flex flex-wrap gap-2 mt-3">
+            {edu.technologies && edu.technologies.length > 0 && <div className="flex flex-wrap gap-2 mt-3">
               {edu.technologies.map((tech, idx) => (
-                <Tag key={idx} tag={tech} />
+                <Tag key={idx} tag={tech} profile={profile} />
               ))}
-            </div>
+            </div>}
           </div>
         ))}
       </div>
     </section>
   );
-} 
+}

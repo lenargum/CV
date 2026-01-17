@@ -17,12 +17,14 @@ import {
   FRONTEND_CORE_TAGS,
   REACT_ECOSYSTEM_TAGS,
   VUE_ECOSYSTEM_TAGS,
+  BACKEND_TAGS,
   TOOLING_TAGS,
   UI_VISUAL_TAGS,
   RENDERING_TAGS,
   ARCHITECTURE_TAGS,
   PRINCIPLES_TAGS,
   PROCESS_TAGS,
+  MOBILE_TAGS,
 } from '@/data/tags';
 
 export const TAG_GROUPS: Record<string, TagGroupConfig> = {
@@ -52,6 +54,15 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
       tags: RENDERING_TAGS,
       priority: 3
     },
+
+    BACKEND: {
+      name: {
+        en: 'Backend',
+        ru: 'Бэкенд'
+      },
+      tags: BACKEND_TAGS,
+      priority: 4
+    },
   
     TOOLS: {
       name: {
@@ -59,7 +70,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Инструменты'
       },
       tags: TOOLING_TAGS,
-      priority: 4
+      priority: 5
     },
   
     UX_VISUAL: {
@@ -68,10 +79,8 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'UX и Визуал'
       },
       tags: UI_VISUAL_TAGS,
-      priority: 5
+      priority: 6
     },
-
-    
 
     ARCHITECTURE: {
       name: {
@@ -79,7 +88,16 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Архитектура'
       },
       tags: ARCHITECTURE_TAGS,
-      priority: 6
+      priority: 7
+    },
+
+    MOBILE_TAGS: {
+      name: {
+        en: 'Mobile',
+        ru: 'Мобильные'
+      },
+      tags: MOBILE_TAGS,
+      priority: 8
     },
 
     PRINCIPLES: {
@@ -88,7 +106,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Принципы'
       },
       tags: PRINCIPLES_TAGS,
-      priority: 7
+      priority: 9
     },
 
     PROCESS: {
@@ -97,7 +115,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Процессы'
       },
       tags: PROCESS_TAGS,
-      priority: 8
+      priority: 10
     },
   
     UNFILTERED: {
@@ -106,7 +124,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Остальные'
       },
       tags: [],
-      priority: 9
+      priority: 11
     }
   };
   

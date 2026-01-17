@@ -1,13 +1,14 @@
 import { useTranslation } from '../i18n/useTranslation';
 import { MarkdownText } from '../utils/markdown';
-import { type ExperienceItem, type TranslatedText, type TranslatedArray } from '../data/experiences';
+import type { ComposedExperience, ProfileType } from '../lib/types';
 import Tag from './Tag/Tag';
 import { withBasePath } from '../lib/utils';
-import { PRIORITY_TECHNOLOGIES } from '../data/tags';
+import { TAGS_PRIORITY } from '@/data/tags';
 
 
 interface ExperienceProps {
-  experiences: ExperienceItem[];
+  experiences: ComposedExperience[];
+  profile: ProfileType;
 }
 
 // Helper function to format duration in years and months
@@ -72,21 +73,11 @@ function monthsBetween(startDate: Date, endDate: Date | null): number {
   return (endYear - startYear) * 12 + (endMonth - startMonth) + 1; // +1 to include both start and end months
 }
 
-export default function Experience({ experiences }: ExperienceProps) {
+export default function Experience({ experiences, profile }: ExperienceProps) {
   const { t, currentLang } = useTranslation();
 
-  const getTranslatedValue = (value: string | TranslatedText): string => {
-    if (typeof value === 'string') return value;
-    return value[currentLang as keyof TranslatedText] || value.en;
-  };
-
-  const getTranslatedArray = (value: string[] | TranslatedArray): string[] => {
-    if (Array.isArray(value)) return value;
-    return value[currentLang as keyof TranslatedArray] || value.en;
-  };
-
   // Format date range using date objects
-  const getFormattedDateRange = (startDate: Date, endDate: Date | null, showDuration: boolean = false): string => {
+  const getFormattedDateRange = (startDate: Date, endDate: Date | null): string => {
     const locale = t.dateFormat?.locale || (currentLang === 'ru' ? 'ru-RU' : 'en-US');
     const options: Intl.DateTimeFormatOptions = {
       month: 'short',
@@ -104,8 +95,14 @@ export default function Experience({ experiences }: ExperienceProps) {
       endFormatted = currentLang === 'ru' ? 'По настоящее время' : 'Present';
     }
 
-    // Create the date range text without duration (duration will be added separately)
-    return `${capitalizeFirstLetter(startFormatted)} — ${endDate ? capitalizeFirstLetter(endFormatted) : endFormatted}`;
+    if (endDate) {
+      // Create the date range text without duration (duration will be added separately)
+      return `${capitalizeFirstLetter(startFormatted)} — ${capitalizeFirstLetter(endFormatted)}`;
+    } else {
+      return `${currentLang === 'ru' ? 'С' : 'From'} ${capitalizeFirstLetter(startFormatted)}`;
+    }
+
+
   };
 
   // Helper function to capitalize first letter
@@ -118,7 +115,7 @@ export default function Experience({ experiences }: ExperienceProps) {
     // Simply sum the duration of each position - this counts overlapping months multiple times
     // which better represents the cumulative experience gained across different roles
     return experiences.reduce((total, exp) => {
-      const months = monthsBetween(exp.date_start, exp.date_end);
+      const months = monthsBetween(exp.dateStart, exp.dateEnd);
       return total + months;
     }, 0);
   };
@@ -127,8 +124,8 @@ export default function Experience({ experiences }: ExperienceProps) {
   const totalExperienceText = formatDuration(totalExperienceMonths, currentLang);
 
   const compareByPriority = (a: string, b: string) => {
-    const ai = PRIORITY_TECHNOLOGIES.indexOf(a);
-    const bi = PRIORITY_TECHNOLOGIES.indexOf(b);
+    const ai = TAGS_PRIORITY.indexOf(a);
+    const bi = TAGS_PRIORITY.indexOf(b);
     if (ai !== -1 && bi !== -1) return ai - bi;
     if (ai !== -1) return -1;
     if (bi !== -1) return 1;
@@ -137,38 +134,43 @@ export default function Experience({ experiences }: ExperienceProps) {
 
   return (
     <section className="cv-section">
-      <div className="flex flex-col md:flex-row md:items-baseline gap-x-3">
+      <div className="flex flex-col md:flex-row md:items-baseline gap-x-3 print:flex-row print:items-baseline print:gap-x-2">
         <h2 className="section-title max-md:mb-0">{t.sections.experience}</h2>
         <span className="text-text-tertiary text-sm max-md:mb-6 print:max-md:mb-0">{totalExperienceText}</span>
       </div>
       <div className="space-y-8 print:space-y-2">
         {experiences.map((exp, index) => (
           <div key={index} className="subsection">
-            <div className="flex flex-row items-start md:items-center gap-x-3 mb-4 print:mb-0">
-              <img src={withBasePath(exp.icon || '')} alt={getTranslatedValue(exp.company)} className="md:w-20 md:h-20 w-10 h-10 rounded-xl flex-shrink-0 mt-2 md:mt-0" />
+            <div className="flex flex-row items-start md:items-center gap-x-3 mb-4 print:mb-0 print:break-inside-avoid">
+              <img src={withBasePath(exp.icon || '')} alt={exp.company} className="md:w-20 md:h-20 w-10 h-10 rounded-xl flex-shrink-0 mt-2 md:mt-0" />
               <div className="flex flex-col">
-                <h3 className="md:mb-1"><MarkdownText>{getTranslatedValue(exp.title)}</MarkdownText></h3>
-                <h4 className="md:mb-1"><MarkdownText>{`${getTranslatedValue(exp.company)}, ${getTranslatedValue(exp.location)}`}</MarkdownText></h4>
+                <h3 className="md:mb-1"><MarkdownText>{exp.company}</MarkdownText></h3>
+                <div className="flex flex-col print:flex-row print:items-baseline print:gap-x-2">
+                  <h4 className="md:mb-1"><MarkdownText>{`${exp.title}, ${exp.location}`}</MarkdownText></h4>
 
-                <div className="flex flex-row items-baseline gap-x-2">
-                  <span className="text-text-tertiary text-sm">{getFormattedDateRange(exp.date_start, exp.date_end)}</span>
-                  <span className="text-text-tertiary text-sm">
-                    ({formatDuration(monthsBetween(exp.date_start, exp.date_end), currentLang, true)})
-                  </span>
+                  <div className="flex flex-row items-baseline gap-x-2 print:gap-x-1">
+                    <span className="text-text-tertiary text-sm">{getFormattedDateRange(exp.dateStart, exp.dateEnd)}</span>
+                    <span className="text-text-tertiary text-sm">
+                      ({formatDuration(monthsBetween(exp.dateStart, exp.dateEnd), currentLang, true)})
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-            {exp.description && <ul className="list-disc">
-              {getTranslatedArray(exp.description).map((item, idx) => (
+            {exp.description && exp.description.length > 0 && <ul className="list-disc">
+              {exp.description.map((item, idx) => (
                 <li key={idx}>
                   <MarkdownText>{item}</MarkdownText>
                 </li>
               ))}
             </ul>}
             {exp.technologies && exp.technologies.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-3">
-                {[...exp.technologies].sort(compareByPriority).map((tech, idx) => (
-                  <Tag key={idx} tag={tech} />
+              <div className="flex flex-wrap gap-2 mt-3 print:mt-1">
+                {profile === 'all' ? [...exp.technologies].sort(compareByPriority).map((tech, idx) => (
+                  <Tag key={idx} tag={tech} profile={profile} />
+                )) :
+                [...exp.technologies].map((tech, idx) => (
+                  <Tag key={idx} tag={tech} profile={profile} />
                 ))}
               </div>
             )}
@@ -177,4 +179,4 @@ export default function Experience({ experiences }: ExperienceProps) {
       </div>
     </section>
   );
-} 
+}

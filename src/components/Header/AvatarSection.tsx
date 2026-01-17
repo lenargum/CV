@@ -10,7 +10,7 @@ const AvatarSection = memo(({ name }: AvatarSectionProps) => {
   const imgSrc = withBasePath('resume_photo.png');
   
   return (
-    <div className="w-full md:w-[250px] bg-primary relative min-h-[250px] print:min-h-[100px] print:h-[100px] print:w-[150px] print:rounded-lg">
+    <div className="w-full md:w-[250px] bg-primary relative min-h-[250px] mt-10 md:mt-0 print:min-h-[100px] print:h-[100px] print:w-[150px] print:rounded-lg">
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <img 
           src={imgSrc}

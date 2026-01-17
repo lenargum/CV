@@ -14,7 +14,7 @@ h2 {
 h3 {
   @apply text-xl font-medium text-text-primary;
 }
-a {
+a:not(.custom-link) {
   @apply text-text-primary underline hover:text-blue-600 transition-colors;
 }
 
@@ -27,7 +27,7 @@ section.cv-section + section.cv-section {
 }
 
 .section-title {
-  @apply text-2xl font-semibold text-text-primary mb-6 print:mb-2;
+  @apply text-2xl font-semibold text-text-primary mb-6 print:mb-1;
 }
 
 .list-disc {
@@ -36,7 +36,7 @@ section.cv-section + section.cv-section {
 
 @media print {
   @page {
-    margin: 10mm;
+    margin: 9mm;
     size: A4;
   }
   body {
