@@ -1,25 +1,91 @@
 ---
 // Client-side redirect based on browser language
+import { withBasePath } from "../lib/utils";
 ---
 
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-  <title>Redirecting...</title>
-  <script>
-    // Detect browser language and redirect
-    function detectBrowserLanguage() {
-      const browserLang = navigator.language || navigator.userLanguage || 'en';
-      return browserLang.toLowerCase().startsWith('ru') ? 'ru' : 'en';
-    }
+  <head>
+    <title>Redirecting...</title>
 
-    // Redirect to the appropriate language page
-    const base = '/CV';
-    const lang = detectBrowserLanguage();
-    window.location.href = `${base}/${lang}/all/`;
-  </script>
-</head>
-<body>
-  <p>Redirecting to your preferred language...</p>
-</body>
+    <link rel="icon" type="image/svg+xml" href={withBasePath(`favicon.svg`)} />
+
+    <script>
+      // Detect browser language and redirect
+      function detectBrowserLanguage() {
+        const browserLang =
+          navigator.language || navigator.userLanguage || "en";
+        return browserLang.toLowerCase().startsWith("ru") ? "ru" : "en";
+      }
+
+      // Redirect to the appropriate language page
+      const base = "/CV";
+      const lang = detectBrowserLanguage();
+      const langTextEl = document.querySelector('.lang-text') as HTMLElement;
+      if (langTextEl) {
+        langTextEl.textContent = lang === 'ru' ? 'Russian' : 'English';
+        langTextEl.style.filter = 'blur(0px)';
+      }
+      window.location.href = `${base}/${lang}/all/`;
+    </script>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100dvh;
+        background-color: black;
+        backdrop-filter: 10px;
+        overflow: hidden;
+      }
+
+      .metaball {
+        aspect-ratio: 1/1;
+        border-radius: 50%;
+        background-color: white;
+        position: absolute;
+        z-index: -1;
+        opacity: 0.8;
+        filter: blur(10px);
+      }
+
+      .redirect-text {
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        font-size: x-large;
+      }
+
+      .lang-text {
+        filter: blur(10px);
+        transition: filter 0.1s ease-in-out;
+        text-transform: capitalize;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="metaball"
+      style="width: 600px; left: 0; top: 0; transform: translate(-50%, -50%); "
+    >
+    </div>
+    <div
+      class="metaball"
+      style="width: 600px; right: 0; bottom: 0; transform: translate(50%, 50%);"
+    >
+    </div>
+    <div
+      class="metaball"
+      style="width: 300px; left: 15%; top: 60%; transform: translate(0%, 0%);"
+    >
+    </div>
+    <div
+      class="metaball"
+      style="width: 200px; right: 15%; bottom: 60%; transform: translate(0%, 0%);"
+    >
+    </div>
+    <p class="redirect-text">
+      Redirecting to <span class="lang-text">English</span>
+    </p>
+  </body>
 </html>
