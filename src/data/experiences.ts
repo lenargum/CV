@@ -498,7 +498,13 @@ export const experiences: ExperienceItem[] = [
 			base: [
 				"Vue", "SCSS",
 				"Modular Frontend"
-			]
+			],
+			byProfile: {
+				react: [
+					"React", "SCSS",
+					"Modular Frontend"
+				],
+			}
 		},
 	},
 ];
