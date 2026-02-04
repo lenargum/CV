@@ -501,7 +501,7 @@ export const experiences: ExperienceItem[] = [
 			],
 			byProfile: {
 				react: [
-					"React", "SCSS",
+					"Javascript", "SCSS",
 					"Modular Frontend"
 				],
 			}
