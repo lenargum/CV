@@ -1,38 +1,33 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, type ReactNode } from 'react';
 import { LanguageContext, getTranslation } from './index';
+import type { Lang } from './types';
 
-export default function LanguageProvider({ children, initialLang }) {
-  // State management
-  const [currentLang, setCurrentLang] = useState(initialLang || 'en');
+interface LanguageProviderProps {
+  children: ReactNode;
+  initialLang?: Lang;
+}
+
+export default function LanguageProvider({ children, initialLang }: LanguageProviderProps) {
+  const [currentLang, setCurrentLang] = useState<Lang>(initialLang || 'en');
   const [translations, setTranslations] = useState(getTranslation(initialLang || 'en'));
 
-  // Always use URL-based language
   useEffect(() => {
     try {
-      // Always use the URL-provided initialLang if it's different from current
       if (initialLang && initialLang !== currentLang) {
         setCurrentLang(initialLang);
         setTranslations(getTranslation(initialLang));
       }
-    } catch (error) {
+    } catch {
       // keep current state
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialLang, currentLang]);
 
-  // Language change handler
-  const handleSetLanguage = useCallback((lang) => {
+  const handleSetLanguage = useCallback((lang: Lang) => {
     if (lang === currentLang) return;
-
-    // Get new translations
-    const newTranslations = getTranslation(lang);
-
-    // Update state
     setCurrentLang(lang);
-    setTranslations(newTranslations);
+    setTranslations(getTranslation(lang));
   }, [currentLang]);
 
-  // Create a memoized context value to prevent unnecessary re-renders
   const contextValue = useMemo(() => ({
     currentLang,
     setLanguage: handleSetLanguage,

@@ -3,7 +3,7 @@ import { LanguageContext } from './index';
 
 export function useTranslation() {
   const { currentLang, setLanguage, t } = useContext(LanguageContext);
-  
+
   return {
     t,
     currentLang,
@@ -11,4 +11,4 @@ export function useTranslation() {
     isEn: currentLang === 'en',
     isRu: currentLang === 'ru'
   };
-} 
+}

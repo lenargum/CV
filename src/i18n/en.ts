@@ -1,4 +1,6 @@
-export default {
+import type { Translation } from './types';
+
+const en: Translation = {
   personalInfo: {
     name: "Lenar Gumerov",
     title: "Frontend Developer",
@@ -17,7 +19,7 @@ export default {
   dateFormat: {
     locale: "en-US",
     options: {
-      month: "long", 
+      month: "long",
       year: "numeric"
     }
   },
@@ -25,4 +27,6 @@ export default {
     copied: "Copied!",
     failed: "Failed to copy"
   }
-}; 
+};
+
+export default en;

@@ -1,0 +1,11 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ResumeCopyTool from "../components/ResumeCopyTool";
+
+const title = "Resume Copy Tool";
+const description = "Copy resume data by specialization, language, and markdown mode.";
+---
+
+<Layout title={title} description={description} lang="en" profile="all">
+  <ResumeCopyTool client:load />
+</Layout>
