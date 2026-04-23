@@ -16,6 +16,90 @@ export interface ExperienceItem {
 export const experiences: ExperienceItem[] = [
 	{
 		title: {
+			en: "Senior Frontend Engineer",
+			ru: "Senior Frontend Engineer",
+		},
+		icon: '/CV/icons/cobalt.png',
+		company: 'Cobalt Lab',
+		location: {
+			en: "Cyprus, Remote",
+			ru: "Кипр, Удалённо"
+		},
+		date_start: new Date(2026, 1, 16), // February 16, 2026
+		date_end: new Date(2026, 3, 17),   // April 17, 2026
+		description: [
+			// === Top bullet — Vue/Fullstack/All variant (mentions Vue 3 typing) ===
+			{
+				base: {
+					en: "Joined a redesign-in-flight on a real-money iGaming platform as senior frontend IC; shipped to production in 2 months while leading parallel architectural cleanup — network layer centralization, state-management refactors without breaking existing behavior, and Vue 3 typing standardization across the codebase.",
+					ru: "Подключился к проекту в стадии редизайна — real-money iGaming платформа; за 2 месяца дотащил релиз в прод, параллельно ведя архитектурную чистку: централизация network-слоя, рефакторинг state-management без слома существующего поведения, стандартизация типизации Vue 3 по всей кодовой базе."
+				},
+				showIn: ['vue', 'fullstack', 'all'],
+			},
+			// === Top bullet — React variant (Vue-neutral) ===
+			{
+				base: {
+					en: "Joined a redesign-in-flight on a real-money iGaming platform as senior frontend IC; shipped to production in 2 months while leading parallel architectural cleanup — network layer centralization, state-management refactors without breaking existing behavior, and codebase-wide TypeScript standardization.",
+					ru: "Подключился к проекту в стадии редизайна — real-money iGaming платформа; за 2 месяца дотащил релиз в прод, параллельно ведя архитектурную чистку: централизация network-слоя, рефакторинг state-management без слома существующего поведения, стандартизация TypeScript по кодовой базе."
+				},
+				showIn: ['react'],
+			},
+			// === Scope/throughput (all profiles) ===
+			{
+				base: {
+					en: "Owned 6+ end-to-end product features across 17 epics within a tight-deadline release window — gamified retention, onboarding, event landings, referral redemption.",
+					ru: "Самостоятельно вёл 6+ end-to-end продуктовых фич в рамках 17 эпиков в условиях жёсткого дедлайна — gamified retention, онбординг, ивент-лендинги, реф-флоу."
+				},
+			},
+			// === Deposit Marathon flagship (all profiles) ===
+			{
+				base: {
+					en: "Built **Deposit Marathon** end-to-end — gamified retention system with real-time progress, auto-refresh timer, sortable rewards, responsive UI across desktop/tablet/mobile, and unit test coverage — delivered in ~2 weeks.",
+					ru: "С нуля реализовал **Deposit Marathon** — систему gamified-retention с real-time прогрессом, авто-обновлением, сортировкой наград и адаптивным UI на десктопе/планшете/мобиле, покрытым юнит-тестами — за ~2 недели."
+				},
+			},
+			// === Legacy migration (vue/fullstack/all) ===
+			{
+				base: {
+					en: "Migrated core gameplay and chat modules from the legacy frontend to the new architecture without breaking existing user flows, ensuring seamless navigation during rollout.",
+					ru: "Перенёс ключевые игровые и чат-модули со старого фронта на новую архитектуру без потери функциональности, обеспечив бесшовную навигацию для пользователей во время выкатки."
+				},
+				showIn: ['vue', 'fullstack', 'all'],
+			},
+			// === Security & quality (fullstack/all) ===
+			{
+				base: {
+					en: "Hardened security and reliability: added client-side HTML sanitization, improved the 2FA disable flow with recovery-code support, and stabilized localization coverage across game-history and transactions modules.",
+					ru: "Усилил безопасность и стабильность: добавил клиентскую санитизацию HTML, улучшил флоу отключения 2FA с поддержкой recovery-кодов, стабилизировал локализацию в модулях game-history и transactions."
+				},
+				showIn: ['fullstack', 'all'],
+			},
+		],
+		technologies: {
+			base: [
+				"Vue", "TypeScript", "Pinia", "vue-i18n",
+				"Vite", "Vitest", "Tailwind",
+				"Socket.IO", "PostHog", "Amplitude",
+				"iGaming"
+			],
+			byProfile: {
+				react: [
+					"TypeScript", "Socket.IO", "PostHog",
+					"Vitest", "Tailwind", "iGaming"
+				],
+				vue: [
+					"Vue", "TypeScript", "Pinia", "vue-i18n",
+					"Vite", "Vitest", "Tailwind", "iGaming"
+				],
+				fullstack: [
+					"Vue", "TypeScript", "Socket.IO", "PostHog",
+					"Vitest", "Tailwind", "iGaming"
+				],
+			}
+		},
+	},
+	{
+		title: {
 			base: {
 				en: "Fullstack Engineer (Frontend-focused)",
 				ru: "Fullstack Engineer (Frontend-focused)",
@@ -45,7 +129,7 @@ export const experiences: ExperienceItem[] = [
 			ru: "Удалённо"
 		},
 		date_start: new Date(2025, 0, 1), // January 1, 2025
-		date_end: null,
+		date_end: new Date(2026, 1, 15), // February 15, 2026 (day before Cobalt start)
 		description: [
 			// === CANON (all) — буллет 1 ===
 			{

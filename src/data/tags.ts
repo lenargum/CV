@@ -43,14 +43,19 @@ export const BACKEND_TAGS = [
 export const TOOLING_TAGS = [
   "Tailwind",
   "Figma",
-  "Telegram Mini Apps (TMA)",
   "Google Tag Manager",
   "Yandex Metrica",
+  "PostHog",
+  "Amplitude",
 
   "Motion.js",
   "Paper.js",
   "Chart.js",
   "SVG",
+
+  "Vitest",
+  "Socket.IO",
+
   "Cursor",
   "Claude",
   "ChatGPT",
@@ -88,6 +93,14 @@ export const MOBILE_TAGS = [
   "iOS"
 ];
 
+// Industry domains
+export const DOMAIN_TAGS = [
+  "iGaming",
+  "E-commerce",
+  "Crypto/Web3",
+  "Telegram Mini Apps (TMA)",
+];
+
 // Principles
 export const PRINCIPLES_TAGS = [
   "Web Performance Optimization",
@@ -117,12 +130,14 @@ export const manualTags = [
   ...RENDERING_TAGS,
   ...ARCHITECTURE_TAGS,
   ...MOBILE_TAGS,
+  ...DOMAIN_TAGS,
   ...PRINCIPLES_TAGS,
   ...PROCESS_TAGS,
 ];
 
 
 export const TAGS_PRIORITY = [
+  ...DOMAIN_TAGS,
   ...REACT_ECOSYSTEM_TAGS,
   ...VUE_ECOSYSTEM_TAGS,
   ...BACKEND_TAGS,
@@ -171,19 +186,21 @@ const KEY_SKILLS_BY_PROFILE: Record<ProfileType, string[]> = {
   react: [
     "React", "TypeScript", "Next.js", "Redux", "Zustand",
     "Tailwind", "Web Performance Optimization", "CI/CD",
-    "Telegram Mini Apps (TMA)", "Motion.js", "shadcn/ui",
-    "Git", "REST API"
+    "Telegram Mini Apps (TMA)", "iGaming", "Motion.js", "shadcn/ui",
+    "Vitest", "Git", "REST API"
   ],
   vue: [
     "Vue", "TypeScript", "Nuxt", "Pinia",
     "Tailwind", "Vuetify",
+    "iGaming", "Vitest",
     "Web Performance Optimization", "Git", "REST API"
   ],
   fullstack: [
     "React", "TypeScript", "Next.js", "Zustand", "Tailwind",
-    "Go", "REST API", "WebSockets", "Microservices",
+    "Go", "REST API", "WebSockets", "Socket.IO", "Microservices",
     "PostgreSQL", "Redis", "MongoDB", "TimescaleDB",
-    "Docker", "CI/CD", "Git"
+    "Docker", "CI/CD", "Git",
+    "iGaming", "PostHog", "Vitest"
   ],
   all: [], // empty means use generateTags()
 };
@@ -197,9 +214,9 @@ const PROFILE_HIDE_TAGS: Partial<Record<ProfileType, string[]>> = {
 
 /** Tags to highlight (prioritize) per profile */
 const PROFILE_HIGHLIGHT_TAGS: Partial<Record<ProfileType, string[]>> = {
-  react: [...REACT_ECOSYSTEM_TAGS, "Telegram Mini Apps (TMA)", "Motion.js"],
-  vue: [...VUE_ECOSYSTEM_TAGS, "Chart.js", "Paper.js"],
-  fullstack: ["Go", "PostgreSQL", "Redis", "Docker", "CI/CD", ...REACT_ECOSYSTEM_TAGS],
+  react: [...REACT_ECOSYSTEM_TAGS, "Telegram Mini Apps (TMA)", "iGaming", "Motion.js", "Vitest"],
+  vue: [...VUE_ECOSYSTEM_TAGS, "iGaming", "Chart.js", "Paper.js", "Vitest"],
+  fullstack: ["Go", "PostgreSQL", "Redis", "Docker", "CI/CD", "Socket.IO", "PostHog", "Vitest", "iGaming", ...REACT_ECOSYSTEM_TAGS],
   all: [], // no special highlighting
 };
 

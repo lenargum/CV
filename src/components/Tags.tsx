@@ -91,27 +91,31 @@ export default function Tags({ allTags = [], profile }: TagsProps) {
     return group.name[currentLang as keyof typeof group.name] || group.name.en;
   };
 
-  const getCardCols = (index: number): string => {
-    // Simple, deterministic layout tuned for groups
-    switch (index) {
-      case 0: return 'col-span-6 md:col-span-4 print:col-span-4'; // Core
-      case 1: return 'col-span-6 md:col-span-5 print:col-span-4'; // React ecosystem
-      case 2: return 'col-span-6 md:col-span-3 print:col-span-4'; // Vue ecosystem
-
-      case 3: return 'col-span-6  md:col-span-2 print:col-span-2'; // Rendering
-      case 4: return 'col-span-12 md:col-span-4 print:col-span-4'; // Backend
-      case 5: return 'col-span-12 md:col-span-6 print:col-span-6'; // Tools
-
-      case 6: return 'col-span-12 md:col-span-5 print:col-span-5'; // UX & Visual
-      case 7: return 'col-span-12 md:col-span-7 print:col-span-7'; // Architecture
-
-      case 8: return 'col-span-3 md:col-span-3 print:col-span-3'; // Mobile
-      case 9: return 'col-span-5 md:col-span-5 print:col-span-5'; // Principles
-      case 10: return 'col-span-4 md:col-span-4 print:col-span-4'; // Process
-
-      default: return 'col-span-6 md:col-span-6 print:col-span-6';
-    }
+  // Name-based mapping (uses group.name.en as a stable key — i18n-independent).
+  // Layout intent (md, 12-col grid, by row):
+  //   Row 0: Core(4) + Domains(4) + React(4)
+  //   Row 1: Vue(3) + Rendering(2) + Backend(7)
+  //   Row 2: Tools(6) + UX & Visual(6)
+  //   Row 3: Architecture(8) + Mobile(4)
+  //   Row 4: Principles(8) + Process(4)
+  const COL_SPANS: Record<string, string> = {
+    'Core':         'col-span-6 md:col-span-4 print:col-span-4',
+    'Domains':      'col-span-6 md:col-span-4 print:col-span-4',
+    'React':        'col-span-6 md:col-span-4 print:col-span-4',
+    'Vue':          'col-span-6 md:col-span-3 print:col-span-3',
+    'Rendering':    'col-span-4 md:col-span-2 print:col-span-2',
+    'Backend':      'col-span-8 md:col-span-7 print:col-span-7',
+    'Tools':        'col-span-12 md:col-span-6 print:col-span-6',
+    'UX & Visual':  'col-span-12 md:col-span-6 print:col-span-6',
+    'Architecture': 'col-span-12 md:col-span-8 print:col-span-8',
+    'Mobile':       'col-span-4 md:col-span-4 print:col-span-4',
+    'Principles':   'col-span-4 md:col-span-8 print:col-span-8',
+    'Process':      'col-span-4 md:col-span-4 print:col-span-4',
   };
+  const FALLBACK_SPAN = 'col-span-6 md:col-span-6 print:col-span-6';
+
+  const getCardCols = (group: TagGroupConfig): string =>
+    COL_SPANS[group.name.en] ?? FALLBACK_SPAN;
 
   // Filter out meta-tags like 'Backend', 'Frontend', 'Mobile'
   const filterMetaTags = (tag: string) => !['Backend', 'Frontend', 'Mobile'].includes(tag);
@@ -140,7 +144,7 @@ export default function Tags({ allTags = [], profile }: TagsProps) {
             key={groupIndex}
             className={[
               'rounded-xl bg-primary-bg/80 backdrop-blur-sm p-4 flex flex-col gap-3 print:p-0 print:gap-1',
-              getCardCols(groupIndex)
+              getCardCols(group)
             ].join(' ')}
           >
             <h3 className="text-base md:text-lg font-semibold text-text-primary tracking-tight" style={{lineHeight: '1'}}>{getTranslatedGroupName(group)}</h3>
