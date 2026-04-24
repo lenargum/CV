@@ -23,6 +23,11 @@ const ContentSection = ({ name, title, email, links, profile }: ContentSectionPr
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  // Tracks the "entering" phase (mouse just entered the row). During this phase
+  // transitions are longer for a gentle rise; once the phase ends, transitions
+  // snap to short so that mouse movement feels responsive.
+  const [isEnteringPhase, setIsEnteringPhase] = useState(false);
+  const enterTimerRef = useRef<number | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<(HTMLElement | null)[]>([]);
 
@@ -64,27 +69,25 @@ const ContentSection = ({ name, title, email, links, profile }: ContentSectionPr
 
     const containerRect = containerRef.current.getBoundingClientRect();
 
-    // Calculate the center of the button relative to the container
+    // Center of the button relative to the container
     const buttonCenterX = buttonRect.left + buttonRect.width / 2 - containerRect.left;
     const buttonCenterY = buttonRect.top + buttonRect.height / 2 - containerRect.top;
 
-    // Calculate the distance between mouse and button center
     const distance = Math.sqrt(
       Math.pow(mousePosition.x - buttonCenterX, 2) +
       Math.pow(mousePosition.y - buttonCenterY, 2)
     );
 
-    // Maximum distance for scaling effect (adjust as needed)
-    const maxDistance = 200;
-    const hoverDistance = 15;
+    // Smooth Gaussian falloff — no discontinuity, natural "field" feel.
+    // sigma controls how quickly the influence drops with distance.
+    // peakDelta is the extra scale applied right at the cursor.
+    const sigma = 70;       // ≈ field radius (px); within sigma, influence is strong
+    const peakDelta = 0.35; // max additional scale at distance 0 → 1 + 0.35 = 1.35
 
-    if (distance > maxDistance) {
-      return '';
-    } else if (distance < hoverDistance) {
-      return 'scale(1.5)';
-    } else {
-      return `scale(${1 + 0.35 * (1 - distance / maxDistance)})`;
-    }
+    const influence = Math.exp(-Math.pow(distance / sigma, 2));
+    if (influence < 0.005) return ''; // negligible — let CSS render baseline
+
+    return `scale(${1 + peakDelta * influence})`;
   };
 
   const setButtonRef = (index: number) => (el: HTMLElement | null) => {
@@ -103,16 +106,41 @@ const ContentSection = ({ name, title, email, links, profile }: ContentSectionPr
             ref={containerRef}
             className="flex print:flex-col items-center print:items-start gap-6 print:gap-2"
             onMouseMove={handleMouseMove}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
+            onMouseEnter={(e) => {
+              // Initialize mouse position from the enter event so the first
+              // frame computes scale from the actual cursor position
+              // (avoids snapping from a stale {0,0} position on first hover).
+              if (containerRef.current) {
+                const rect = containerRef.current.getBoundingClientRect();
+                setMousePosition({
+                  x: e.clientX - rect.left,
+                  y: e.clientY - rect.top
+                });
+              }
+              setIsHovering(true);
+              // Start the "entering phase" — long transition for a gentle rise.
+              setIsEnteringPhase(true);
+              if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
+              enterTimerRef.current = window.setTimeout(() => {
+                setIsEnteringPhase(false);
+              }, 1000);
+            }}
+            onMouseLeave={() => {
+              setIsHovering(false);
+              setIsEnteringPhase(false);
+              if (enterTimerRef.current) {
+                window.clearTimeout(enterTimerRef.current);
+                enterTimerRef.current = null;
+              }
+            }}
           >
             <div className="flex items-center relative">
               <button
                 ref={setButtonRef(0)}
-                className="inline-flex items-center bg-transparent border-0 p-0 transition-all duration-300 print:hidden"
+                className="inline-flex items-center bg-transparent border-0 p-0 transition-transform ease-out print:hidden"
                 onClick={copyEmailToClipboard}
                 title={email}
-                style={{ transform: getButtonScale(buttonRefs.current[0]) }}
+                style={{ transform: getButtonScale(buttonRefs.current[0]), transitionProperty: 'transform', transitionTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)', transitionDuration: isEnteringPhase ? '1000ms' : '150ms' }}
               >
                 <div className="text-text-primary">
                   <SocialIcon type="email" />
@@ -149,12 +177,12 @@ const ContentSection = ({ name, title, email, links, profile }: ContentSectionPr
                 <a
                   key={link.name}
                   ref={setButtonRef(index + 1)}
-                  className="inline-flex items-center bg-transparent border-0 p-0 transition-all duration-300"
+                  className="inline-flex items-center bg-transparent border-0 p-0 transition-transform ease-out"
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
                   title={link.displayText}
-                  style={{ transform: getButtonScale(buttonRefs.current[index + 1]) }}
+                  style={{ transform: getButtonScale(buttonRefs.current[index + 1]), transitionProperty: 'transform', transitionTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)', transitionDuration: isEnteringPhase ? '1000ms' : '150ms' }}
                 >
                   <div className="text-text-primary">
                     <SocialIcon type={link.icon} />
