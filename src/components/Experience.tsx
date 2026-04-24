@@ -133,7 +133,7 @@ export default function Experience({ experiences, profile }: ExperienceProps) {
     <section className="cv-section">
       <div className="mb-6 print:mb-1">
         <h2 className="section-title !mb-1 print:!mb-0">{t.sections.experience}</h2>
-        <span className="text-text-primary text-sm font-semibold">{totalExperienceText}</span>
+        <span className="text-text-primary text-md">{totalExperienceText}</span>
       </div>
       <div className="space-y-8 print:space-y-2">
         {experiences.map((exp, index) => (
