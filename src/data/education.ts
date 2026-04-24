@@ -56,8 +56,8 @@ export const education: EducationItem[] = [
 			},
 			{
 				base: {
-					en: "Project: procedurally generated solar system in Unity (algorithms reused in [resume-site](https://lenargum.github.io/CV/) animation)",
-					ru: "Проект: процедурно-генерируемая солнечная система в Unity (алгоритмы используются в анимации [сайта-резюме](https://lenargum.github.io/CV/))"
+					en: "Project: procedurally generated solar system in Unity (algorithms reused in [resume-site](https://lenargum.me/) animation)",
+					ru: "Проект: процедурно-генерируемая солнечная система в Unity (алгоритмы используются в анимации [сайта-резюме](https://lenargum.me/))"
 				},
 				showIn: ['all'],
 			},

@@ -41,20 +41,27 @@ export const BACKEND_TAGS = [
 
 // Tools & visualization
 export const TOOLING_TAGS = [
+  // Build / dev / test
+  "Vite",
+  "Vitest",
   "Tailwind",
+
+  // Design + platform
   "Figma",
   "Telegram Mini Apps (TMA)",
+
+  // Analytics
   "Google Tag Manager",
   "Yandex Metrica",
   "PostHog",
 
+  // Visualization / animation
   "Motion.js",
   "Paper.js",
   "Chart.js",
   "SVG",
 
-  "Vitest",
-
+  // AI assistants
   "Cursor",
   "Claude",
   "ChatGPT",
