@@ -15,6 +15,7 @@ const en: Translation = {
     awards: "Awards",
     teaching: "Teaching",
     technologies: "Key Skills",
+    extra: "Extra",
   },
   dateFormat: {
     locale: "en-US",

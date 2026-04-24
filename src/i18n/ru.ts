@@ -15,6 +15,7 @@ const ru: Translation = {
     awards: 'Награды',
     teaching: 'Преподавание',
     technologies: 'Ключевые навыки',
+    extra: 'Дополнительно',
   },
   dateFormat: {
     locale: 'ru-RU',

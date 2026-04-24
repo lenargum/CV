@@ -5,15 +5,22 @@ import type { ComposedAchievement } from '../lib/types';
 export interface AchievementsProps {
   awards: ComposedAchievement[];
   teaching: ComposedAchievement[];
+  nested?: boolean;
 }
 
-export default function Achievements({ awards, teaching }: AchievementsProps) {
+export default function Achievements({ awards, teaching, nested = false }: AchievementsProps) {
   const { t } = useTranslation();
+
+  const Wrapper = nested ? 'div' : 'section';
+  const wrapperClass = nested ? '' : 'cv-section';
+  const teachingWrapperClass = nested ? 'print:hidden' : 'cv-section print:hidden';
+  const HeadingTag = nested ? 'h3' : 'h2';
+  const headingClass = nested ? 'subsection-title' : 'section-title';
 
   return (
     <>
-      <section className="cv-section">
-        <h2 className="section-title">{t.sections.awards}</h2>
+      <Wrapper className={wrapperClass}>
+        <HeadingTag className={headingClass}>{t.sections.awards}</HeadingTag>
         <ul className="list-disc">
           {awards.map((achievement, index) => (
             <li key={index}>
@@ -26,9 +33,9 @@ export default function Achievements({ awards, teaching }: AchievementsProps) {
             </li>
           ))}
         </ul>
-      </section>
-      <section className="cv-section print:hidden">
-        <h2 className="section-title">{t.sections.teaching}</h2>
+      </Wrapper>
+      <Wrapper className={teachingWrapperClass}>
+        <HeadingTag className={headingClass}>{t.sections.teaching}</HeadingTag>
         <ul className="list-disc">
           {teaching.map((achievement, index) => (
             <li key={index}>
@@ -41,7 +48,7 @@ export default function Achievements({ awards, teaching }: AchievementsProps) {
             </li>
           ))}
         </ul>
-      </section>
+      </Wrapper>
     </>
   );
 }

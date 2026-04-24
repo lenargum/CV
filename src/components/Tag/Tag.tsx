@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import React from 'react';
-import { CORE_TAGS, REACT_ECOSYSTEM_TAGS, VUE_ECOSYSTEM_TAGS, BACKEND_TAGS, ARCHITECTURE_TAGS, PRINCIPLES_TAGS, PROCESS_TAGS, RENDERING_TAGS, FRONTEND_CORE_TAGS, TOOLING_TAGS, UI_VISUAL_TAGS, MOBILE_TAGS, DOMAIN_TAGS } from '@/data/tags';
+import { CORE_TAGS, REACT_ECOSYSTEM_TAGS, VUE_ECOSYSTEM_TAGS, BACKEND_TAGS, ARCHITECTURE_TAGS, PRINCIPLES_TAGS, PROCESS_TAGS, RENDERING_TAGS, FRONTEND_CORE_TAGS, TOOLING_TAGS, UI_VISUAL_TAGS, MOBILE_TAGS } from '@/data/tags';
 import type { ProfileType } from '@/lib/types';
 
 interface TagProps {
@@ -20,7 +20,6 @@ const Tag: React.FC<TagProps> = ({ tag, profile = 'all' }) => {
 
   // === 'all' profile: colored by group ===
   const isCore = CORE_TAGS.includes(tag);
-  const isDomains = DOMAIN_TAGS.includes(tag);
   const isArchitecture = ARCHITECTURE_TAGS.includes(tag);
   const isPrinciples = PRINCIPLES_TAGS.includes(tag);
   const isMobile = MOBILE_TAGS.includes(tag);
@@ -36,8 +35,7 @@ const Tag: React.FC<TagProps> = ({ tag, profile = 'all' }) => {
   // Priority: Architecture/Principles/Processes > React/Vue/Backend ecosystem > default
   let bgClass = 'bg-transparent border border-zinc-900';
   let colorClass = 'text-primary';
-  if (isDomains) { bgClass = 'bg-transparent border border-amber-500/40 border-l-4 border-l-amber-500 print:border-zinc-900 print:border-l-zinc-900'; colorClass = 'text-amber-300 print:text-black'; }
-  else if (isCore) { bgClass = 'bg-primary-bg border border-zinc-900 print:border-none'; colorClass = 'text-text-primary'; }
+  if (isCore) { bgClass = 'bg-primary-bg border border-zinc-900 print:border-none'; colorClass = 'text-text-primary'; }
   else if (isMobile) { bgClass = 'bg-blue-500'; colorClass = 'text-white'; }
   else if (isArchitecture) { bgClass = 'bg-orange-500'; colorClass = 'text-white'; }
   else if (isPrinciples) { bgClass = 'bg-violet-500'; colorClass = 'text-white'; }

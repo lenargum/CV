@@ -25,7 +25,6 @@ import {
   PRINCIPLES_TAGS,
   PROCESS_TAGS,
   MOBILE_TAGS,
-  DOMAIN_TAGS,
 } from '@/data/tags';
 
 export const TAG_GROUPS: Record<string, TagGroupConfig> = {
@@ -38,22 +37,13 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
       priority: 1
     },
 
-    DOMAINS: {
-      name: {
-        en: 'Domains',
-        ru: 'Домены'
-      },
-      tags: DOMAIN_TAGS,
-      priority: 2
-    },
-
     FRAMEWORKS: {
       name: {
         en: 'Frameworks',
         ru: 'Фреймворки'
       },
       tags: [...REACT_ECOSYSTEM_TAGS, ...VUE_ECOSYSTEM_TAGS],
-      priority: 3
+      priority: 2
     },
 
     RENDERING: {
@@ -62,7 +52,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Рендеринг'
       },
       tags: RENDERING_TAGS,
-      priority: 4
+      priority: 3
     },
 
     BACKEND: {
@@ -71,7 +61,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Бэкенд'
       },
       tags: BACKEND_TAGS,
-      priority: 5
+      priority: 4
     },
 
     TOOLS: {
@@ -80,7 +70,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Инструменты'
       },
       tags: TOOLING_TAGS,
-      priority: 6
+      priority: 5
     },
 
     UX_VISUAL: {
@@ -89,7 +79,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'UX и Визуал'
       },
       tags: UI_VISUAL_TAGS,
-      priority: 7
+      priority: 6
     },
 
     ARCHITECTURE: {
@@ -98,7 +88,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Архитектура'
       },
       tags: ARCHITECTURE_TAGS,
-      priority: 8
+      priority: 7
     },
 
     MOBILE_TAGS: {
@@ -107,7 +97,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Мобильные'
       },
       tags: MOBILE_TAGS,
-      priority: 9
+      priority: 8
     },
 
     PRINCIPLES: {
@@ -116,7 +106,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Принципы'
       },
       tags: PRINCIPLES_TAGS,
-      priority: 10
+      priority: 9
     },
 
     PROCESS: {
@@ -125,7 +115,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Процессы'
       },
       tags: PROCESS_TAGS,
-      priority: 11
+      priority: 10
     },
 
     UNFILTERED: {
@@ -134,7 +124,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Остальные'
       },
       tags: [],
-      priority: 12
+      priority: 11
     }
   };
   

@@ -60,17 +60,14 @@ function formatDuration(months: number, lang: string, shorten: boolean = false):
   }
 }
 
-// Calculate months between two dates
+// Calculate months between two dates (rounded to nearest month from actual day-difference)
 function monthsBetween(startDate: Date, endDate: Date | null): number {
   // Use current date if endDate is null (current position)
   const actualEndDate = endDate || new Date();
 
-  const startYear = startDate.getFullYear();
-  const endYear = actualEndDate.getFullYear();
-  const startMonth = startDate.getMonth();
-  const endMonth = actualEndDate.getMonth();
-
-  return (endYear - startYear) * 12 + (endMonth - startMonth) + 1; // +1 to include both start and end months
+  const diffMs = actualEndDate.getTime() - startDate.getTime();
+  const diffDays = diffMs / (1000 * 60 * 60 * 24);
+  return Math.max(1, Math.round(diffDays / 30.44)); // average month length; min 1 to avoid "0 мес"
 }
 
 export default function Experience({ experiences, profile }: ExperienceProps) {
@@ -134,9 +131,9 @@ export default function Experience({ experiences, profile }: ExperienceProps) {
 
   return (
     <section className="cv-section">
-      <div className="flex flex-col md:flex-row md:items-baseline gap-x-3 print:flex-row print:items-baseline print:gap-x-2">
-        <h2 className="section-title max-md:mb-0">{t.sections.experience}</h2>
-        <span className="text-text-tertiary text-sm max-md:mb-6 print:max-md:mb-0">{totalExperienceText}</span>
+      <div className="mb-6 print:mb-1">
+        <h2 className="section-title !mb-1 print:!mb-0">{t.sections.experience}</h2>
+        <span className="text-text-primary text-sm font-semibold">{totalExperienceText}</span>
       </div>
       <div className="space-y-8 print:space-y-2">
         {experiences.map((exp, index) => (

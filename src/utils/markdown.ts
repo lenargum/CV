@@ -118,7 +118,7 @@ export function renderMarkdown(text: string): React.ReactNode[] {
   return nodes.map((node, index) => {
     switch (node.type) {
       case 'bold':
-        return React.createElement('strong', { key: index, className: 'font-semibold text-text-primary' }, node.content);
+        return React.createElement('strong', { key: index, className: 'font-extrabold text-text-primary' }, node.content);
       
       case 'italic':
         return React.createElement('em', { key: index, className: 'italic' }, node.content);
@@ -132,7 +132,7 @@ export function renderMarkdown(text: string): React.ReactNode[] {
       case 'link':
         const linkClasses = [
           'underline',
-          node.isBold ? 'font-semibold text-text-primary' : '',
+          node.isBold ? 'font-extrabold text-text-primary' : '',
           node.isItalic ? 'italic' : ''
         ].filter(Boolean).join(' ');
         

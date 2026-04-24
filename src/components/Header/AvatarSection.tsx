@@ -11,12 +11,12 @@ const AvatarSection = memo(({ name }: AvatarSectionProps) => {
   
   return (
     <div className="w-full md:w-[250px] bg-primary relative min-h-[250px] mt-10 md:mt-0 print:min-h-[100px] print:h-[100px] print:w-[150px] print:rounded-lg">
-      <div className="absolute inset-0 w-full h-full overflow-hidden">
+      <div className="absolute inset-0 w-full h-full overflow-hidden flex justify-center items-center">
         <img 
           src={imgSrc}
           alt={name} 
           className="w-full h-full object-cover"
-          style={{ objectFit: 'cover', width: '100%', height: '100%', objectPosition: 'top' }}
+          style={{ objectFit: 'cover', width: '100%', height: '100%', objectPosition: 'top', maxWidth: '350px' }}
           onError={(e) => {
             e.currentTarget.style.display = 'none';
             if (e.currentTarget.parentElement) {

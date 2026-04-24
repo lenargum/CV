@@ -7,9 +7,10 @@ import { withBasePath } from '../lib/utils';
 export interface EducationProps {
   education: ComposedEducation[];
   profile: ProfileType;
+  nested?: boolean;
 }
 
-export default function Education({ education, profile }: EducationProps) {
+export default function Education({ education, profile, nested = false }: EducationProps) {
   const { t } = useTranslation();
 
   // Format date range using date objects - only show years for education
@@ -22,9 +23,14 @@ export default function Education({ education, profile }: EducationProps) {
     return `${startYear} — ${endYear}`;
   };
 
+  const Wrapper = nested ? 'div' : 'section';
+  const wrapperClass = nested ? '' : 'cv-section';
+  const HeadingTag = nested ? 'h3' : 'h2';
+  const headingClass = nested ? 'subsection-title' : 'section-title';
+
   return (
-    <section className="cv-section">
-      <h2 className="section-title">{t.sections.education}</h2>
+    <Wrapper className={wrapperClass}>
+      <HeadingTag className={headingClass}>{t.sections.education}</HeadingTag>
       <div>
         {education.map((edu, index) => (
           <div key={index}>
@@ -56,6 +62,6 @@ export default function Education({ education, profile }: EducationProps) {
           </div>
         ))}
       </div>
-    </section>
+    </Wrapper>
   );
 }

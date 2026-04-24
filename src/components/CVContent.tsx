@@ -5,6 +5,7 @@ import Tags from './Tags';
 import Experience from './Experience';
 import Education from './Education';
 import Achievements from './Achievements';
+import { useTranslation } from '../i18n/useTranslation';
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import type { 
@@ -72,12 +73,31 @@ export default function CVContent({
             <Summary summary={summary} />
             <Tags allTags={allTags} profile={profile} />
             <Experience experiences={experiences} profile={profile} />
-            <Education education={education} profile={profile} />
-            <Achievements awards={awards} teaching={teaching} />
+            <ExtraSection education={education} awards={awards} teaching={teaching} profile={profile} />
           </div>
         </LanguageProvider>
       </motion.div>
       {/* toggle button moved to Layout */}
     </>
+  );
+}
+
+interface ExtraSectionProps {
+  education: ComposedEducation[];
+  awards: ComposedAchievement[];
+  teaching: ComposedAchievement[];
+  profile: ProfileType;
+}
+
+function ExtraSection({ education, awards, teaching, profile }: ExtraSectionProps) {
+  const { t } = useTranslation();
+  return (
+    <section className="cv-section">
+      <h2 className="section-title">{t.sections.extra}</h2>
+      <div className="space-y-6 print:space-y-2">
+        <Education education={education} profile={profile} nested />
+        <Achievements awards={awards} teaching={teaching} nested />
+      </div>
+    </section>
   );
 }

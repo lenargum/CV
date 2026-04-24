@@ -28,72 +28,62 @@ export const experiences: ExperienceItem[] = [
 		date_start: new Date(2026, 1, 16), // February 16, 2026
 		date_end: new Date(2026, 3, 17),   // April 17, 2026
 		description: [
-			// === Top bullet — Vue/Fullstack/All variant (mentions Vue 3 typing) ===
+			// === Top bullet — context + delivery + proactivity (all profiles) ===
 			{
 				base: {
-					en: "Joined a redesign-in-flight on a real-money iGaming platform as senior frontend IC; shipped to production in 2 months while leading parallel architectural cleanup — network layer centralization, state-management refactors without breaking existing behavior, and Vue 3 typing standardization across the codebase.",
-					ru: "Подключился к проекту в стадии редизайна — real-money iGaming платформа; за 2 месяца дотащил релиз в прод, параллельно ведя архитектурную чистку: централизация network-слоя, рефакторинг state-management без слома существующего поведения, стандартизация типизации Vue 3 по всей кодовой базе."
+					en: "Joined a real-money iGaming platform mid-redesign with heavy accumulated legacy. Over 2 months: production release plus systematic refactoring delivered alongside feature work.",
+					ru: "Пришёл на real-money iGaming платформу на этапе редизайна, с тяжёлым накопленным легаси. За 2 месяца: релиз в прод и системный рефакторинг параллельно фичам."
+				},
+			},
+			// === Architectural cleanup — Vue/Fullstack/All variant ===
+			{
+				base: {
+					en: "Key refactors — network layer centralization, splitting 2–3k-line god components and stores (with legacy parity), Vue 3 typing standardization, and security hardening across user flows.",
+					ru: "Ключевые рефакторинги — централизация network-слоя, разбиение 2–3к-строчных god-компонентов и сторов (с сохранением legacy-поведения), стандартизация типизации Vue 3 и усиление security в пользовательских флоу."
 				},
 				showIn: ['vue', 'fullstack', 'all'],
 			},
-			// === Top bullet — React variant (Vue-neutral) ===
+			// === Architectural cleanup — React variant ===
 			{
 				base: {
-					en: "Joined a redesign-in-flight on a real-money iGaming platform as senior frontend IC; shipped to production in 2 months while leading parallel architectural cleanup — network layer centralization, state-management refactors without breaking existing behavior, and codebase-wide TypeScript standardization.",
-					ru: "Подключился к проекту в стадии редизайна — real-money iGaming платформа; за 2 месяца дотащил релиз в прод, параллельно ведя архитектурную чистку: централизация network-слоя, рефакторинг state-management без слома существующего поведения, стандартизация TypeScript по кодовой базе."
+					en: "Key refactors — network layer centralization, splitting 2–3k-line god components and stores (with legacy parity), codebase-wide TypeScript standardization, and security hardening across user flows.",
+					ru: "Ключевые рефакторинги — централизация network-слоя, разбиение 2–3к-строчных god-компонентов и сторов (с сохранением legacy-поведения), стандартизация TypeScript по кодовой базе и усиление security в пользовательских флоу."
 				},
 				showIn: ['react'],
 			},
-			// === Scope/throughput (all profiles) ===
+			// === Scope with feature list (all profiles) ===
 			{
 				base: {
-					en: "Owned 6+ end-to-end product features across 17 epics within a tight-deadline release window — gamified retention, onboarding, event landings, referral redemption.",
-					ru: "Самостоятельно вёл 6+ end-to-end продуктовых фич в рамках 17 эпиков в условиях жёсткого дедлайна — gamified retention, онбординг, ивент-лендинги, реф-флоу."
+					en: "Owned 6+ end-to-end product features across 17 epics — retention events, onboarding, new banner system, referral program, reward claim.",
+					ru: "Самостоятельно вёл 6+ end-to-end продуктовых фич в рамках 17 эпиков — retention-эвенты, онбординг, новая система баннеров, реферальная программа, клейм наград."
 				},
 			},
-			// === Deposit Marathon flagship (all profiles) ===
+			// === Production-cycle processes (all profiles) ===
 			{
 				base: {
-					en: "Built **Deposit Marathon** end-to-end — gamified retention system with real-time progress, auto-refresh timer, sortable rewards, responsive UI across desktop/tablet/mobile, and unit test coverage — delivered in ~2 weeks.",
-					ru: "С нуля реализовал **Deposit Marathon** — систему gamified-retention с real-time прогрессом, авто-обновлением, сортировкой наград и адаптивным UI на десктопе/планшете/мобиле, покрытым юнит-тестами — за ~2 недели."
+					en: "Every feature shipped through a full production cycle — responsive on desktop/tablet/mobile, unit-tested, localized via admin panel, CDN-delivered with WebP + compression, event tracking via PostHog.",
+					ru: "Каждая фича уходила в прод по полному циклу — адаптив на десктопе/планшете/мобиле, юнит-тесты, локализация через админку, доставка через CDN с WebP + compression, event-трекинг через PostHog."
 				},
-			},
-			// === Legacy migration (vue/fullstack/all) ===
-			{
-				base: {
-					en: "Migrated core gameplay and chat modules from the legacy frontend to the new architecture without breaking existing user flows, ensuring seamless navigation during rollout.",
-					ru: "Перенёс ключевые игровые и чат-модули со старого фронта на новую архитектуру без потери функциональности, обеспечив бесшовную навигацию для пользователей во время выкатки."
-				},
-				showIn: ['vue', 'fullstack', 'all'],
-			},
-			// === Security & quality (fullstack/all) ===
-			{
-				base: {
-					en: "Hardened security and reliability: added client-side HTML sanitization, improved the 2FA disable flow with recovery-code support, and stabilized localization coverage across game-history and transactions modules.",
-					ru: "Усилил безопасность и стабильность: добавил клиентскую санитизацию HTML, улучшил флоу отключения 2FA с поддержкой recovery-кодов, стабилизировал локализацию в модулях game-history и transactions."
-				},
-				showIn: ['fullstack', 'all'],
 			},
 		],
 		technologies: {
 			base: [
-				"Vue", "TypeScript", "Pinia", "vue-i18n",
+				"Vue", "TypeScript", "Pinia",
 				"Vite", "Vitest", "Tailwind",
-				"Socket.IO", "PostHog", "Amplitude",
-				"iGaming"
+				"PostHog"
 			],
 			byProfile: {
 				react: [
-					"TypeScript", "Socket.IO", "PostHog",
-					"Vitest", "Tailwind", "iGaming"
+					"TypeScript", "PostHog",
+					"Vitest", "Tailwind"
 				],
 				vue: [
-					"Vue", "TypeScript", "Pinia", "vue-i18n",
-					"Vite", "Vitest", "Tailwind", "iGaming"
+					"Vue", "TypeScript", "Pinia",
+					"Vite", "Vitest", "Tailwind"
 				],
 				fullstack: [
-					"Vue", "TypeScript", "Socket.IO", "PostHog",
-					"Vitest", "Tailwind", "iGaming"
+					"Vue", "TypeScript", "PostHog",
+					"Vitest", "Tailwind"
 				],
 			}
 		},
@@ -503,8 +493,8 @@ export const experiences: ExperienceItem[] = [
 			// === CANON — буллет 4: Performance ===
 			{
 				base: {
-					en: "Optimized performance using lazy loading, SSR, and image compression — **reducing LCP by 42%**, CLS to 0.03, and image payload by 55%",
-					ru: "Оптимизировал производительность с помощью lazy loading, SSR и сжатия изображений — **LCP −42%**, CLS 0.03, вес изображений −55%"
+					en: "Optimized performance using lazy loading, SSR, and image compression — **LCP −42%**, **CLS 0.03**, **image payload −55%**",
+					ru: "Оптимизировал производительность с помощью lazy loading, SSR и сжатия изображений — **LCP −42%**, **CLS 0.03**, **вес изображений −55%**"
 				},
 				// показывать везде
 			},

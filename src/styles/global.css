@@ -15,7 +15,7 @@ h3 {
   @apply text-xl font-medium text-text-primary;
 }
 a:not(.custom-link) {
-  @apply text-text-primary underline hover:text-blue-600 transition-colors;
+  @apply text-blue-500 underline hover:text-blue-400 transition-colors print:text-black;
 }
 
 section.cv-section {
@@ -28,6 +28,10 @@ section.cv-section + section.cv-section {
 
 .section-title {
   @apply text-2xl font-semibold text-text-primary mb-6 print:mb-1;
+}
+
+.subsection-title {
+  @apply text-lg md:text-xl font-semibold text-text-primary mb-3 print:mb-1;
 }
 
 .list-disc {

@@ -15,6 +15,7 @@ export interface Translation {
     awards: string;
     teaching: string;
     technologies: string;
+    extra: string;
   };
   dateFormat: {
     locale: string;
