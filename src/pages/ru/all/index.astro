@@ -1,0 +1,17 @@
+---
+// Legacy redirect: /ru/all/ → /ru/ ('all' merged into root of language).
+const target = '/ru/';
+---
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex" />
+    <title>Redirecting…</title>
+  </head>
+  <body>
+    <a href={target}>Continue to {target}</a>
+  </body>
+</html>

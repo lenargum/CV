@@ -1,11 +1,26 @@
 ---
-// English "all" profile at site root — served directly, no redirect.
+// English focused profiles at /react/, /vue/, /fullstack/.
 import Layout from "../layouts/Layout.astro";
 import CVContent from "../components/CVContent.tsx";
 import { composeCv } from "../lib/composeCv";
+import { PROFILES } from "../lib/types";
+import type { ProfileType } from "../lib/types";
 
+export function getStaticPaths() {
+  // 'all' is served at site root via index.astro, so this dynamic
+  // route only generates the focused profiles.
+  return PROFILES.filter(p => p !== 'all').map(profile => ({
+    params: { profile },
+    props: { profile },
+  }));
+}
+
+interface Props {
+  profile: ProfileType;
+}
+
+const { profile } = Astro.props;
 const lang = 'en' as const;
-const profile = 'all' as const;
 
 const cv = composeCv(profile, lang);
 const allTags = cv.tags;

@@ -1,33 +1,27 @@
 ---
+// Russian focused profiles at /ru/react/, /ru/vue/, /ru/fullstack/.
 import Layout from "../../layouts/Layout.astro";
 import CVContent from "../../components/CVContent.tsx";
 import { composeCv } from "../../lib/composeCv";
-import { PROFILES, LANGS } from "../../lib/types";
-import type { ProfileType, LangType } from "../../lib/types";
+import { PROFILES } from "../../lib/types";
+import type { ProfileType } from "../../lib/types";
 
 export function getStaticPaths() {
-  return PROFILES.flatMap(profile =>
-    LANGS.map(lang => ({
-      params: { lang, profile },
-      props: { lang, profile }
-    }))
-  );
+  return PROFILES.filter(p => p !== 'all').map(profile => ({
+    params: { profile },
+    props: { profile },
+  }));
 }
 
 interface Props {
-  lang: LangType;
   profile: ProfileType;
 }
 
-const { lang, profile } = Astro.props;
+const { profile } = Astro.props;
+const lang = 'ru' as const;
 
-// Compose CV data for the specific profile and language
 const cv = composeCv(profile, lang);
-
-// Get tags for this profile
 const allTags = cv.tags;
-
-// Page title based on profile
 const pageTitle = `${cv.personalInfo.name} - ${cv.personalInfo.title}`;
 ---
 

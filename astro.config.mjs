@@ -8,4 +8,12 @@ export default defineConfig({
   integrations: [react(), tailwind()],
   site: 'https://lenargum.me',
   base: '/',
+  // EN serves at root (/, /react/, ...); RU at /ru/, /ru/react/, ...
+  i18n: {
+    defaultLocale: 'en',
+    locales: ['en', 'ru'],
+    routing: {
+      prefixDefaultLocale: false,
+    },
+  },
 });

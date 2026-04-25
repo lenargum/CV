@@ -1,10 +1,10 @@
 ---
-// English "all" profile at site root — served directly, no redirect.
-import Layout from "../layouts/Layout.astro";
-import CVContent from "../components/CVContent.tsx";
-import { composeCv } from "../lib/composeCv";
+// Russian "all" profile at /ru/.
+import Layout from "../../layouts/Layout.astro";
+import CVContent from "../../components/CVContent.tsx";
+import { composeCv } from "../../lib/composeCv";
 
-const lang = 'en' as const;
+const lang = 'ru' as const;
 const profile = 'all' as const;
 
 const cv = composeCv(profile, lang);

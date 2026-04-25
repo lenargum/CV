@@ -15,19 +15,19 @@ export default function QuickLanguageSwitcher({
   const activeClasses = 'bg-white text-black';
   const inactiveClasses = 'bg-black hover:bg-white/10';
 
-  const getHref = (lang: 'en' | 'ru') => {
+  // URL scheme: EN at root (/, /react/, /vue/, /fullstack/);
+  // RU under /ru/ prefix (/ru/, /ru/react/, ...).
+  const buildPath = (lang: 'en' | 'ru', p: ProfileType): string => {
     const base = import.meta.env.BASE_URL.endsWith('/')
       ? import.meta.env.BASE_URL
       : `${import.meta.env.BASE_URL}/`;
-    return `${base}${lang}/${profile}/`;
+    const langSegment = lang === 'en' ? '' : 'ru/';
+    const profileSegment = p === 'all' ? '' : `${p}/`;
+    return `${base}${langSegment}${profileSegment}`;
   };
 
-  const getProfileHref = (lang: 'en' | 'ru', nextProfile: ProfileType) => {
-    const base = import.meta.env.BASE_URL.endsWith('/')
-      ? import.meta.env.BASE_URL
-      : `${import.meta.env.BASE_URL}/`;
-    return `${base}${lang}/${nextProfile}/`;
-  };
+  const getHref = (lang: 'en' | 'ru') => buildPath(lang, profile);
+  const getProfileHref = (lang: 'en' | 'ru', nextProfile: ProfileType) => buildPath(lang, nextProfile);
 
   return (
     <div className="flex gap-2 p-1 md:p-0 rounded-lg md:padding-0 bg-black md:bg-transparent">

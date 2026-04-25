@@ -17,7 +17,10 @@ interface Props {
 }
 
 const { title, description, lang = "en", profile = "all" } = Astro.props as Props;
-const canonicalUrl = withBasePath(`${lang}/${profile}/`);
+// URL scheme: EN at root (/, /react/, ...); RU under /ru/ (/ru/, /ru/react/, ...).
+const langSegment = lang === 'en' ? '' : 'ru/';
+const profileSegment = profile === 'all' ? '' : `${profile}/`;
+const canonicalUrl = withBasePath(`${langSegment}${profileSegment}`);
 const ogLocale = localeMap[lang];
 ---
 

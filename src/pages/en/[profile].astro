@@ -1,0 +1,36 @@
+---
+// Legacy redirects:
+//   /en/all/      → /
+//   /en/react/    → /react/
+//   /en/vue/      → /vue/
+//   /en/fullstack/ → /fullstack/
+import { PROFILES } from "../../lib/types";
+import type { ProfileType } from "../../lib/types";
+
+export function getStaticPaths() {
+  return PROFILES.map(profile => ({
+    params: { profile },
+    props: { profile },
+  }));
+}
+
+interface Props {
+  profile: ProfileType;
+}
+
+const { profile } = Astro.props;
+const target = profile === 'all' ? '/' : `/${profile}/`;
+---
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content={`0;url=${target}`} />
+    <link rel="canonical" href={target} />
+    <meta name="robots" content="noindex" />
+    <title>Redirecting…</title>
+  </head>
+  <body>
+    <a href={target}>Continue to {target}</a>
+  </body>
+</html>
