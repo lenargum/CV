@@ -76,7 +76,9 @@ const NoiseBackground: React.FC = () => {
 
         let width = 0, height = 0, dpr = 1, toScreen = 1;
         let animationFrame = 0;
-        let time = 0;
+        // Random per-visit seed: shifts the 3D noise field along the time axis
+        // so each visit starts from a different "slice" — no two visits look identical.
+        let time = Math.random() * 1000;
         let hasShown = false;
 
         // Shaders
