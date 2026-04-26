@@ -70,7 +70,8 @@ export const experiences: ExperienceItem[] = [
 			base: [
 				"Vue", "TypeScript", "Pinia",
 				"Vite", "Vitest", "Tailwind",
-				"PostHog"
+				"PostHog",
+				"Modular Frontend"
 			],
 			byProfile: {
 				react: [
