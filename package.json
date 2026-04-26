@@ -6,7 +6,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "qr": "node scripts/generate-qrs.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.1",
@@ -23,6 +24,7 @@
     "@astrojs/tailwind": "5.0.3",
     "autoprefixer": "10.4.16",
     "postcss": "8.4.31",
+    "qrcode": "^1.5.4",
     "tailwindcss": "3.3.5"
   }
 }
