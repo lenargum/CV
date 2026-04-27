@@ -1,153 +1,153 @@
-# Interactive CV
+# Lenar Gumerov — Interactive CV
 
-A modern, interactive CV/resume website built with Astro and React, featuring a clean design, interactive elements, and multi-language support.
+Live: **[lenargum.me](https://lenargum.me/)**
 
-![CV Preview](public/cover-1200x630.png)
+Personal CV/resume site built with Astro + React. Animated WebGL noise field, multi-profile content (`/`, `/react/`, `/vue/`, `/fullstack/`), full RU/EN, build-time PDF and social-card generation, mobile hamburger menu, custom design system.
 
-<!-- 
-To add a preview image, place a screenshot of your CV in the public directory:
-public/cv-preview.png 
--->
+![CV preview](public/cover.png)
 
-## 🌟 Features
+---
 
-- **Responsive Design**: Looks great on all devices from mobile to desktop
-- **Interactive Elements**: Animated background, smooth transitions, and interactive components
-- **Multi-language Support**: Easily switch between English and Russian
-- **Print-friendly Layout**: Optimized for PDF generation and printing
-- **Animated Noise Background**: Dynamic bubble pattern
-- **Accessibility Focused**: Follows best practices for screen readers and keyboard navigation
+## ✨ Highlights
 
-## 🛠️ Tech Stack
+- **WebGL2 noise background** — 3D simplex noise on a fullscreen triangle, cursor-trail "ink cuts" with eased pointer, looping shader for seamless OG previews, mobile touch support.
+- **Profile switching** — same data tree, different curated views: `all` (everything), `react`, `vue`, `fullstack`. Each profile has its own URL, OG card, and PDF.
+- **i18n** — EN at root, RU under `/ru/`. Lang switcher is a regular `<a>` link that navigates to the mirror URL.
+- **Build-time PDF generation** — Puppeteer renders each `/pdf/{lang}/{profile}/` route at A4 and writes `public/downloads/LenarGumerov_<spec>[_RU].pdf`. PDF Modal links to the real file (no print dialog).
+- **Build-time OG cards** — Astro route `/og/{lang}/{profile}/` rendered to PNG. Each social share gets a profile-tailored preview.
+- **QR generation** — pure-JS pipeline writes square-anchor SVG QRs into `public/qr/`, embedded in the PDF route.
+- **Mobile-first chrome** — hamburger overlay (full-screen, `.cv-card`-styled panel) consolidates profile / language / PDF / lava-mode toggle. Floating chrome on desktop only.
+- **Lava-mode screensaver** — toggle hides the card so the noise field takes the whole viewport. Tap the hamburger to exit (taps on the noise itself drive the cursor-trail animation, not the dismiss).
+- **Design tokens** — colours, type scale, radii, spacing in `src/design-system/tokens.css`. Reused across web + PDF + OG.
 
-- **[Astro](https://astro.build/)**: Core framework for static site generation
-- **[React](https://reactjs.org/)**: For interactive components
-- **[TypeScript](https://www.typescriptlang.org/)**: For type-safe code
-- **[Tailwind CSS](https://tailwindcss.com/)**: For styling
-- **[Motion](https://motion.dev/)**: For smooth animations and transitions
-- **WebGL2 (GLSL shaders)**: GPU-accelerated background animation
+## 🛠️ Tech stack
 
-## 🚀 Getting Started
+- **[Astro 5](https://astro.build/)** — static site generation, route-per-profile via `getStaticPaths`
+- **[React 19](https://react.dev/)** — interactive islands (header, content, switchers, PDF modal)
+- **[TypeScript](https://www.typescriptlang.org/)** — strict-mode types throughout
+- **[Tailwind CSS 3](https://tailwindcss.com/)** — utilities + custom design tokens
+- **[Motion](https://motion.dev/)** — toast / modal animations
+- **WebGL2 + GLSL** — `NoiseBackground.tsx` simplex noise shader, looping mode, capture mode
+- **[Puppeteer](https://pptr.dev/)** — headless Chromium for PDF + OG rendering
+- **[qrcode](https://github.com/soldair/node-qrcode)** — QR codes (custom SVG renderer with sharp finder anchors)
 
-### Prerequisites
+## 🚀 Getting started
 
-- Node.js (v20+)
-- pnpm (recommended) or npm
+```bash
+pnpm install
+pnpm dev          # http://localhost:4321/
+```
 
-### Installation
+Other scripts:
 
-1. Install dependencies:
+```bash
+pnpm build        # static build → dist/
+pnpm preview      # preview the built site
 
-   ```bash
-   pnpm install
-   ```
+pnpm qr           # regenerate QR SVGs (8 files: 2 langs × 4 profiles)
+pnpm pdf-gen      # build + render 8 PDFs into public/downloads/
+pnpm og-gen       # build + render 8 OG cards into public/og/
+pnpm og-apng      # render animated APNG variants of OG cards (experimental)
+pnpm assets-gen   # qr + pdf + og in one go (full pre-deploy refresh)
+```
 
-2. Start the development server:
+## 🎨 Background animation (WebGL)
 
-   ```bash
-   pnpm dev
-   ```
+Lives in `src/components/NoiseBackground.tsx`.
 
-3. Open your browser and navigate to `http://localhost:4321/CV/`
+- **Shader** — fullscreen triangle, 3D simplex noise (Ashima/Stegu) thresholded into soft "bubbles".
+- **Cursor cuts** — recent pointer positions are pushed into a uniform array (`u_cuts`); each fragment near a cut subtracts brightness, producing an ink-trail effect that decays with `CUT_LIFETIME_MS` and `MAX_CUTS_JS`.
+- **Touch** — mobile finger-drag mirrors mouse, but only in lava-mode (otherwise touch = page scroll, not animation).
+- **Looping mode** — pass `loopSeconds={N}` to enable seamless cycling. The shader cross-fades two snoise samples at `phase` and `phase − 1` so `noise(0) === noise(N)`. Used by the OG capture pipeline.
+- **Capture mode** — `captureMode={true}` (also auto-detected via `?capture=1`) suspends rAF and exposes `window.__noiseFrame(t)` for deterministic frame stepping.
+- **Performance** — paused on `visibilitychange`, gated on `cv-card`/menu/chrome hover so the trail only fires over the noise itself.
+- **Accessibility** — honors `prefers-reduced-motion` (renders a static frame), gracefully no-ops without WebGL2, hidden in `print:hidden`.
 
-## 🫧 Background Animation (WebGL)
+## 📐 Design system
 
-The background is rendered on a `<canvas>` using WebGL2 and a GLSL fragment shader that generates animated simplex noise. It runs efficiently on the GPU, supports subtle parallax to mouse and scroll, and respects accessibility and performance best practices.
+`src/design-system/tokens.css` ships colour, type, radius, and spacing tokens consumed across:
 
-- **Implementation**: See `src/components/NoiseBackground.tsx`. It renders a fullscreen triangle and shades fragments with 3D simplex noise, thresholded to produce a soft bubble pattern. Mounted in `src/layouts/Layout.astro` via `<NoiseBackground client:idle />`.
-- **Interaction**: Mouse movement and page scroll apply a light parallax effect. Animation starts on browser idle and pauses when the tab is not visible.
-- **Accessibility & Fallbacks**:
-  - Honors `prefers-reduced-motion` by rendering a static frame.
-  - If WebGL2 is unavailable, the component falls back to the page’s CSS background (no script errors).
-  - Hidden in print via `print:hidden`.
-- **Customization**:
-  - **Colors**: Controlled via the canvas classes `text-noise-primary` and `bg-noise-secondary` (see Tailwind setup). Update these theme colors to restyle the effect.
-  - **Density/Scale**: Tweak `u_threshold` and `u_noiseScale` in `NoiseBackground.tsx` to change blob density and size.
-  - **Parallax feel**: Adjust `parallaxIntensity`, `scrollParallaxIntensity`, and `lerpFactor` constants in `NoiseBackground.tsx`.
-- **Disable**: Remove or comment out `<NoiseBackground client:idle />` in `src/layouts/Layout.astro` if you want a static background.
+- The site (`global.css` rules use `var(--lenar-*)`)
+- PDF route (`pdf/[lang]/[profile].astro`)
+- OG card route (`og/[lang]/[profile].astro`)
 
-## 📋 Project Structure
+The handoff reference (Figma export and component sketches) lives under `src/design-system/handoff-reference/`.
+
+## 📄 PDF & OG pipeline
 
 ```text
-/
-├── public/            # Static assets
+pnpm pdf-gen
+  └─ astro build           ← renders /pdf/en/all/, /pdf/ru/react/, ...
+  └─ generate-pdfs.mjs     ← Puppeteer screenshots each route to A4 PDF
+                              into public/downloads/
+
+pnpm og-gen
+  └─ astro build           ← renders /og/en/all/, /og/ru/react/, ...
+  └─ generate-og.mjs       ← Puppeteer screenshots to PNG
+                              into public/og/og-{lang}-{profile}.png
+```
+
+`Layout.astro` reads the matching OG card per page; the PDF Modal links directly to the matching downloaded PDF (no print dialog).
+
+## 🗂️ Project structure
+
+```text
+.
+├── public/
+│   ├── downloads/        # build-time PDFs (LenarGumerov_*.pdf)
+│   ├── og/               # build-time OG cards (og-{lang}-{profile}.png)
+│   ├── qr/               # build-time QR SVGs (qr-code-{lang}-{profile}.svg)
+│   ├── icons/            # company/education logos
+│   └── ...               # avatar, lava-lamp, favicon, CNAME
 ├── src/
-│   ├── components/    # React components
-│   ├── data/          # CV data (experiences, education, skills)
-│   ├── i18n/          # Translation files
-│   ├── layouts/       # Astro layouts
-│   ├── pages/         # Astro pages
-│   ├── styles/        # Global CSS
-│   └── utils/         # Utility functions
-├── astro.config.mjs   # Astro configuration
-├── tailwind.config.js # Tailwind configuration
-└── tsconfig.json      # TypeScript configuration
+│   ├── components/       # React islands + Astro components
+│   ├── data/             # CV content (experiences, education, tags, ...)
+│   ├── design-system/    # tokens + Figma handoff reference
+│   ├── i18n/             # translation provider + EN/RU strings
+│   ├── layouts/          # Layout.astro (chrome, hamburger menu, meta)
+│   ├── lib/              # composeCv, types, utils
+│   ├── pages/
+│   │   ├── index.astro   # EN root
+│   │   ├── [profile].astro
+│   │   ├── ru/           # RU mirror
+│   │   ├── pdf/[lang]/[profile].astro   # PDF render route
+│   │   └── og/[lang]/[profile].astro    # OG card render route
+│   └── styles/           # global.css
+├── scripts/
+│   ├── generate-qrs.mjs
+│   ├── generate-pdfs.mjs
+│   ├── generate-og.mjs
+│   └── generate-og-apng.mjs
+├── astro.config.mjs
+├── tailwind.config.mjs
+└── tsconfig.json
 ```
 
 ## 🌐 Customization
 
 ### Content
 
-To customize the CV content, edit the files in the `src/data/` directory:
+Edit data files under `src/data/`:
 
-- `personal-info.ts`: Your personal information and social links
-- `experiences.ts`: Your work experience
-- `education.ts`: Your educational background
-- `achievements.ts`: Your achievements
-- `tags.ts`: Your used technologies
+- `personal-info.ts` — name, email, social links
+- `experiences.ts` — work history (per-profile bullet `showIn` filtering)
+- `education.ts`
+- `achievements.ts` — awards + teaching
+- `tags.ts` — tech tag groups + per-profile Key Skills curation
+- `tag-groups.ts` — Key Skills section grouping
 
 ### Translations
 
-To modify or add translations, edit the files in the `src/i18n/` directory:
+`src/i18n/en.ts`, `src/i18n/ru.ts`. New language = new file + register in `src/i18n/index.ts`.
 
-- `en.js`: English translations
-- `ru.js`: Russian translations
+### Theme
 
-To add a new language, create a new file (e.g., `fr.js`) and update the `index.js` file to include it.
+Edit tokens in `src/design-system/tokens.css`. The site's surfaces, type scale, radii all derive from these CSS custom properties.
 
-### Styling
+## 📱 Responsive
 
-The project uses Tailwind CSS for styling. The main configuration is in `tailwind.config.mjs`.
+Layouts adapt down to ~360px. Mobile drops the floating chrome cluster, replacing it with a full-screen hamburger menu containing all controls (profile, language, PDF, lava-mode). The card goes full-bleed (no rounded corners) under 768px.
 
-The color scheme can be customized by editing:
+## 📜 License
 
-- Primary color (black): `#0A0A0A`
-- Secondary color (light gray): `#F5F5F5`
-
-## 🔄 Translation System
-
-The project features a robust translation system that supports:
-
-- Personal information
-- Section titles
-- Experience and education details
-- Date formatting according to locale
-- UI elements
-
-Translations are stored in key-value pairs and accessed via a React context.
-
-## 🖨️ Printing
-
-The CV is optimized for printing to PDF:
-
-1. Open the website in Chrome
-2. Press `Ctrl+P` (or `Cmd+P` on Mac)
-3. Set destination to "Save as PDF"
-4. Click "Save"
-
-## 📱 Responsive Design
-
-The CV is fully responsive and optimized for:
-
-- Mobile phones
-- Tablets
-- Desktops
-- Print media
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+MIT — see [LICENSE](LICENSE).
