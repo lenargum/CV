@@ -13,7 +13,7 @@ const AvatarSection = memo(({ name }: AvatarSectionProps) => {
   // the heading-column height blew up to ~400px when the right column had
   // multiple wrapped lines — pinning a sane fixed size avoids the runaway.
   return (
-    <div className="cv-inset w-[150px] h-[150px] md:w-[132px] md:h-[132px] rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 !p-0 print:w-[100px] print:h-[100px] print:rounded-lg">
+    <div className="cv-inset w-[110px] h-[110px] md:w-[132px] md:h-[132px] rounded-xl md:rounded-2xl overflow-hidden flex-shrink-0 !p-0 print:w-[100px] print:h-[100px] print:rounded-lg">
       <img
         src={imgSrc}
         alt={name}

@@ -58,7 +58,7 @@ export default function CVContent({
     <>
       <motion.div
         id="cv-content"
-        className={`cv-card my-20 md:my-20 max-w-[920px] mx-auto print:max-w-full print:my-0 ${isContentHidden ? 'pointer-events-none select-none' : ''}`}
+        className={`cv-card my-0 md:my-20 max-w-[920px] mx-auto print:max-w-full print:my-0 ${isContentHidden ? 'pointer-events-none select-none' : ''}`}
         initial={{opacity: 0}}
         animate={{ opacity: isContentHidden ? 0 : 1 }}
         transition={{ duration: 1, ease: 'easeInOut' }}

@@ -79,23 +79,41 @@ export default function PDFModal({ lang, profile, base = '/' }: PDFModalProps) {
         <div className="cv-pdf-modal__bar">
           <div className="cv-pdf-modal__title">{labels.title}</div>
           <div className="cv-pdf-modal__bar-actions">
+            {/* Download — desktop shows label, mobile collapses to icon-only.
+                aria-label keeps the action discoverable to assistive tech. */}
             <a
-              className="cv-pdf-btn"
+              className="cv-pdf-btn cv-pdf-btn--icon-mobile"
               href={downloadUrl}
               download={downloadName}
+              aria-label={labels.download}
+              title={labels.download}
             >
-              {labels.download}
+              <svg className="cv-pdf-btn__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="12" y1="12" x2="12" y2="18" />
+                <polyline points="9 15 12 18 15 15" />
+              </svg>
+              <span className="cv-pdf-btn__label">{labels.download}</span>
             </a>
             <button
               type="button"
-              className="cv-pdf-btn cv-pdf-btn--ghost"
+              className="cv-pdf-btn cv-pdf-btn--ghost cv-pdf-btn--icon-mobile"
               onClick={() => setOpen(false)}
               aria-label={labels.close}
+              title={labels.close}
             >
-              {labels.close}
+              <svg className="cv-pdf-btn__icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+                <line x1="6"  y1="6"  x2="18" y2="18" />
+                <line x1="18" y1="6"  x2="6"  y2="18" />
+              </svg>
+              <span className="cv-pdf-btn__label">{labels.close}</span>
             </button>
           </div>
         </div>
+        {/* Wrapper scrolls horizontally on small screens so the iframe can
+            render at its native A4 width (~794px) and the user can pan to
+            the side instead of seeing a squashed PDF. */}
         <div className="cv-pdf-modal__frame-wrap">
           <iframe
             ref={iframeRef}

@@ -41,16 +41,15 @@ export default function Education({ education, profile, nested = false }: Educat
                   {edu.degree}
                   {edu.specialization && <span className="font-normal opacity-75">, {edu.specialization}</span>}
                 </div>
-                {/* Institution + years on a single flex row — degree text is
-                    long ("Bachelor of Computer Science, Software Engineer"),
-                    so a separate top-right meta column would float weirdly
-                    once degree wraps. Inline keeps them visually paired. */}
-                <div className="cv-edu__inst-row">
-                  <div className="cv-exp__title">
-                    <MarkdownText as="span">{edu.institution}</MarkdownText>
-                  </div>
-                  <div className="cv-edu__years">{getFormattedDateRange(edu.dateStart, edu.dateEnd)}</div>
+              </div>
+              {/* Institution + years live OUTSIDE the heading so they can flow
+                  to a new full-width row under the icon when degree wraps —
+                  CSS places this child on row 2 spanning both columns. */}
+              <div className="cv-edu__inst-row">
+                <div className="cv-exp__title">
+                  <MarkdownText as="span">{edu.institution}</MarkdownText>
                 </div>
+                <div className="cv-edu__years">{getFormattedDateRange(edu.dateStart, edu.dateEnd)}</div>
               </div>
             </div>
             {edu.highlights.length > 0 && (

@@ -41,10 +41,12 @@ const ContentSection = ({ name, title, email, links, profile, profileSwitcher }:
 
   return (
     <div className="flex-1 min-w-0 flex justify-between items-stretch relative print:py-0">
-      <div className="flex flex-col justify-between min-w-0 flex-1 gap-4">
+      <div className="flex flex-col justify-start md:justify-between min-w-0 flex-1 gap-2 md:gap-4">
         {/* Name + title on the LEFT, profile switcher on the RIGHT, same baseline.
             Stacks below name on narrow screens (md:flex-row vs flex-col). */}
-        <div className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-2 md:gap-4">
+        {/* On mobile, reserve a slot on the right (pr-12) so the floating
+            hamburger doesn't overlap the name/title text. */}
+        <div className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-2 md:gap-4 pr-12 md:pr-0">
           {/* Mobile pl-3 visually aligns the name/role text column with the
               "All" button label inside the profile-switcher pill above (the
               pill has internal padding, so without this offset the text
@@ -54,7 +56,7 @@ const ContentSection = ({ name, title, email, links, profile, profileSwitcher }:
             <h2 className="text-text-primary text-sm md:text-xl font-medium opacity-85 mb-0 print:mb-1">{title}</h2>
           </div>
           {profileSwitcher && (
-            <div className="flex-shrink-0 print:hidden self-end md:self-start md:pt-1">
+            <div className="hidden md:block flex-shrink-0 print:hidden self-end md:self-start md:pt-1">
               {profileSwitcher}
             </div>
           )}
@@ -67,8 +69,10 @@ const ContentSection = ({ name, title, email, links, profile, profileSwitcher }:
             slight visual offset is intentional. */}
         <div className="flex flex-wrap items-center gap-2 print:hidden md:-ml-[10px]">
           {/* Email pill — wrapped in a relative container so the toast
-              originates from the pill itself (not from the row's left edge). */}
-          <div className="relative">
+              originates from the pill itself (not from the row's left edge).
+              w-fit clamps the wrapper to button width so left-1/2 lands on
+              the actual button center, not a stretched flex-item bbox. */}
+          <div className="relative w-fit">
             <button
               type="button"
               className="cv-social custom-link"
@@ -81,11 +85,14 @@ const ContentSection = ({ name, title, email, links, profile, profileSwitcher }:
             <AnimatePresence>
               {copyStatus && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.5, y: -4 }}
-                  animate={{ opacity: 1, scale: 1, y: 6 }}
-                  exit={{ opacity: 0, scale: 0.5, y: -4 }}
+                  /* x:'-50%' must live on the motion prop — Tailwind's
+                     -translate-x-1/2 gets clobbered by the inline transform
+                     motion writes for scale/y, which silently broke centring. */
+                  initial={{ opacity: 0, scale: 0.5, y: -4, x: '-50%' }}
+                  animate={{ opacity: 1, scale: 1,   y: 6,  x: '-50%' }}
+                  exit={{    opacity: 0, scale: 0.5, y: -4, x: '-50%' }}
                   transition={{ type: "tween", ease: "easeInOut", duration: 0.3 }}
-                  className="absolute top-full left-1/2 -translate-x-1/2 z-10 origin-top whitespace-nowrap"
+                  className="absolute top-full left-1/2 z-10 origin-top whitespace-nowrap"
                 >
                   {/* Toast styled to match the global .cv-tip hover tooltip
                       (rgba dark surface, no border, same type/padding/radius). */}

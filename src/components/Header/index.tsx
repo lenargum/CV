@@ -19,8 +19,8 @@ interface HeaderProps {
 
 const Header = ({ name, title, email, links, profile = 'all' }: HeaderProps) => {
   return (
-    <header className="cv-header relative px-4 pt-4 pb-4 md:px-9 md:pt-9 md:pb-7 print:p-0">
-      <div className="flex flex-row gap-5 md:gap-6 items-start md:items-stretch">
+    <header className="cv-header relative p-4 md:p-8 print:p-0">
+      <div className="flex flex-row gap-3 md:gap-6 items-center md:items-stretch">
         <AvatarSection name={name} />
         <ContentSection
           name={name}

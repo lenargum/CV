@@ -309,7 +309,29 @@ void main(){
         const easedPtr = { x: null as number | null, y: null as number | null };
         const EASE = 0.35;
 
+        // The pointer/touch interactivity should only fire when the user is
+        // actually on the noise field — NOT on top of the resume card or the
+        // mobile menu. In lava-mode the card is hidden, so the whole screen
+        // is the noise field — re-enable everywhere.
+        const isOnInteractiveSurface = (e: { clientX: number; clientY: number; target?: EventTarget | null }): boolean => {
+          if (document.body.classList.contains('lava-mode')) return true;
+          let el: Element | null = null;
+          if (e.target instanceof Element) {
+            el = e.target;
+          } else {
+            el = document.elementFromPoint(e.clientX, e.clientY);
+          }
+          if (!el) return true;
+          // Card body, mobile menu, and floating chrome all sit ON TOP of the
+          // noise — pointer over them shouldn't drive cuts.
+          return !el.closest('.cv-card, .cv-menu-overlay, #cv-chrome, #cv-burger, #lava-toggle');
+        };
+
         const onCursorMove = (e: MouseEvent) => {
+          if (!isOnInteractiveSurface(e)) {
+            cursor.active = 0;
+            return;
+          }
           const rect = canvas.getBoundingClientRect();
           cursor.tx = e.clientX - rect.left;
           cursor.ty = rect.height - (e.clientY - rect.top);
@@ -319,6 +341,7 @@ void main(){
           if (!(e as any).relatedTarget) cursor.active = 0;
         };
         const onMouseCut = (e: MouseEvent) => {
+          if (!isOnInteractiveSurface(e)) return;
           const rect = canvas.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = rect.height - (e.clientY - rect.top); // GL origin = bottom-left
@@ -393,6 +416,14 @@ void main(){
         // swipes the same way it does to a mouse. Passive listeners — don't
         // block native scrolling.
         const onTouch = (e: TouchEvent) => {
+            // Mobile noise is interactive ONLY in lava mode. Outside lava
+            // mode, touch events are just regular scroll — adding a trail
+            // every time the user pans the resume is noisy AND costs CPU
+            // on phones. Cheap early-bail keeps the rAF lean.
+            if (!document.body.classList.contains('lava-mode')) {
+                cursor.active = 0;
+                return;
+            }
             if (e.touches.length === 0) return;
             const t = e.touches[0];
             const rect = canvas.getBoundingClientRect();

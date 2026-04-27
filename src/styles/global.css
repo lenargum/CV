@@ -23,7 +23,7 @@ a:not(.custom-link) {
 }
 
 section.cv-section {
-  @apply p-6 md:p-8 [&:not(:first-child)]:pb-10 print:p-0 print:[&:not(:first-child)]:pb-2;
+  @apply p-4 md:p-8 [&:not(:first-child)]:pb-8 md:[&:not(:first-child)]:pb-10 print:p-0 print:[&:not(:first-child)]:pb-2;
 }
 
 section.cv-section + section.cv-section {
@@ -128,8 +128,21 @@ section.cv-section:first-child {
     justify-content: space-between;
     align-items: baseline;
     gap: 8px;
+    flex-wrap: wrap;
   }
   .cv-exp__loc { margin-top: 0; }
+}
+/* Most phones (≤480px) — long Russian dates ("Сент. 2024 г. — Март 2025 г.")
+   plus location overflow even at 380-414px viewports. Stack them on two
+   lines, both left-aligned: location on top, dates below. Tight 2px gap. */
+@media (max-width: 480px) {
+  .cv-exp__meta {
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 2px;
+    text-align: left;
+  }
+  .cv-exp__meta > div { text-align: left; }
 }
 .cv-exp__icon {
   width: 40px;
@@ -189,12 +202,18 @@ section.cv-section:first-child {
 }
 .cv-exp__tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
 
-/* Education-only: 2-col head (icon + content). Years sit inline with the
-   institution row instead of in a third "meta" column at the top, because
-   the degree string can wrap and would leave the meta floating awkwardly. */
-.cv-exp--edu .cv-exp__head { grid-template-columns: 40px minmax(0, 1fr); }
+/* Education head — 2-col grid (icon + degree heading). The institution row
+   is placed on row 2 spanning BOTH columns so it flows under the icon when
+   the degree wraps, instead of stacking awkwardly to the right of the icon. */
+.cv-exp--edu .cv-exp__head {
+  grid-template-columns: 40px minmax(0, 1fr);
+  row-gap: 6px;
+}
 @media (max-width: 640px) {
   .cv-exp--edu .cv-exp__head { grid-template-columns: 36px minmax(0, 1fr); }
+}
+.cv-exp--edu .cv-edu__inst-row {
+  grid-column: 1 / -1;
 }
 .cv-edu__inst-row {
   display: flex;
@@ -206,6 +225,16 @@ section.cv-section:first-child {
    inst-row flexbox — strip it here so institution sits tight under the
    degree line. */
 .cv-edu__inst-row .cv-exp__title { margin-top: 0; }
+/* Same treatment as experience meta — stack on two lines, left-aligned,
+   on most phones (≤480px). Institution on top, years below. */
+@media (max-width: 480px) {
+  .cv-edu__inst-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+  .cv-edu__years { text-align: left; }
+}
 .cv-edu__years {
   font-size: 12px;
   color: var(--fg-tertiary);
@@ -273,6 +302,18 @@ section.cv-section:first-child {
 }
 .cv-social svg { width: 18px; height: 18px; flex-shrink: 0; }
 .cv-social--icon { padding: 8px; }
+/* Mobile: text labels are hidden (hidden md:inline) — collapse all socials
+   to the same square padding so they read as a uniform icon row instead
+   of mixed rect/square pills. */
+@media (max-width: 767px) {
+  .cv-social { padding: 8px; gap: 0; }
+}
+/* Very narrow phones (≤380px / iPhone SE etc.) — keep generous tap padding
+   (8px stays for accessibility), just shrink the SVG so all five icons fit
+   on one row alongside the 110px avatar without wrapping. */
+@media (max-width: 380px) {
+  .cv-social svg { width: 16px; height: 16px; }
+}
 @media print {
   .cv-social { color: #000 !important; }
 }
@@ -294,6 +335,249 @@ section.cv-section:first-child {
   transform: translateY(8px);
   filter: blur(6px);
   pointer-events: none;
+}
+
+/* === Mobile hamburger button — anchored to the cv-card top-right (visually
+   sits inside the card surface). Mobile-only via media query; the Tailwind
+   md:hidden class lost the source-order war against this rule, so we
+   hard-code visibility here. === */
+.cv-burger {
+  display: none;
+}
+@media (max-width: 767px) {
+  .cv-burger { display: grid; }
+}
+.cv-burger {
+  position: fixed;
+  /* Mobile: card is full-bleed and the cv-header uses symmetric p-4 (16px)
+     padding all around. Burger's outer button edges align to that 16px
+     padding so it sits on the same grid as the header content. */
+  top: 16px;
+  right: 16px;
+  z-index: 60;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgba(40, 40, 40, 0.55);
+  border: 0;
+  color: var(--fg-primary);
+  cursor: pointer;
+  place-items: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 160ms ease, transform 140ms ease, opacity 220ms ease;
+}
+.cv-burger:hover { background: rgba(60, 60, 60, 0.75); }
+.cv-burger:active { transform: scale(0.94); }
+body.menu-open .cv-burger { opacity: 0; pointer-events: none; }
+/* Lava mode: keep the burger visible (just dimmed) so the user has a way
+   back into the menu — without it lava mode becomes a one-way trap. */
+body.lava-mode .cv-burger { opacity: 0.4; }
+body.lava-mode .cv-burger:hover,
+body.lava-mode .cv-burger:focus { opacity: 1; }
+
+/* === Full-screen menu overlay (mobile) === */
+.cv-menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: none;
+}
+body.menu-open .cv-menu-overlay { display: block; }
+.cv-menu-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 0;
+  cursor: pointer;
+  animation: cvMenuFade 180ms ease both;
+}
+
+/* Panel — uses .cv-card glassmorphism (added via class on the element) plus
+   sizing/centring here. Compact card centered in viewport. */
+.cv-menu-overlay__panel {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100vw - 32px);
+  max-width: 380px;
+  max-height: calc(100dvh - 64px);
+  overflow-y: auto;
+  padding: 18px 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  animation: cvMenuRise 220ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+/* The menu panel uses .cv-card for its glassmorphism, but the mobile
+   .cv-card override (border-radius:0 for full-bleed body card) lives later
+   in the cascade. Higher-specificity selector pins the menu's rounding back. */
+.cv-menu-overlay__panel.cv-card {
+  border-radius: 24px;
+}
+
+.cv-menu-overlay__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.cv-menu-overlay__title {
+  font-size: var(--text-xl);   /* 20px — same as h3 / subsection-title */
+  font-weight: var(--weight-semibold);
+  color: var(--fg-primary);
+  margin: 0;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+.cv-menu-overlay__close {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  background: rgba(255, 255, 255, 0.06);
+  border: 0;
+  color: var(--fg-primary);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: background 160ms ease, transform 140ms ease;
+}
+.cv-menu-overlay__close:hover { background: rgba(255, 255, 255, 0.12); }
+.cv-menu-overlay__close:active { transform: scale(0.94); }
+
+.cv-menu-overlay__group { display: flex; flex-direction: column; gap: 8px; }
+.cv-menu-overlay__label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-tertiary);
+  padding-left: 4px;
+}
+.cv-menu-overlay__divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  margin: 2px 0;
+}
+
+/* Inline switchers (cv-profile-inline / cv-lang) reused as the active control
+   inside menu sections — they already render with proper active state, type
+   and hover from the design system. Auto-width so the pill hugs its content
+   instead of stretching across the full panel.
+   .cv-lang ships with the chrome's dark glass backdrop (designed for floating
+   over the noise field) — re-skin it inside the menu to match the
+   cv-profile-inline inset surface so both pills feel like one family. */
+.cv-menu-overlay__group .cv-profile-inline,
+.cv-menu-overlay__group .cv-lang {
+  width: max-content;
+  max-width: 100%;
+}
+.cv-menu-overlay__group .cv-lang {
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Primary CTA — Download PDF. Filled accent button with icon. */
+.cv-menu-overlay__cta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-xl);
+  background: var(--lenar-white);
+  color: var(--lenar-black);
+  border: 0;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: left;
+  transition: transform 140ms ease, opacity 160ms ease;
+}
+.cv-menu-overlay__cta:hover { opacity: 0.92; }
+.cv-menu-overlay__cta:active { transform: scale(0.98); }
+
+/* Toggle row — label + visual switch on the right. iOS-style switch. */
+.cv-menu-overlay__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: var(--radius-xl);
+  background: rgba(255, 255, 255, 0.04);
+  border: 0;
+  color: var(--fg-primary);
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  transition: background 160ms ease;
+}
+.cv-menu-overlay__toggle:hover { background: rgba(255, 255, 255, 0.07); }
+.cv-menu-overlay__toggle-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+.cv-menu-overlay__toggle-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: grayscale(1) brightness(0.85);
+  opacity: 0.85;
+  transition: filter 220ms ease, opacity 220ms ease;
+}
+.cv-menu-overlay__toggle[aria-checked="true"] .cv-menu-overlay__toggle-icon {
+  filter: none;
+  opacity: 1;
+}
+.cv-menu-overlay__switch {
+  position: relative;
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  flex-shrink: 0;
+  transition: background 200ms ease;
+}
+.cv-menu-overlay__switch-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background: var(--lenar-white);
+  transition: transform 200ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.cv-menu-overlay__toggle[aria-checked="true"] .cv-menu-overlay__switch {
+  background: var(--lenar-react-cyan);
+}
+.cv-menu-overlay__toggle[aria-checked="true"] .cv-menu-overlay__switch-thumb {
+  transform: translateX(16px);
+  background: var(--lenar-black);
+}
+
+@keyframes cvMenuFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes cvMenuRise {
+  from { opacity: 0; transform: translate(-50%, -48%) scale(0.98); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+/* Mobile: floating chrome cluster is fully hidden — contents live in the
+   hamburger overlay. (.cv-lava mobile-hide lives later in the file, after
+   its base rule, so source-order keeps it overridden correctly.) */
+@media (max-width: 767px) {
+  .cv-chrome { display: none; }
 }
 .cv-chrome__row {
   display: flex;
@@ -427,7 +711,7 @@ section.cv-section:first-child {
   background: rgba(255, 255, 255, 0.02);
 }
 .cv-pdf-modal__title {
-  font: 500 13px/1 var(--font-sans);
+  font: 500 13px/1.45 var(--font-sans);
   color: var(--fg-tertiary);
   letter-spacing: 0.04em;
 }
@@ -438,12 +722,25 @@ section.cv-section:first-child {
 .cv-pdf-modal__frame-wrap {
   flex: 1;
   background: #2a2a2a;
+  /* Mobile: scroll horizontally instead of squashing the iframe to viewport
+     width — A4 documents need ~794px to read at native size. */
+  overflow: auto;
 }
 .cv-pdf-modal__frame {
   width: 100%;
   height: 100%;
   border: 0;
   background: #fff;
+  display: block;
+}
+@media (max-width: 767px) {
+  /* Force iframe to keep its native A4 width so the rendered PDF doesn't
+     reflow/shrink. The wrapper handles the horizontal pan. */
+  .cv-pdf-modal__frame {
+    width: 794px;
+    min-width: 794px;
+    height: 100%;
+  }
 }
 .cv-pdf-btn {
   display: inline-flex;
@@ -468,6 +765,39 @@ section.cv-section:first-child {
   color: var(--fg-primary) !important;
 }
 .cv-pdf-btn--ghost:hover { background: rgba(255, 255, 255, 0.16); }
+
+/* Toolbar buttons collapse to icon-only on mobile to save horizontal space
+   (filename pill + 2 buttons crammed at 360px screen). Labels stay in DOM
+   for screen readers. */
+.cv-pdf-btn__icon { flex-shrink: 0; }
+@media (max-width: 767px) {
+  .cv-pdf-btn--icon-mobile {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    justify-content: center;
+  }
+  .cv-pdf-btn--icon-mobile .cv-pdf-btn__label {
+    /* Visually hide while remaining accessible */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+  /* Title (filename) gets less space too — truncate with ellipsis */
+  .cv-pdf-modal__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .cv-pdf-modal__bar { gap: 8px; }
+}
 
 /* === Profile switcher (inline, inside header body) === */
 .cv-profile-inline {
@@ -512,13 +842,16 @@ section.cv-section:first-child {
 body.lava-mode { cursor: none; }
 body.lava-mode #lava-toggle { cursor: pointer; }
 
-/* Redesigned lava-toggle — circular glassmorphic button matching chrome cluster */
+/* Redesigned lava-toggle — circular glassmorphic button. On desktop pops
+   out of the chrome cluster to its original top-LEFT corner (asymmetric
+   placement, screensaver-toggle vibe). DOM still lives inside cv-chrome
+   so the mobile @media display:none on chrome also hides it on mobile. */
 .cv-lava {
   position: fixed;
-  top: 18px;
-  left: 18px;
+  top: 24px;
+  left: 24px;
   z-index: 50;
-  /* Match PDF button size for visual symmetry between the two corners */
+  /* Match PDF button size for visual symmetry */
   width: 40px;
   height: 40px;
   border-radius: 999px;
@@ -534,6 +867,11 @@ body.lava-mode #lava-toggle { cursor: pointer; }
 }
 .cv-lava:hover { background: rgba(255, 255, 255, 0.10); }
 .cv-lava:active { transform: scale(0.94); }
+/* In lava mode keep the lava button discoverable but dimmed — it's the
+   way out. Hover/focus restores full opacity. */
+body.lava-mode .cv-lava { opacity: 0.4; }
+body.lava-mode .cv-lava:hover,
+body.lava-mode .cv-lava:focus { opacity: 1; }
 .cv-lava img {
   width: 100%;
   height: 100%;
@@ -541,6 +879,11 @@ body.lava-mode #lava-toggle { cursor: pointer; }
   transition: filter 240ms ease, opacity 240ms ease;
 }
 .cv-lava--off img { filter: grayscale(1) brightness(0.7); opacity: 0.7; }
+@media (max-width: 767px) {
+  /* Hidden on mobile — control lives in the hamburger menu. Placed AFTER
+     the base .cv-lava rule so source-order makes display:none stick. */
+  .cv-lava { display: none; }
+}
 @media print {
   .cv-lava { display: none !important; }
 }
@@ -554,6 +897,15 @@ body.lava-mode #lava-toggle { cursor: pointer; }
   border-radius: 24px;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
   overflow: hidden;
+}
+/* Mobile: card spans the full viewport — drop the rounded corners and the
+   ambient drop-shadow so it reads as a full-bleed surface, not a floating
+   card with awkward gaps to the screen edges. */
+@media (max-width: 767px) {
+  .cv-card {
+    border-radius: 0;
+    box-shadow: none;
+  }
 }
 @media print {
   .cv-card {
