@@ -31,8 +31,8 @@ export const experiences: ExperienceItem[] = [
 			// === Top bullet — context + delivery + proactivity (all profiles) ===
 			{
 				base: {
-					en: "Joined a real-money iGaming platform mid-redesign with heavy accumulated legacy. Over **6 months**: production release plus systematic refactoring delivered alongside feature work.",
-					ru: "Пришёл на real-money iGaming платформу на этапе редизайна, с тяжёлым накопленным легаси. За **6 месяцев**: релиз в прод и системный рефакторинг параллельно фичам."
+					en: "Joined a real-money iGaming platform **mid-rebuild** (parallel UI redesign + architectural overhaul) with heavy accumulated legacy. Over **6 months**: production release plus systematic refactoring delivered alongside feature work.",
+					ru: "Пришёл на real-money iGaming платформу **в разгар ребилда** (UI-редизайн параллельно с архитектурным овeрхолом), с тяжёлым накопленным легаси. За **6 месяцев**: релиз в прод и системный рефакторинг параллельно фичам."
 				},
 			},
 			// === Architectural cleanup — Vue/Fullstack/All variant ===
