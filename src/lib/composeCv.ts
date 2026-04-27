@@ -134,7 +134,11 @@ export function getTechnologies(
 export function composeCv(profile: ProfileType, lang: LangType): ComposedCV {
 	// === Personal Info ===
 	const composedPersonalInfo: ComposedPersonalInfo = {
-		name: personalInfo.name,
+		// Name is now language-aware (TranslatedText); fall back to the raw
+		// string for backwards compat if someone passes a plain literal.
+		name: typeof personalInfo.name === 'string'
+			? personalInfo.name
+			: personalInfo.name[lang],
 		title: getProfiledText(personalInfo.title, profile, lang),
 		email: personalInfo.email,
 		description: getProfiledText(personalInfo.description, profile, lang),

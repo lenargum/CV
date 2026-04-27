@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import { ClientRouter } from "astro:transitions";
 import NoiseBackground from "../components/NoiseBackground";
 import { LangSwitcher, ProfileSwitcher } from "../components/QuickLanguageSwitcher";
 import PDFModal from "../components/PDFModal";
@@ -90,14 +91,23 @@ const ogImageUrl = withBasePath(`og/og-${lang}-${profile}.png?v=5`);
 
     <!-- Robots -->
     <meta name="robots" content="index,follow,max-image-preview:large" />
+
+    {/* Astro View Transitions — fetches the next page in the background and
+        crossfades the swap so profile/lang nav feels SPA-like. The noise
+        canvas, lava button, burger and overlay are persisted across swaps
+        so the WebGL context, animation state, and any open menu survive. */}
+    <ClientRouter />
   </head>
   <body class="flex justify-center bg-secondary" style="min-height: 100dvh">
-    <NoiseBackground client:idle />
+    {/* Persist the noise WebGL canvas so it doesn't reinit between page nav
+        — the simplex shader, cursor trail, and rAF loop stay alive. */}
+    <NoiseBackground client:idle transition:persist />
 
     {/* Mobile hamburger — anchored to the cv-card top-right (visually inside
         the card). Toggles a full-screen overlay menu. */}
     <button
       id="cv-burger"
+      transition:persist
       class="cv-burger"
       aria-label={lang === 'ru' ? 'Меню' : 'Menu'}
       aria-expanded="false"
@@ -113,9 +123,11 @@ const ogImageUrl = withBasePath(`og/og-${lang}-${profile}.png?v=5`);
 
     {/* Lava lamp toggle — standalone top-LEFT (asymmetric to chrome cluster),
         kept OUTSIDE cv-chrome so the chrome's `is-hidden` opacity/blur in
-        lava mode doesn't take the user's only escape hatch with it. */}
+        lava mode doesn't take the user's only escape hatch with it.
+        transition:persist so the button doesn't flicker on nav. */}
     <button
       id="lava-toggle"
+      transition:persist
       class="cv-lava cv-lava--off cv-tip cv-tip--left"
       data-tip={lang === 'ru' ? 'Режим лава-лампы: ВЫКЛ' : 'Lava lamp mode: OFF'}
       aria-label={lang === 'ru' ? 'Режим лава-лампы' : 'Lava lamp mode'}
@@ -269,82 +281,100 @@ const ogImageUrl = withBasePath(`og/og-${lang}-${profile}.png?v=5`);
 </style>
 
 <script>
-  // PDF / Print button — fires custom event picked up by the React PDFModal
-  // island below. Modal opens, loads /pdf/{lang}/{profile}/ in iframe.
-  const pdfBtn = document.getElementById("cv-pdf-btn");
-  pdfBtn?.addEventListener("click", () => {
-    window.dispatchEvent(new CustomEvent("cv-pdf-open"));
-  });
+  // === Layout chrome init — wrapped in a function so it can re-run after
+  // each Astro view-transition swap (handlers must rebind to the new DOM
+  // nodes that replace the old ones). ===
+  const initLayoutChrome = () => {
+    // PDF button (desktop chrome) — fires the custom event the PDFModal
+    // React island listens for.
+    const pdfBtn = document.getElementById("cv-pdf-btn");
+    pdfBtn?.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("cv-pdf-open"));
+    });
 
-  // === Mobile menu overlay ===
-  const burger = document.getElementById("cv-burger");
-  const overlay = document.getElementById("cv-menu-overlay");
-  const overlayClose = document.getElementById("cv-menu-close");
-  const overlayBackdrop = overlay?.querySelector(".cv-menu-overlay__backdrop");
-  const setMenuOpen = (open) => {
-    document.body.classList.toggle("menu-open", open);
-    burger?.setAttribute("aria-expanded", open ? "true" : "false");
-    overlay?.setAttribute("aria-hidden", open ? "false" : "true");
+    // === Mobile menu overlay ===
+    const burger = document.getElementById("cv-burger");
+    const overlay = document.getElementById("cv-menu-overlay");
+    const overlayClose = document.getElementById("cv-menu-close");
+    const overlayBackdrop = overlay?.querySelector(".cv-menu-overlay__backdrop");
+    const setMenuOpen = (open) => {
+      document.body.classList.toggle("menu-open", open);
+      burger?.setAttribute("aria-expanded", open ? "true" : "false");
+      overlay?.setAttribute("aria-hidden", open ? "false" : "true");
+    };
+    burger?.addEventListener("click", () => {
+      // If we're in lava mode, opening the menu also exits lava — the menu
+      // shouldn't appear over the screensaver, that's confusing.
+      if (document.body.classList.contains("lava-mode")) toggle();
+      setMenuOpen(!document.body.classList.contains("menu-open"));
+    });
+    overlayClose?.addEventListener("click", () => setMenuOpen(false));
+    overlayBackdrop?.addEventListener("click", () => setMenuOpen(false));
+
+    // Mobile menu — PDF item fires the same custom event as the floating PDF
+    // button and then closes the overlay.
+    document.getElementById("cv-menu-pdf")?.addEventListener("click", () => {
+      window.dispatchEvent(new CustomEvent("cv-pdf-open"));
+      setMenuOpen(false);
+    });
+
+    const btn = document.getElementById("lava-toggle");
+    const chrome = document.getElementById("cv-chrome");
+    const menuLava = document.getElementById("cv-menu-lava");
+    const lavaTipRu = { on: "Режим лава-лампы: ВКЛ", off: "Режим лава-лампы: ВЫКЛ" };
+    const lavaTipEn = { on: "Lava lamp mode: ON",   off: "Lava lamp mode: OFF" };
+    const lavaTip = document.documentElement.lang === "ru" ? lavaTipRu : lavaTipEn;
+    const updateButton = () => {
+      const on = document.body.classList.contains("lava-mode");
+      btn?.classList.toggle("cv-lava--on", on);
+      btn?.classList.toggle("cv-lava--off", !on);
+      btn?.setAttribute("aria-pressed", on ? "true" : "false");
+      btn?.setAttribute("data-tip", on ? lavaTip.on : lavaTip.off);
+      chrome?.classList.toggle("is-hidden", on);
+      menuLava?.setAttribute("aria-checked", on ? "true" : "false");
+    };
+    const toggle = () => {
+      document.body.classList.toggle("lava-mode");
+      const on = document.body.classList.contains("lava-mode");
+      window.dispatchEvent(
+        new CustomEvent("lava-mode-change", { detail: { on } })
+      );
+      updateButton();
+      document.documentElement.style.overflow = on ? "hidden" : "";
+    };
+    btn?.addEventListener("click", toggle);
+    menuLava?.addEventListener("click", () => {
+      toggle();
+      setMenuOpen(false);
+    });
+
+    // sync initial state styles for this freshly-swapped DOM
+    updateButton();
   };
-  burger?.addEventListener("click", () => {
-    // If we're in lava mode, opening the menu also exits lava — the menu
-    // shouldn't appear over the screensaver, that's confusing.
-    if (document.body.classList.contains("lava-mode")) toggle();
-    setMenuOpen(!document.body.classList.contains("menu-open"));
-  });
-  overlayClose?.addEventListener("click", () => setMenuOpen(false));
-  overlayBackdrop?.addEventListener("click", () => setMenuOpen(false));
+
+  // Escape key listener lives on document — bind once, survives swaps.
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && document.body.classList.contains("menu-open")) {
-      setMenuOpen(false);
+      document.body.classList.remove("menu-open");
+      document.getElementById("cv-burger")?.setAttribute("aria-expanded", "false");
+      document.getElementById("cv-menu-overlay")?.setAttribute("aria-hidden", "true");
     }
   });
 
-  // Mobile menu — PDF item fires the same custom event as the floating PDF
-  // button and then closes the overlay.
-  document.getElementById("cv-menu-pdf")?.addEventListener("click", () => {
-    window.dispatchEvent(new CustomEvent("cv-pdf-open"));
-    setMenuOpen(false);
+  // === View Transitions wiring ===
+  // Carry stateful body classes (lava-mode, menu-open) across page swaps —
+  // Astro replaces document.body wholesale so they'd otherwise vanish.
+  document.addEventListener("astro:before-swap", (e) => {
+    const carry = ["lava-mode", "menu-open"];
+    const newDoc = (e as any).newDocument as Document;
+    carry.forEach(c => {
+      if (document.body.classList.contains(c)) {
+        newDoc.body.classList.add(c);
+      }
+    });
   });
 
-  const btn = document.getElementById("lava-toggle");
-  const chrome = document.getElementById("cv-chrome");
-  const menuLava = document.getElementById("cv-menu-lava");
-  const lavaTipRu = { on: "Режим лава-лампы: ВКЛ", off: "Режим лава-лампы: ВЫКЛ" };
-  const lavaTipEn = { on: "Lava lamp mode: ON",   off: "Lava lamp mode: OFF" };
-  const lavaTip = document.documentElement.lang === "ru" ? lavaTipRu : lavaTipEn;
-  const updateButton = () => {
-    const on = document.body.classList.contains("lava-mode");
-    btn?.classList.toggle("cv-lava--on", on);
-    btn?.classList.toggle("cv-lava--off", !on);
-    btn?.setAttribute("aria-pressed", on ? "true" : "false");
-    btn?.setAttribute("data-tip", on ? lavaTip.on : lavaTip.off);
-    // Floating chrome hides in lava mode so the noise field is unobstructed
-    chrome?.classList.toggle("is-hidden", on);
-    // Mobile menu lava — flip aria-checked so the iOS-style switch animates
-    menuLava?.setAttribute("aria-checked", on ? "true" : "false");
-  };
-  const toggle = () => {
-    document.body.classList.toggle("lava-mode");
-    const on = document.body.classList.contains("lava-mode");
-    window.dispatchEvent(
-      new CustomEvent("lava-mode-change", { detail: { on } })
-    );
-    updateButton();
-    if (on) {
-      document.documentElement.style.overflow = "hidden";
-    } else {
-      document.documentElement.style.overflow = "";
-    }
-  };
-  btn?.addEventListener("click", toggle);
-  // Mobile menu Lava button — same toggle, then close the overlay so user
-  // can immediately see the lava effect.
-  menuLava?.addEventListener("click", () => {
-    toggle();
-    setMenuOpen(false);
-  });
-
-  // ensure initial state styles
-  updateButton();
+  // Re-attach handlers after every navigation. Initial page load also fires
+  // astro:page-load (Astro emits it on first load too).
+  document.addEventListener("astro:page-load", initLayoutChrome);
 </script>

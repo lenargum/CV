@@ -12,7 +12,7 @@ Personal CV/resume site built with Astro + React. Animated WebGL noise field, mu
 
 - **WebGL2 noise background** — 3D simplex noise on a fullscreen triangle, cursor-trail "ink cuts" with eased pointer, looping shader for seamless OG previews, mobile touch support.
 - **Profile switching** — same data tree, different curated views: `all` (everything), `react`, `vue`, `fullstack`. Each profile has its own URL, OG card, and PDF.
-- **i18n** — EN at root, RU under `/ru/`. Lang switcher is a regular `<a>` link that navigates to the mirror URL.
+- **i18n** — EN at root, RU under `/ru/`. Lang and profile switcher links use Astro View Transitions for smooth in-place crossfades — no full reload, the WebGL noise canvas keeps running across navigations.
 - **Build-time PDF generation** — Puppeteer renders each `/pdf/{lang}/{profile}/` route at A4 and writes `public/downloads/LenarGumerov_<spec>[_RU].pdf`. PDF Modal links to the real file (no print dialog).
 - **Build-time OG cards** — Astro route `/og/{lang}/{profile}/` rendered to PNG. Each social share gets a profile-tailored preview.
 - **QR generation** — pure-JS pipeline writes square-anchor SVG QRs into `public/qr/`, embedded in the PDF route.

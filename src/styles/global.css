@@ -106,43 +106,28 @@ section.cv-section:first-child {
   gap: 12px;
   align-items: start;
 }
-@media (max-width: 640px) {
-  /* Mobile: 2-col grid (icon + content). Some company names are long
-     ("Orbit — Telegram Mini Apps gaming platform") and a 3rd meta column
-     would squeeze the content into 4-line wraps. Meta moves below content,
-     full-width, left-aligned — reads cleanly even on 320px screens. */
+@media (max-width: 540px) {
+  /* Mobile (≤540 covers all common phones): 2-col grid (icon + content).
+     Long Russian dates + location don't fit alongside the heading column,
+     so meta drops to its own full-width row under the icon, stacked on two
+     lines: dates first, location below. Both left-aligned. */
   .cv-exp__head {
     grid-template-columns: 40px minmax(0, 1fr);
     gap: 10px;
   }
-  /* Meta spans full width on its own row UNDER the icon (grid-column 1/-1),
-     with location on the LEFT and dates on the RIGHT — flex-row-reverse
-     because the DOM has dates first, location second. */
   .cv-exp__meta {
     grid-column: 1 / -1;
     margin-top: 0;
     font-size: 11px;
     white-space: normal;
     display: flex;
-    flex-direction: row-reverse;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-  .cv-exp__loc { margin-top: 0; }
-}
-/* Most phones (≤480px) — long Russian dates ("Сент. 2024 г. — Март 2025 г.")
-   plus location overflow even at 380-414px viewports. Stack them on two
-   lines, both left-aligned: location on top, dates below. Tight 2px gap. */
-@media (max-width: 480px) {
-  .cv-exp__meta {
-    flex-direction: column-reverse;
+    flex-direction: column;
     align-items: flex-start;
     gap: 2px;
     text-align: left;
   }
   .cv-exp__meta > div { text-align: left; }
+  .cv-exp__loc { margin-top: 0; }
 }
 .cv-exp__icon {
   width: 40px;
@@ -176,6 +161,14 @@ section.cv-section:first-child {
 }
 .cv-exp__loc { margin-top: 2px; }
 .cv-exp__dur { opacity: 0.7; }
+/* Date-order swap variants — desktop shows "duration · dates", mobile
+   "dates · duration". Hidden via CSS to keep the JSX clean. */
+.cv-exp__dates--desktop { display: inline; }
+.cv-exp__dates--mobile { display: none; }
+@media (max-width: 540px) {
+  .cv-exp__dates--desktop { display: none; }
+  .cv-exp__dates--mobile { display: inline; }
+}
 .cv-exp__bullets {
   margin: 12px 0 0;
   padding-left: 18px;

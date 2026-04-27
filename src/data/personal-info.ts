@@ -17,7 +17,7 @@ export interface PersonalInfoLink {
 }
 
 export interface PersonalInfo {
-	name: string;
+	name: string | TranslatedText;
 	title: string | ProfiledText;
 	email: string;
 	description: ProfiledText;
@@ -25,7 +25,7 @@ export interface PersonalInfo {
 }
 
 export const personalInfo: PersonalInfo = {
-	name: "Lenar Gumerov",
+	name: { en: "Lenar Gumerov", ru: "Ленар Гумеров" },
 	// === Title & Subtitle by profile ===
 	title: {
 		base: { en: "Software Engineer (Frontend-focused)", ru: "Software Engineer (Frontend-focused)" },

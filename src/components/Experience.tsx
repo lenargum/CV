@@ -154,8 +154,17 @@ export default function Experience({ experiences, profile }: ExperienceProps) {
               </div>
               <div className="cv-exp__meta">
                 <div>
-                  <span className="cv-exp__dur">{formatDuration(monthsBetween(exp.dateStart, exp.dateEnd), currentLang, true)} · </span>
-                  {getFormattedDateRange(exp.dateStart, exp.dateEnd)}
+                  {/* Desktop: "duration · dates". Mobile (<=480): swap to
+                      "dates · duration" so the most-scannable info (when)
+                      comes first. CSS hides one or the other per breakpoint. */}
+                  <span className="cv-exp__dates--desktop">
+                    <span className="cv-exp__dur">{formatDuration(monthsBetween(exp.dateStart, exp.dateEnd), currentLang, true)} · </span>
+                    {getFormattedDateRange(exp.dateStart, exp.dateEnd)}
+                  </span>
+                  <span className="cv-exp__dates--mobile">
+                    {getFormattedDateRange(exp.dateStart, exp.dateEnd)}
+                    <span className="cv-exp__dur"> · {formatDuration(monthsBetween(exp.dateStart, exp.dateEnd), currentLang, true)}</span>
+                  </span>
                 </div>
                 <div className="cv-exp__loc">{exp.location}</div>
               </div>
