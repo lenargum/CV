@@ -15,6 +15,7 @@ Personal CV/resume site built with Astro + React. Animated WebGL noise field, mu
 - **i18n** — EN at root, RU under `/ru/`. Lang and profile switcher links use Astro View Transitions for smooth in-place crossfades — no full reload, the WebGL noise canvas keeps running across navigations.
 - **Build-time PDF generation** — Puppeteer renders each `/pdf/{lang}/{profile}/` route at A4 and writes `public/downloads/LenarGumerov_<spec>[_RU].pdf`. PDF Modal links to the real file (no print dialog).
 - **Build-time OG cards** — Astro route `/og/{lang}/{profile}/` rendered to PNG. Each social share gets a profile-tailored preview.
+- **Resume Copy Tool** at `/copy/` — turn the same source data into per-block / per-tag copy chunks for ATS forms, LinkedIn, cover letters. Markdown / plain / numeric-date / comma-stack toggles.
 - **QR generation** — pure-JS pipeline writes square-anchor SVG QRs into `public/qr/`, embedded in the PDF route.
 - **Mobile-first chrome** — hamburger overlay (full-screen, `.cv-card`-styled panel) consolidates profile / language / PDF / lava-mode toggle. Floating chrome on desktop only.
 - **Lava-mode screensaver** — toggle hides the card so the noise field takes the whole viewport. Tap the hamburger to exit (taps on the noise itself drive the cursor-trail animation, not the dismiss).
@@ -72,6 +73,23 @@ Lives in `src/components/NoiseBackground.tsx`.
 - OG card route (`og/[lang]/[profile].astro`)
 
 The handoff reference (Figma export and component sketches) lives under `src/design-system/handoff-reference/`.
+
+## 🎛 Resume Copy Tool
+
+Live at **[/copy/](https://lenargum.me/copy/)**. A small client-side tool that turns the same source data into pasteable chunks for ATS forms, LinkedIn, cover letters, and recruiter chats — without exporting a PDF.
+
+**Features:**
+
+- **Per-block copy** — Summary, each Experience entry (with separate fields for company / role / location / dates / body / stack), each Education entry, Awards, Teaching. Hit copy on any one.
+- **Per-skill copy** — every Key Skills tag and per-experience tech-stack tag is its own click-to-copy chip; the chip flashes accent on success.
+- **Profile + language switchers** — same controls as the resume, but state-only: pick `react` / `vue` / `fullstack` and EN / RU and the content rewrites in place. URL is updated via `history.replaceState` so the configuration is shareable, but no navigation happens.
+- **Format toggles:**
+  - `Markdown` — keeps `**bold**` / `[link](url)` for tools that render it (Notion, GitHub, Slack), strips for plain-text targets.
+  - `Dates as DD.MM.YYYY` — switches between numeric and "Feb 2026" formats.
+  - `Stack as comma text` — collapses the chip list into one comma-separated line for inputs that take a single string.
+- **No noise / no chrome** — the floating PDF button, language switcher, mobile hamburger, and PDF modal are stripped on `/copy/` so the page is purely the tool.
+
+Same design tokens (cv-card surface, profile-inline pills, lang pills) as the rest of the site — drops straight into the existing visual language.
 
 ## 📄 PDF & OG pipeline
 
