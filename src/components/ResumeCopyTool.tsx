@@ -1,6 +1,4 @@
-﻿import { useEffect, useMemo, useState, type MouseEventHandler } from 'react';
-import LanguageProvider from '../i18n/LanguageProvider';
-import QuickLanguageSwitcher from './QuickLanguageSwitcher';
+import { useEffect, useMemo, useState } from 'react';
 import { composeCv } from '../lib/composeCv';
 import { buildCopyBlocks } from '../lib/resumeCopy';
 import type { LangType, ProfileType } from '../lib/types';
@@ -38,11 +36,12 @@ interface ResumeCopyToolProps {
 
 type CopyStatus = 'idle' | 'ok' | 'error';
 
-function statusText(status: CopyStatus, fallback: string): string {
-  if (status === 'ok') return 'Copied';
-  if (status === 'error') return 'Failed';
+function statusText(status: CopyStatus, fallback: string, lang: LangType): string {
+  if (status === 'ok') return lang === 'ru' ? 'Скопировано' : 'Copied';
+  if (status === 'error') return lang === 'ru' ? 'Ошибка' : 'Failed';
   return fallback;
 }
+
 function plainTitle(text: string): string {
   return text
     .replace(/\*\*\[([^\]]+)\]\(([^)]+)\)\*\*/g, '$1')
@@ -53,6 +52,11 @@ function plainTitle(text: string): string {
     .replace(/`([^`]+)`/g, '$1')
     .replace(/~~([^~]+)~~/g, '$1');
 }
+
+const PROFILE_LABELS: Record<LangType, Record<ProfileType, string>> = {
+  en: { all: 'All', react: 'React', vue: 'Vue', fullstack: 'Fullstack' },
+  ru: { all: 'Всё', react: 'React', vue: 'Vue', fullstack: 'Fullstack' },
+};
 
 export default function ResumeCopyTool({
   initialLang = 'en',
@@ -65,6 +69,7 @@ export default function ResumeCopyTool({
   const [stackAsText, setStackAsText] = useState(false);
   const [copyStatusById, setCopyStatusById] = useState<Record<string, CopyStatus>>({});
 
+  // Read initial state from query params (?lang=en&profile=react) on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const langParam = params.get('lang');
@@ -73,6 +78,7 @@ export default function ResumeCopyTool({
     if (profileParam && PROFILE_OPTIONS.includes(profileParam as ProfileType)) setProfile(profileParam as ProfileType);
   }, []);
 
+  // Reflect lang/profile in the URL so a copy-tool URL is shareable
   useEffect(() => {
     const path = withBasePath('copy/');
     const params = new URLSearchParams({ lang, profile });
@@ -85,28 +91,59 @@ export default function ResumeCopyTool({
     [cv, useMarkdown, numericDates]
   );
 
-  const sectionTitle = {
-    summary: lang === 'ru' ? 'Обо мне' : 'Summary',
-    keySkills: lang === 'ru' ? 'Ключевые навыки' : 'Key Skills',
-    experience: lang === 'ru' ? 'Опыт' : 'Experience',
-    education: lang === 'ru' ? 'Образование' : 'Education',
-    awards: lang === 'ru' ? 'Достижения' : 'Achievements',
-    teaching: lang === 'ru' ? 'Преподавание' : 'Teaching',
-  } as const;
-
-  const expMetaLabel = {
-    company: lang === 'ru' ? 'Компания' : 'Company',
-    role: lang === 'ru' ? 'Должность' : 'Role',
-    location: lang === 'ru' ? 'Локация' : 'Location',
-    dates: lang === 'ru' ? 'Даты' : 'Dates',
-  } as const;
-
-  const eduMetaLabel = {
-    institution: lang === 'ru' ? 'Учебное заведение' : 'Institution',
-    degree: lang === 'ru' ? 'Степень' : 'Degree',
-    specialization: lang === 'ru' ? 'Специализация' : 'Specialization',
-    dates: lang === 'ru' ? 'Даты' : 'Dates',
-  } as const;
+  const t = useMemo(
+    () =>
+      lang === 'ru'
+        ? {
+            heading: 'Конструктор резюме',
+            subtitle: 'Скопируй любую часть: саммари, опыт, образование, достижения, преподавание.',
+            useMarkdown: 'Markdown',
+            numericDates: 'Даты как ДД.ММ.ГГГГ',
+            stackAsText: 'Стек одной строкой',
+            copyBlock: 'Скопировать',
+            copyBody: 'Скопировать описание',
+            copySkills: 'Скопировать навыки',
+            copyStack: 'Скопировать стек',
+            copy: 'Копия',
+            sections: {
+              summary: 'Обо мне',
+              keySkills: 'Ключевые навыки',
+              experience: 'Опыт',
+              education: 'Образование',
+              awards: 'Достижения',
+              teaching: 'Преподавание',
+            },
+            expMeta: { company: 'Компания', role: 'Должность', location: 'Локация', dates: 'Даты' },
+            eduMeta: { institution: 'Учебное заведение', degree: 'Степень', specialization: 'Специализация', dates: 'Даты' },
+            techStack: 'Технологии',
+            controls: 'Настройки',
+          }
+        : {
+            heading: 'Resume Copy',
+            subtitle: 'Copy any block: summary, experience, education, awards, teaching.',
+            useMarkdown: 'Markdown',
+            numericDates: 'Dates as DD.MM.YYYY',
+            stackAsText: 'Stack as comma text',
+            copyBlock: 'Copy',
+            copyBody: 'Copy body',
+            copySkills: 'Copy skills',
+            copyStack: 'Copy stack',
+            copy: 'Copy',
+            sections: {
+              summary: 'Summary',
+              keySkills: 'Key Skills',
+              experience: 'Experience',
+              education: 'Education',
+              awards: 'Awards',
+              teaching: 'Teaching',
+            },
+            expMeta: { company: 'Company', role: 'Role', location: 'Location', dates: 'Dates' },
+            eduMeta: { institution: 'Institution', degree: 'Degree', specialization: 'Specialization', dates: 'Dates' },
+            techStack: 'Tech stack',
+            controls: 'Settings',
+          },
+    [lang]
+  );
 
   const summaryBlock = blocks.filter((block) => block.section === 'summary')[0];
   const awardsBlocks = blocks.filter((block) => block.section === 'awards');
@@ -129,12 +166,12 @@ export default function ResumeCopyTool({
         return {
           id: `experience-card-${index}`,
           title: plainTitle(exp.company),
-          metaItems: metaItems as Array<{ key: keyof typeof expMetaLabel; block: (typeof blocks)[number] }>,
+          metaItems: metaItems as Array<{ key: keyof typeof t.expMeta; block: (typeof blocks)[number] }>,
           body,
           stack: exp.technologies,
         };
       }),
-    [blocks, cv.experiences]
+    [blocks, cv.experiences, t]
   );
 
   const educationCards = useMemo(
@@ -152,38 +189,13 @@ export default function ResumeCopyTool({
         return {
           id: `education-card-${index}`,
           title: plainTitle(edu.institution),
-          metaItems: metaItems as Array<{ key: keyof typeof eduMetaLabel; block: (typeof blocks)[number] }>,
+          metaItems: metaItems as Array<{ key: keyof typeof t.eduMeta; block: (typeof blocks)[number] }>,
           body,
           stack: edu.technologies,
         };
       }),
-    [blocks, cv.education]
+    [blocks, cv.education, t]
   );
-
-  const handleSwitcherClickCapture: MouseEventHandler<HTMLDivElement> = (event) => {
-    const target = event.target as HTMLElement;
-    const link = target.closest('a');
-    if (!link || !link.href) return;
-
-    const url = new URL(link.href, window.location.origin);
-    const base = withBasePath('');
-    const normalizedPath = url.pathname.startsWith(base)
-      ? url.pathname.slice(base.length)
-      : url.pathname.replace(/^\/+/, '');
-
-    const parts = normalizedPath.split('/').filter(Boolean);
-    if (parts.length < 2) return;
-
-    const nextLang = parts[0];
-    const nextProfile = parts[1];
-
-    if (!LANG_OPTIONS.includes(nextLang as LangType)) return;
-    if (![...PROFILE_OPTIONS, 'all'].includes(nextProfile as ProfileType | 'all')) return;
-
-    event.preventDefault();
-    setLang(nextLang as LangType);
-    if (nextProfile !== 'all') setProfile(nextProfile as ProfileType);
-  };
 
   const handleCopyBlock = async (id: string, text: string) => {
     const ok = await writeToClipboard(text);
@@ -192,242 +204,314 @@ export default function ResumeCopyTool({
   };
 
   return (
-    <section className="p-4 md:p-6 rounded-2xl bg-primary-bg/90 text-text-primary shadow-md mt-6 mb-6">
-      <h1 className="text-2xl md:text-3xl font-semibold mb-2">Resume Copy</h1>
-      <p className="text-text-tertiary mb-4">Separate blocks for copying: summary, each experience, education, achievements, teaching.</p>
+    <article className="cv-card my-0 md:my-16 max-w-[920px] mx-auto">
+      {/* === HEADER === */}
+      <header className="cv-inset !rounded-none cv-copy-header">
+        <h1 className="cv-copy-title">{t.heading}</h1>
+        <p className="cv-copy-subtitle">{t.subtitle}</p>
 
-      <div className="mb-4" onClickCapture={handleSwitcherClickCapture}>
-        <LanguageProvider initialLang={lang} key={lang}>
-          <QuickLanguageSwitcher profile="all" activeProfile={profile}/>
-        </LanguageProvider>
-      </div>
+        {/* Switchers — pure state, NO navigation. Uses the design-system
+            pill styles (cv-profile-inline / cv-lang) so it matches every
+            other switcher on the site. */}
+        <div className="cv-copy-switchers">
+          <div className="cv-profile-inline" role="radiogroup" aria-label="Profile">
+            {(['all', ...PROFILE_OPTIONS] as ProfileType[]).map((p) => {
+              const isActive = profile === p;
+              return (
+                <button
+                  key={p}
+                  type="button"
+                  role="radio"
+                  aria-checked={isActive}
+                  className={`cv-profile-inline__btn custom-link ${isActive ? 'is-active' : ''}`}
+                  onClick={() => p !== 'all' && setProfile(p as ProfileType)}
+                  disabled={p === 'all'}
+                  title={p === 'all' ? 'Use a focused profile' : undefined}
+                >
+                  {PROFILE_LABELS[lang][p]}
+                </button>
+              );
+            })}
+          </div>
 
-      <label className="inline-flex items-center gap-2 mb-6 select-none">
-        <input type="checkbox" checked={useMarkdown} onChange={(event) => setUseMarkdown(event.target.checked)} />
-        <span>Use markdown</span>
-      </label>
-      <label className="inline-flex items-center gap-2 mb-6 ml-4 select-none">
-        <input type="checkbox" checked={numericDates} onChange={(event) => setNumericDates(event.target.checked)} />
-        <span>Dates as DD.MM.YYYY</span>
-      </label>
-      <label className="inline-flex items-center gap-2 mb-6 ml-4 select-none">
-        <input type="checkbox" checked={stackAsText} onChange={(event) => setStackAsText(event.target.checked)} />
-        <span>Stack as comma text</span>
-      </label>
+          <div className="cv-lang" role="radiogroup" aria-label="Language">
+            {LANG_OPTIONS.map((l) => {
+              const isActive = lang === l;
+              return (
+                <button
+                  key={l}
+                  type="button"
+                  role="radio"
+                  aria-checked={isActive}
+                  className={`cv-lang__btn custom-link ${isActive ? 'is-active' : ''}`}
+                  onClick={() => setLang(l)}
+                >
+                  {l === 'en' ? 'EN' : 'РУС'}
+                </button>
+              );
+            })}
+          </div>
+        </div>
 
-      <div className="space-y-7">
-        <section className="space-y-4">
-          <div className="flex items-center justify-between gap-2">
-            <h2 className="text-xl font-semibold">{sectionTitle.summary}</h2>
-            <button type="button" onClick={() => handleCopyBlock(summaryBlock.id, summaryBlock.text)} className="px-3 py-1.5 rounded-md bg-white text-black hover:bg-white/90 transition-colors text-sm">
-              {statusText(summaryCopyStatus, 'Copy block')}
+        {/* Format toggles */}
+        <div className="cv-copy-toggles">
+          <span className="cv-copy-toggles__label">{t.controls}:</span>
+          <label className="cv-copy-toggle">
+            <input type="checkbox" checked={useMarkdown} onChange={(e) => setUseMarkdown(e.target.checked)} />
+            <span>{t.useMarkdown}</span>
+          </label>
+          <label className="cv-copy-toggle">
+            <input type="checkbox" checked={numericDates} onChange={(e) => setNumericDates(e.target.checked)} />
+            <span>{t.numericDates}</span>
+          </label>
+          <label className="cv-copy-toggle">
+            <input type="checkbox" checked={stackAsText} onChange={(e) => setStackAsText(e.target.checked)} />
+            <span>{t.stackAsText}</span>
+          </label>
+        </div>
+      </header>
+
+      <div className="cv-copy-body">
+        {/* === SUMMARY === */}
+        <section className="cv-section">
+          <div className="cv-copy-section-head">
+            <h2 className="section-title">{t.sections.summary}</h2>
+            <button
+              type="button"
+              onClick={() => handleCopyBlock(summaryBlock.id, summaryBlock.text)}
+              className="cv-copy-btn cv-copy-btn--primary"
+            >
+              {statusText(summaryCopyStatus, t.copyBlock, lang)}
             </button>
           </div>
-          <textarea readOnly value={summaryBlock.text} rows={5} className="w-full bg-black/60 border border-white/20 rounded-lg p-3 font-mono text-xs md:text-sm leading-relaxed" />
+          <article className="cv-inset cv-copy-card">
+            <textarea readOnly value={summaryBlock.text} rows={5} className="cv-copy-textarea" />
+          </article>
         </section>
 
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold">{sectionTitle.keySkills}</h2>
-          {!stackAsText ? (
-            <div className="flex flex-wrap gap-2">
-              {cv.tags.map((skill, idx) => {
-                const skillId = `key-skills-${idx}`;
-                return (
-                  <button
-                    key={skillId}
-                    type="button"
-                    onClick={() => handleCopyBlock(skillId, skill)}
-                    className="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 border border-white/20 text-xs md:text-sm transition-colors"
-                    title={statusText(copyStatusById[skillId] ?? 'idle', 'Copy')}
-                  >
-                    {skill}
-                  </button>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <input
-                readOnly
-                value={cv.tags.join(', ')}
-                className="flex-1 h-9 bg-black/60 border border-white/20 rounded-md px-2 font-mono text-xs md:text-sm"
-              />
+        {/* === KEY SKILLS === */}
+        <section className="cv-section">
+          <div className="cv-copy-section-head">
+            <h2 className="section-title">{t.sections.keySkills}</h2>
+            {stackAsText && (
               <button
                 type="button"
                 onClick={() => handleCopyBlock('key-skills-all', cv.tags.join(', '))}
-                className="px-3 py-1.5 rounded-md bg-white text-black hover:bg-white/90 transition-colors text-sm"
+                className="cv-copy-btn cv-copy-btn--primary"
               >
-                {statusText(copyStatusById['key-skills-all'] ?? 'idle', 'Copy skills')}
+                {statusText(copyStatusById['key-skills-all'] ?? 'idle', t.copySkills, lang)}
               </button>
-            </div>
-          )}
-        </section>
-
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold">{sectionTitle.experience}</h2>
-          {experienceCards.map((card) => (
-            <article key={card.id} className="border border-white/20 rounded-xl p-3 bg-black/40 space-y-3">
-              <h3 className="text-base md:text-lg font-semibold">{card.title}</h3>
-              <div className="grid gap-2 md:grid-cols-2">
-                {card.metaItems.map(({ key, block }) => {
-                  const status = copyStatusById[block.id] ?? 'idle';
+            )}
+          </div>
+          <article className="cv-inset cv-copy-card">
+            {!stackAsText ? (
+              <div className="cv-copy-chips">
+                {cv.tags.map((skill, idx) => {
+                  const skillId = `key-skills-${idx}`;
+                  const status = copyStatusById[skillId] ?? 'idle';
                   return (
-                    <div key={block.id} className="flex items-center gap-2">
-                      <label className="text-xs text-text-tertiary min-w-[72px]">{expMetaLabel[key]}:</label>
-                      <input readOnly value={block.text} className="flex-1 h-9 bg-black/60 border border-white/20 rounded-md px-2 font-mono text-xs md:text-sm" />
-                      <button type="button" onClick={() => handleCopyBlock(block.id, block.text)} className="px-2 py-1 rounded-md bg-white text-black hover:bg-white/90 transition-colors text-xs">
-                        {statusText(status, 'Copy')}
-                      </button>
-                    </div>
+                    <button
+                      key={skillId}
+                      type="button"
+                      onClick={() => handleCopyBlock(skillId, skill)}
+                      className={`cv-copy-chip ${status === 'ok' ? 'is-copied' : ''}`}
+                      title={statusText(status, t.copy, lang)}
+                    >
+                      {status === 'ok' ? `✓ ${skill}` : skill}
+                    </button>
                   );
                 })}
               </div>
-
-              {card.body && (
-                <div className="">
-                  <div className="flex items-center justify-end mb-2">
-                    <button type="button" onClick={() => handleCopyBlock(card.body!.id, card.body!.text)} className="px-3 py-1.5 rounded-md bg-white text-black hover:bg-white/90 transition-colors text-sm">
-                      {statusText(copyStatusById[card.body.id] ?? 'idle', 'Copy body')}
-                    </button>
-                  </div>
-                  <textarea readOnly value={card.body.text} rows={6} className="w-full bg-black/60 border border-white/20 rounded-lg p-3 font-mono text-xs md:text-sm leading-relaxed" />
-                </div>
-              )}
-
-              {card.stack.length > 0 && (
-                <div>
-                  {!stackAsText ? (
-                    <div className="flex flex-wrap gap-2">
-                      {card.stack.map((tech, idx) => {
-                        const techId = `${card.id}-stack-${idx}`;
-                        return (
-                          <button
-                            key={techId}
-                            type="button"
-                            onClick={() => handleCopyBlock(techId, tech)}
-                            className="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 border border-white/20 text-xs md:text-sm transition-colors"
-                            title={statusText(copyStatusById[techId] ?? 'idle', 'Copy')}
-                          >
-                            {tech}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <input
-                        readOnly
-                        value={card.stack.join(', ')}
-                        className="flex-1 h-9 bg-black/60 border border-white/20 rounded-md px-2 font-mono text-xs md:text-sm"
-                      />
-                      <button
-                        type="button"
-                        onClick={() => handleCopyBlock(`${card.id}-stack-all`, card.stack.join(', '))}
-                        className="px-3 py-1.5 rounded-md bg-white text-black hover:bg-white/90 transition-colors text-sm"
-                      >
-                        {statusText(copyStatusById[`${card.id}-stack-all`] ?? 'idle', 'Copy stack')}
-                      </button>
-                    </div>
-                  )}
-                </div>
-              )}
-            </article>
-          ))}
+            ) : (
+              <input readOnly value={cv.tags.join(', ')} className="cv-copy-input" />
+            )}
+          </article>
         </section>
 
-        <section className="space-y-4">
-          <h2 className="text-xl font-semibold">{sectionTitle.education}</h2>
-          {educationCards.map((card) => (
-            <article key={card.id} className="border border-white/20 rounded-xl p-3 bg-black/40 space-y-3">
-              <h3 className="text-base md:text-lg font-semibold">{card.title}</h3>
-              <div className="grid gap-2 md:grid-cols-2">
-                {card.metaItems.map(({ key, block }) => {
-                  const status = copyStatusById[block.id] ?? 'idle';
-                  return (
-                    <div key={block.id} className="flex items-center gap-2">
-                      <label className="text-xs text-text-tertiary min-w-[92px]">{eduMetaLabel[key]}:</label>
-                      <input readOnly value={block.text} className="flex-1 h-9 bg-black/60 border border-white/20 rounded-md px-2 font-mono text-xs md:text-sm" />
-                      <button type="button" onClick={() => handleCopyBlock(block.id, block.text)} className="px-2 py-1 rounded-md bg-white text-black hover:bg-white/90 transition-colors text-xs">
-                        {statusText(status, 'Copy')}
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {card.body && (
-                <div className="pt-1">
-                  <div className="flex items-center justify-end mb-2">
-                    <button type="button" onClick={() => handleCopyBlock(card.body!.id, card.body!.text)} className="px-3 py-1.5 rounded-md bg-white text-black hover:bg-white/90 transition-colors text-sm">
-                      {statusText(copyStatusById[card.body.id] ?? 'idle', 'Copy body')}
-                    </button>
-                  </div>
-                  <textarea readOnly value={card.body.text} rows={4} className="w-full bg-black/60 border border-white/20 rounded-lg p-3 font-mono text-xs md:text-sm leading-relaxed" />
-                </div>
-              )}
-
-              {card.stack.length > 0 && (
-                <div className="pt-1">
-                  <div className="text-sm font-semibold mb-2">Tech stack</div>
-                  {!stackAsText ? (
-                    <div className="flex flex-wrap gap-2">
-                      {card.stack.map((tech, idx) => {
-                        const techId = `${card.id}-stack-${idx}`;
-                        return (
-                          <button
-                            key={techId}
-                            type="button"
-                            onClick={() => handleCopyBlock(techId, tech)}
-                            className="px-2.5 py-1 rounded-md bg-white/10 hover:bg-white/20 border border-white/20 text-xs md:text-sm transition-colors"
-                            title={statusText(copyStatusById[techId] ?? 'idle', 'Copy')}
-                          >
-                            {tech}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <input
-                        readOnly
-                        value={card.stack.join(', ')}
-                        className="flex-1 h-9 bg-black/60 border border-white/20 rounded-md px-2 font-mono text-xs md:text-sm"
-                      />
+        {/* === EXPERIENCE === */}
+        <section className="cv-section">
+          <h2 className="section-title">{t.sections.experience}</h2>
+          <div className="cv-stack">
+            {experienceCards.map((card) => (
+              <article key={card.id} className="cv-inset cv-copy-card">
+                <h3 className="cv-copy-card-title">{card.title}</h3>
+                <div className="cv-copy-meta-grid">
+                  {card.metaItems.map(({ key, block }) => (
+                    <div key={block.id} className="cv-copy-meta-row">
+                      <label className="cv-copy-meta-label">{t.expMeta[key]}</label>
+                      <input readOnly value={block.text} className="cv-copy-input" />
                       <button
                         type="button"
-                        onClick={() => handleCopyBlock(`${card.id}-stack-all`, card.stack.join(', '))}
-                        className="px-3 py-1.5 rounded-md bg-white text-black hover:bg-white/90 transition-colors text-sm"
+                        onClick={() => handleCopyBlock(block.id, block.text)}
+                        className="cv-copy-btn cv-copy-btn--ghost"
                       >
-                        {statusText(copyStatusById[`${card.id}-stack-all`] ?? 'idle', 'Copy stack')}
+                        {statusText(copyStatusById[block.id] ?? 'idle', t.copy, lang)}
                       </button>
                     </div>
-                  )}
+                  ))}
                 </div>
-              )}
-            </article>
-          ))}
+
+                {card.body && (
+                  <div className="cv-copy-block">
+                    <div className="cv-copy-block__bar">
+                      <button
+                        type="button"
+                        onClick={() => handleCopyBlock(card.body!.id, card.body!.text)}
+                        className="cv-copy-btn cv-copy-btn--primary"
+                      >
+                        {statusText(copyStatusById[card.body.id] ?? 'idle', t.copyBody, lang)}
+                      </button>
+                    </div>
+                    <textarea readOnly value={card.body.text} rows={6} className="cv-copy-textarea" />
+                  </div>
+                )}
+
+                {card.stack.length > 0 && (
+                  <div className="cv-copy-stack">
+                    <div className="cv-copy-stack__label">{t.techStack}</div>
+                    {!stackAsText ? (
+                      <div className="cv-copy-chips">
+                        {card.stack.map((tech, idx) => {
+                          const techId = `${card.id}-stack-${idx}`;
+                          const status = copyStatusById[techId] ?? 'idle';
+                          return (
+                            <button
+                              key={techId}
+                              type="button"
+                              onClick={() => handleCopyBlock(techId, tech)}
+                              className={`cv-copy-chip ${status === 'ok' ? 'is-copied' : ''}`}
+                              title={statusText(status, t.copy, lang)}
+                            >
+                              {status === 'ok' ? `✓ ${tech}` : tech}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="cv-copy-inline">
+                        <input readOnly value={card.stack.join(', ')} className="cv-copy-input" />
+                        <button
+                          type="button"
+                          onClick={() => handleCopyBlock(`${card.id}-stack-all`, card.stack.join(', '))}
+                          className="cv-copy-btn cv-copy-btn--primary"
+                        >
+                          {statusText(copyStatusById[`${card.id}-stack-all`] ?? 'idle', t.copyStack, lang)}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
         </section>
 
-        {[{ title: sectionTitle.awards, items: awardsBlocks }, { title: sectionTitle.teaching, items: teachingBlocks }].map((group) => (
-          <section key={group.title} className="space-y-4">
-            <h2 className="text-xl font-semibold">{group.title}</h2>
-            {group.items.map((block) => {
-              const status = copyStatusById[block.id] ?? 'idle';
-              return (
-                <article key={block.id} className="border border-white/20 rounded-xl p-3 bg-black/40">
-                  <div className="flex items-center justify-between gap-3 mb-2">
-                    <h3 className="text-base md:text-lg font-semibold">{block.title}</h3>
-                    <button type="button" onClick={() => handleCopyBlock(block.id, block.text)} className="px-3 py-1.5 rounded-md bg-white text-black hover:bg-white/90 transition-colors text-sm">
-                      {statusText(status, 'Copy block')}
-                    </button>
+        {/* === EDUCATION === */}
+        <section className="cv-section">
+          <h2 className="section-title">{t.sections.education}</h2>
+          <div className="cv-stack">
+            {educationCards.map((card) => (
+              <article key={card.id} className="cv-inset cv-copy-card">
+                <h3 className="cv-copy-card-title">{card.title}</h3>
+                <div className="cv-copy-meta-grid">
+                  {card.metaItems.map(({ key, block }) => (
+                    <div key={block.id} className="cv-copy-meta-row">
+                      <label className="cv-copy-meta-label">{t.eduMeta[key]}</label>
+                      <input readOnly value={block.text} className="cv-copy-input" />
+                      <button
+                        type="button"
+                        onClick={() => handleCopyBlock(block.id, block.text)}
+                        className="cv-copy-btn cv-copy-btn--ghost"
+                      >
+                        {statusText(copyStatusById[block.id] ?? 'idle', t.copy, lang)}
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                {card.body && (
+                  <div className="cv-copy-block">
+                    <div className="cv-copy-block__bar">
+                      <button
+                        type="button"
+                        onClick={() => handleCopyBlock(card.body!.id, card.body!.text)}
+                        className="cv-copy-btn cv-copy-btn--primary"
+                      >
+                        {statusText(copyStatusById[card.body.id] ?? 'idle', t.copyBody, lang)}
+                      </button>
+                    </div>
+                    <textarea readOnly value={card.body.text} rows={4} className="cv-copy-textarea" />
                   </div>
-                  <textarea readOnly value={block.text} rows={2} className="w-full bg-black/60 border border-white/20 rounded-lg p-3 font-mono text-xs md:text-sm leading-relaxed" />
+                )}
+
+                {card.stack.length > 0 && (
+                  <div className="cv-copy-stack">
+                    <div className="cv-copy-stack__label">{t.techStack}</div>
+                    {!stackAsText ? (
+                      <div className="cv-copy-chips">
+                        {card.stack.map((tech, idx) => {
+                          const techId = `${card.id}-stack-${idx}`;
+                          const status = copyStatusById[techId] ?? 'idle';
+                          return (
+                            <button
+                              key={techId}
+                              type="button"
+                              onClick={() => handleCopyBlock(techId, tech)}
+                              className={`cv-copy-chip ${status === 'ok' ? 'is-copied' : ''}`}
+                              title={statusText(status, t.copy, lang)}
+                            >
+                              {status === 'ok' ? `✓ ${tech}` : tech}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <div className="cv-copy-inline">
+                        <input readOnly value={card.stack.join(', ')} className="cv-copy-input" />
+                        <button
+                          type="button"
+                          onClick={() => handleCopyBlock(`${card.id}-stack-all`, card.stack.join(', '))}
+                          className="cv-copy-btn cv-copy-btn--primary"
+                        >
+                          {statusText(copyStatusById[`${card.id}-stack-all`] ?? 'idle', t.copyStack, lang)}
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </article>
+            ))}
+          </div>
+        </section>
+
+        {/* === AWARDS + TEACHING === Each section has a single combined block;
+              header carries the title + Copy button (mirrors Summary). */}
+        {[
+          { title: t.sections.awards, block: awardsBlocks[0] },
+          { title: t.sections.teaching, block: teachingBlocks[0] },
+        ]
+          .filter(({ block }) => Boolean(block))
+          .map(({ title, block }) => {
+            const status = copyStatusById[block!.id] ?? 'idle';
+            return (
+              <section key={title} className="cv-section">
+                <div className="cv-copy-section-head">
+                  <h2 className="section-title">{title}</h2>
+                  <button
+                    type="button"
+                    onClick={() => handleCopyBlock(block!.id, block!.text)}
+                    className="cv-copy-btn cv-copy-btn--primary"
+                  >
+                    {statusText(status, t.copyBlock, lang)}
+                  </button>
+                </div>
+                <article className="cv-inset cv-copy-card">
+                  <textarea readOnly value={block!.text} rows={3} className="cv-copy-textarea" />
                 </article>
-              );
-            })}
-          </section>
-        ))}
+              </section>
+            );
+          })}
       </div>
-    </section>
+    </article>
   );
 }

@@ -20,6 +20,10 @@ interface Props {
 }
 
 const { title, description, lang = "en", profile = "all" } = Astro.props as Props;
+// /copy/ tool ships its own lang + profile switchers and is irrelevant for
+// PDF download — strip those from the floating chrome and the mobile menu
+// to avoid duplicate / off-topic controls.
+const isCopyTool = Astro.url.pathname.includes('/copy');
 // URL scheme: EN at root (/, /react/, ...); RU under /ru/ (/ru/, /ru/react/, ...).
 const langSegment = lang === 'en' ? '' : 'ru/';
 const profileSegment = profile === 'all' ? '' : `${profile}/`;
@@ -105,21 +109,23 @@ const ogImageUrl = withBasePath(`og/og-${lang}-${profile}.png?v=5`);
 
     {/* Mobile hamburger — anchored to the cv-card top-right (visually inside
         the card). Toggles a full-screen overlay menu. */}
-    <button
-      id="cv-burger"
-      transition:persist
-      class="cv-burger"
-      aria-label={lang === 'ru' ? 'Меню' : 'Menu'}
-      aria-expanded="false"
-      aria-controls="cv-menu-overlay"
-      type="button"
-    >
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <line x1="4" y1="7"  x2="20" y2="7"  />
-        <line x1="4" y1="12" x2="20" y2="12" />
-        <line x1="4" y1="17" x2="20" y2="17" />
-      </svg>
-    </button>
+    {!isCopyTool && (
+      <button
+        id="cv-burger"
+        transition:persist
+        class="cv-burger"
+        aria-label={lang === 'ru' ? 'Меню' : 'Menu'}
+        aria-expanded="false"
+        aria-controls="cv-menu-overlay"
+        type="button"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <line x1="4" y1="7"  x2="20" y2="7"  />
+          <line x1="4" y1="12" x2="20" y2="12" />
+          <line x1="4" y1="17" x2="20" y2="17" />
+        </svg>
+      </button>
+    )}
 
     {/* Lava lamp toggle — standalone top-LEFT (asymmetric to chrome cluster),
         kept OUTSIDE cv-chrome so the chrome's `is-hidden` opacity/blur in
@@ -137,29 +143,34 @@ const ogImageUrl = withBasePath(`og/og-${lang}-${profile}.png?v=5`);
       <img src={withBasePath("lava-lamp.png")} alt="" width={30} height={30} loading="lazy" decoding="async" />
     </button>
 
-    {/* Floating chrome — desktop only (PDF + lang) at the top-right
-        corner. Mobile uses the hamburger + overlay below. */}
-    <div id="cv-chrome" class="cv-chrome">
-      <div class="cv-chrome__row">
-        <button
-          id="cv-pdf-btn"
-          type="button"
-          class="cv-pdf-iconbtn cv-tip"
-          data-tip="PDF"
-          aria-label="PDF"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-            <line x1="12" y1="12" x2="12" y2="18" />
-            <polyline points="9 15 12 18 15 15" />
-          </svg>
-        </button>
-        <LangSwitcher profile={profile} currentLang={lang} client:load />
+    {/* Floating chrome — desktop only (PDF + lang) at the top-right corner.
+        Hidden entirely on /copy/ since the tool owns its own lang switcher
+        and PDF doesn't apply there. */}
+    {!isCopyTool && (
+      <div id="cv-chrome" class="cv-chrome">
+        <div class="cv-chrome__row">
+          <button
+            id="cv-pdf-btn"
+            type="button"
+            class="cv-pdf-iconbtn cv-tip"
+            data-tip="PDF"
+            aria-label="PDF"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+              <line x1="12" y1="12" x2="12" y2="18" />
+              <polyline points="9 15 12 18 15 15" />
+            </svg>
+          </button>
+          <LangSwitcher profile={profile} currentLang={lang} client:load />
+        </div>
       </div>
-    </div>
+    )}
 
-    {/* === Mobile full-screen menu overlay === */}
+    {/* === Mobile full-screen menu overlay === Hidden on /copy/ — the tool
+        owns its own switchers and the burger entry point is suppressed. */}
+    {!isCopyTool && (
     <div id="cv-menu-overlay" class="cv-menu-overlay" aria-hidden="true">
       <button
         type="button"
@@ -190,25 +201,29 @@ const ogImageUrl = withBasePath(`og/og-${lang}-${profile}.png?v=5`);
           <ProfileSwitcher activeProfile={profile} currentLang={lang} client:load />
         </div>
 
-        <div class="cv-menu-overlay__group">
-          <span class="cv-menu-overlay__label">{lang === 'ru' ? 'Язык' : 'Language'}</span>
-          <LangSwitcher profile={profile} currentLang={lang} client:load />
-        </div>
+        {!isCopyTool && (
+          <div class="cv-menu-overlay__group">
+            <span class="cv-menu-overlay__label">{lang === 'ru' ? 'Язык' : 'Language'}</span>
+            <LangSwitcher profile={profile} currentLang={lang} client:load />
+          </div>
+        )}
 
         <div class="cv-menu-overlay__divider"></div>
 
         <div class="cv-menu-overlay__group">
           <span class="cv-menu-overlay__label">{lang === 'ru' ? 'Действия' : 'Actions'}</span>
-          {/* Primary CTA — download the PDF directly. */}
-          <button id="cv-menu-pdf" type="button" class="cv-menu-overlay__cta">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-              <polyline points="14 2 14 8 20 8" />
-              <line x1="12" y1="12" x2="12" y2="18" />
-              <polyline points="9 15 12 18 15 15" />
-            </svg>
-            <span>{lang === 'ru' ? 'Скачать PDF' : 'Download PDF'}</span>
-          </button>
+          {/* Primary CTA — download the PDF directly. Hidden on /copy/. */}
+          {!isCopyTool && (
+            <button id="cv-menu-pdf" type="button" class="cv-menu-overlay__cta">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                <polyline points="14 2 14 8 20 8" />
+                <line x1="12" y1="12" x2="12" y2="18" />
+                <polyline points="9 15 12 18 15 15" />
+              </svg>
+              <span>{lang === 'ru' ? 'Скачать PDF' : 'Download PDF'}</span>
+            </button>
+          )}
 
           {/* Toggle row — label + visual switch indicating ON/OFF state. */}
           <button
@@ -229,12 +244,15 @@ const ogImageUrl = withBasePath(`og/og-${lang}-${profile}.png?v=5`);
         </div>
       </nav>
     </div>
+    )}
 
     <main class="w-full max-w-[920px] z-10">
       <slot />
     </main>
 
-    <PDFModal lang={lang} profile={profile} base={import.meta.env.BASE_URL} client:load />
+    {!isCopyTool && (
+      <PDFModal lang={lang} profile={profile} base={import.meta.env.BASE_URL} client:load />
+    )}
   </body>
 </html>
 
