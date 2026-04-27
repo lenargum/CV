@@ -23,7 +23,6 @@ import {
   RENDERING_TAGS,
   ARCHITECTURE_TAGS,
   PRINCIPLES_TAGS,
-  PROCESS_TAGS,
   MOBILE_TAGS,
 } from '@/data/tags';
 
@@ -37,22 +36,15 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
       priority: 1
     },
 
-    FRAMEWORKS: {
+    FRONTEND: {
       name: {
-        en: 'Frameworks',
-        ru: 'Фреймворки'
+        en: 'Frontend',
+        ru: 'Фронтенд'
       },
-      tags: [...REACT_ECOSYSTEM_TAGS, ...VUE_ECOSYSTEM_TAGS],
+      // React + Vue ecosystems + rendering models all belong to "frontend";
+      // per-tag colors (cyan / emerald / blue) keep the ecosystems readable.
+      tags: [...REACT_ECOSYSTEM_TAGS, ...VUE_ECOSYSTEM_TAGS, ...RENDERING_TAGS],
       priority: 2
-    },
-
-    RENDERING: {
-      name: {
-        en: 'Rendering',
-        ru: 'Рендеринг'
-      },
-      tags: RENDERING_TAGS,
-      priority: 3
     },
 
     BACKEND: {
@@ -61,7 +53,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Бэкенд'
       },
       tags: BACKEND_TAGS,
-      priority: 4
+      priority: 3
     },
 
     TOOLS: {
@@ -70,7 +62,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Инструменты'
       },
       tags: TOOLING_TAGS,
-      priority: 5
+      priority: 4
     },
 
     UX_VISUAL: {
@@ -79,7 +71,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'UX и Визуал'
       },
       tags: UI_VISUAL_TAGS,
-      priority: 6
+      priority: 5
     },
 
     ARCHITECTURE: {
@@ -88,7 +80,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Архитектура'
       },
       tags: ARCHITECTURE_TAGS,
-      priority: 7
+      priority: 6
     },
 
     MOBILE_TAGS: {
@@ -97,7 +89,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Мобильные'
       },
       tags: MOBILE_TAGS,
-      priority: 8
+      priority: 7
     },
 
     PRINCIPLES: {
@@ -106,17 +98,12 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Принципы'
       },
       tags: PRINCIPLES_TAGS,
-      priority: 9
+      priority: 8
     },
 
-    PROCESS: {
-      name: {
-        en: 'Process',
-        ru: 'Процессы'
-      },
-      tags: PROCESS_TAGS,
-      priority: 10
-    },
+    // PROCESS group intentionally removed from Key Skills — not a useful
+    // signal for HR scanners; PROCESS_TAGS still exists in tags.ts for
+    // potential reuse but doesn't render here anymore.
 
     UNFILTERED: {
       name: {
@@ -124,7 +111,7 @@ export const TAG_GROUPS: Record<string, TagGroupConfig> = {
         ru: 'Остальные'
       },
       tags: [],
-      priority: 11
+      priority: 9
     }
   };
   

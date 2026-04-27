@@ -170,7 +170,7 @@ export const education: EducationItem[] = [
 
 					"Data Structures & Algorithms",
 
-					"Game Dev",
+					"Game Development",
 					"C#",
 					"Unity",
 				]

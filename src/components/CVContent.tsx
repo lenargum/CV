@@ -5,7 +5,6 @@ import Tags from './Tags';
 import Experience from './Experience';
 import Education from './Education';
 import Achievements from './Achievements';
-import { useTranslation } from '../i18n/useTranslation';
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import type { 
@@ -59,7 +58,7 @@ export default function CVContent({
     <>
       <motion.div
         id="cv-content"
-        className={`shadow-md print:shadow-none my-0 md:my-6 max-w-[830px] mx-auto print:max-w-full print:m-0 ${isContentHidden ? 'pointer-events-none select-none' : ''}`}
+        className={`cv-card my-20 md:my-20 max-w-[920px] mx-auto print:max-w-full print:my-0 ${isContentHidden ? 'pointer-events-none select-none' : ''}`}
         initial={{opacity: 0}}
         animate={{ opacity: isContentHidden ? 0 : 1 }}
         transition={{ duration: 1, ease: 'easeInOut' }}
@@ -69,35 +68,16 @@ export default function CVContent({
           {/* CV Content */}
           <Header name={name} title={title} email={email} links={links} profile={profile} />
 
-          <div className="flex flex-col bg-primary-bg/90 backdrop-blur-sm print:bg-white">
+          <div className="flex flex-col print:bg-white">
             <Summary summary={summary} />
             <Tags allTags={allTags} profile={profile} />
             <Experience experiences={experiences} profile={profile} />
-            <ExtraSection education={education} awards={awards} teaching={teaching} profile={profile} />
+            <Education education={education} profile={profile} />
+            <Achievements awards={awards} teaching={teaching} />
           </div>
         </LanguageProvider>
       </motion.div>
       {/* toggle button moved to Layout */}
     </>
-  );
-}
-
-interface ExtraSectionProps {
-  education: ComposedEducation[];
-  awards: ComposedAchievement[];
-  teaching: ComposedAchievement[];
-  profile: ProfileType;
-}
-
-function ExtraSection({ education, awards, teaching, profile }: ExtraSectionProps) {
-  const { t } = useTranslation();
-  return (
-    <section className="cv-section">
-      <h2 className="section-title">{t.sections.extra}</h2>
-      <div className="space-y-6 print:space-y-2">
-        <Education education={education} profile={profile} nested />
-        <Achievements awards={awards} teaching={teaching} nested />
-      </div>
-    </section>
   );
 }

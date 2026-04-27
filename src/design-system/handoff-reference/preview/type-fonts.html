@@ -1,0 +1,26 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="../colors_and_type.css">
+<style>
+  html,body{margin:0;padding:0;background:#0A0A0A;}
+  .card{padding:28px;color:#fff;font-family:var(--font-sans);}
+  .label{color:#718096;font-size:11px;font-family:var(--font-mono);letter-spacing:.05em;text-transform:uppercase;margin-bottom:8px;}
+  .stack > div + div{margin-top:18px;}
+  .sample{font-family:ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;}
+  .mono{font-family:ui-monospace, SFMono-Regular, Menlo, monospace;color:#facc15;background:#141414;padding:2px 8px;border-radius:4px;display:inline-block;font-size:13px;}
+</style></head>
+<body><div class="card stack">
+  <div>
+    <div class="label">Sans · system stack (no webfont)</div>
+    <div class="sample" style="font-size:18px;">The quick brown fox jumps over the lazy dog. 1234567890</div>
+    <div class="sample" style="font-size:13px;color:#718096;margin-top:4px;">ui-sans-serif → system-ui → -apple-system → Segoe UI → Roboto</div>
+  </div>
+  <div>
+    <div class="label">RU sample · same stack</div>
+    <div class="sample" style="font-size:18px;">Frontend Engineer с 5+ годами опыта в UI‑heavy продуктах</div>
+  </div>
+  <div>
+    <div class="label">Mono · code / metric</div>
+    <span class="mono">−42% LCP</span>
+    <span class="mono" style="margin-left:6px;">1.1MB → 490KB gz</span>
+  </div>
+</div></body></html>

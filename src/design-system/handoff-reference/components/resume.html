@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Lenar Gumerov — Resume (PDF)</title>
+  <style>
+    @page { size: A4; margin: 18mm 16mm; }
+    html, body { margin: 0; padding: 0; background: #fff; color: #0a0a0a; font: 12pt/1.45 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    .page { max-width: 800px; margin: 24px auto; padding: 28px 32px; }
+    h1 { margin: 0 0 4px; font-size: 28pt; letter-spacing: -0.01em; }
+    .role { color: #444; font-size: 13pt; margin-bottom: 14px; }
+    .contacts { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 10.5pt; color: #333; margin-bottom: 18px; }
+    .contacts a { color: #0a0a0a; text-decoration: none; border-bottom: 1px dotted #888; }
+    h2 { margin: 18px 0 8px; font-size: 11pt; letter-spacing: .12em; text-transform: uppercase; color: #555; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
+    .summary p { margin: 0 0 6px; font-size: 11pt; color: #222; }
+    .exp { margin-bottom: 14px; }
+    .exp-head { display: flex; justify-content: space-between; gap: 16px; }
+    .exp-company { font-weight: 600; }
+    .exp-meta { font-size: 10pt; color: #666; text-align: right; white-space: nowrap; }
+    ul { margin: 6px 0 0; padding-left: 18px; }
+    li { font-size: 10.5pt; color: #222; margin-bottom: 3px; }
+    .tags { font-size: 9.5pt; color: #555; margin-top: 6px; }
+    .print-cta { position: fixed; top: 16px; right: 16px; background: #0a0a0a; color: #fff; padding: 8px 14px; border-radius: 999px; font: 500 11pt/1 ui-sans-serif, system-ui; cursor: pointer; border: 0; }
+    @media print { .print-cta { display: none; } .page { margin: 0; padding: 0; max-width: none; } }
+  </style>
+</head>
+<body>
+  <button class="print-cta" onclick="window.print()">Print / Save as PDF</button>
+  <div class="page">
+    <h1>Lenar Gumerov</h1>
+    <div class="role">Software Engineer (Frontend-focused)</div>
+    <div class="contacts">
+      <a href="mailto:lenargamgam@gmail.com">lenargamgam@gmail.com</a>
+      <a href="https://t.me/lenargum">Telegram @lenargum</a>
+      <a href="https://www.linkedin.com/in/lenar-gumerov-13593b190/">LinkedIn</a>
+      <a href="https://github.com/lenargum">GitHub lenargum</a>
+    </div>
+
+    <h2>About me</h2>
+    <div class="summary">
+      <p>Frontend Engineer with 5+ years of experience in UI-heavy products: editors, dashboards, e-commerce, and Telegram Mini Apps.</p>
+      <p>Focused on complex interfaces, animations, architecture, design systems, and performance optimization.</p>
+      <p>Work end-to-end and take ownership of product outcomes, not just tasks.</p>
+    </div>
+
+    <h2>Experience</h2>
+
+    <div class="exp">
+      <div class="exp-head"><div><div class="exp-company">Cobalt Lab</div><div>Senior Frontend Engineer</div></div><div class="exp-meta">Feb 2026 — Apr 2026<br/>Cyprus, Remote</div></div>
+      <ul>
+        <li>Joined a real-money iGaming platform mid-redesign with heavy accumulated legacy. Over 2 months: production release plus systematic refactoring delivered alongside feature work.</li>
+        <li>Network layer centralization, splitting 2–3k-line god components and stores, Vue 3 typing standardization, security hardening.</li>
+        <li>Owned 6+ end-to-end product features across 17 epics — retention events, onboarding, banner system, referral program, reward claim.</li>
+        <li>Every feature shipped through a full production cycle — responsive, unit-tested, localized, CDN-delivered, PostHog tracking.</li>
+      </ul>
+      <div class="tags">Vue · TypeScript · Pinia · Vite · Vitest · Tailwind · PostHog</div>
+    </div>
+
+    <div class="exp">
+      <div class="exp-head"><div><div class="exp-company">Freelance</div><div>Fullstack Engineer (Frontend-focused)</div></div><div class="exp-meta">Jan 2025 — Feb 2026<br/>Remote</div></div>
+      <ul>
+        <li>Built product-level web applications and Mini Apps: iGaming, e-commerce, crypto dashboards, internal tools.</li>
+        <li>Developed UI-heavy interfaces with animations, complex state management, and responsive layouts.</li>
+        <li>Delivered fullstack solutions: frontend, backend, CI/CD, and deployment.</li>
+        <li>Designed application architecture, role-based access systems, real-time updates, and integrations.</li>
+      </ul>
+      <div class="tags">React · Next.js · TypeScript · Tailwind · Motion.js · Go · PostgreSQL · Redis · Docker · Flutter</div>
+    </div>
+
+    <div class="exp">
+      <div class="exp-head"><div><div class="exp-company">Orbit — Portal (TMA gaming)</div><div>Senior Frontend Engineer</div></div><div class="exp-meta">Sep 2024 — Mar 2025<br/>Dubai, Remote</div></div>
+      <ul>
+        <li>Led the frontend of a Telegram gaming platform from pre-launch to 1M users.</li>
+        <li>Built a drop-in TMA SDK with embeddable UI widgets and cross-game services.</li>
+        <li>Reduced initial JS payload by 55% (1.1 MB → 490 KB gz).</li>
+      </ul>
+      <div class="tags">React · TypeScript · Redux · Zustand · TMA · Motion.js · Tailwind</div>
+    </div>
+
+    <div class="exp">
+      <div class="exp-head"><div><div class="exp-company">Incymo — SmartUA</div><div>Senior Frontend Engineer</div></div><div class="exp-meta">Jun 2023 — Sep 2024<br/>Tbilisi, Remote</div></div>
+      <ul>
+        <li>Complex image and video editor with multi-layer support, batch imports, timeline, animations.</li>
+        <li>Ad banner generator with flexible templates and post-generation editing.</li>
+        <li>Full UI redesign to a modern Material 3+ design system.</li>
+        <li>Analytical dashboards: campaign review time from ~10 to ~2 minutes.</li>
+      </ul>
+      <div class="tags">Vue · TypeScript · Pinia · Vuetify · Chart.js · Tailwind · Design Systems</div>
+    </div>
+
+    <div class="exp">
+      <div class="exp-head"><div><div class="exp-company">Icons8 — Icons</div><div>Frontend Engineer</div></div><div class="exp-meta">Oct 2021 — Jun 2023<br/>Innopolis, Remote</div></div>
+      <ul>
+        <li>Iconizer SVG editor on Paper.js with grouped downloads, editable previews, role-based access.</li>
+        <li>Maintained shared internal UI kit across products with a11y improvements.</li>
+        <li>Ad UX: CTR +18%, viewability 72%. Performance: LCP −42%, CLS 0.03, image payload −55%.</li>
+      </ul>
+      <div class="tags">Vue · Nuxt · Vuex · Paper.js · SVG · SSR</div>
+    </div>
+
+    <div class="exp">
+      <div class="exp-head"><div><div class="exp-company">MKSKOM LLC</div><div>Frontend Engineer</div></div><div class="exp-meta">Feb 2021 — Aug 2021<br/>Moscow, Remote</div></div>
+      <ul>
+        <li>Isolated SPA modules in a legacy monolith with PHP integrations.</li>
+        <li>Internal UI kit for document workflows.</li>
+        <li>Complex editable table with nested forms and full mobile responsiveness.</li>
+      </ul>
+      <div class="tags">Vue · SCSS · Modular Frontend</div>
+    </div>
+
+    <h2>Education</h2>
+    <div class="exp">
+      <div class="exp-head"><div><div class="exp-company">Innopolis University</div><div>Bachelor of Computer Science · Software Engineer</div></div><div class="exp-meta">Aug 2017 — May 2021</div></div>
+      <ul>
+        <li>Advanced Enterprise Programming on JavaScript course</li>
+        <li>Courses in Product Design & Management</li>
+        <li>Hands-on backend, frontend, and mobile development; data structures and algorithms</li>
+        <li>Project: procedurally generated solar system in Unity (algorithms reused in resume-site animation)</li>
+      </ul>
+    </div>
+
+    <h2>Awards</h2>
+    <ul>
+      <li><strong>Winner</strong>, Digital Breakthrough 2020 (Northwest IT Hub) hackathon — 48h, 280 teams</li>
+      <li><strong>Winner</strong>, OpenSpaceHack 2020 hackathon — 48h, 37 teams</li>
+      <li><strong>4th Place</strong>, InnoCTF 2018 (Cybersecurity) — 10h, ~30 teams</li>
+    </ul>
+  </div>
+</body>
+</html>

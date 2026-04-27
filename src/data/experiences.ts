@@ -20,7 +20,7 @@ export const experiences: ExperienceItem[] = [
 			ru: "Senior Frontend Engineer",
 		},
 		icon: '/CV/icons/cobalt.png',
-		company: 'Cobalt Lab',
+		company: '[Cobalt Lab](https://cobaltlab.tech/)',
 		location: {
 			en: "Cyprus, Remote",
 			ru: "Кипр, Удалённо"
@@ -31,38 +31,38 @@ export const experiences: ExperienceItem[] = [
 			// === Top bullet — context + delivery + proactivity (all profiles) ===
 			{
 				base: {
-					en: "Joined a real-money iGaming platform mid-redesign with heavy accumulated legacy. Over 2 months: production release plus systematic refactoring delivered alongside feature work.",
-					ru: "Пришёл на real-money iGaming платформу на этапе редизайна, с тяжёлым накопленным легаси. За 2 месяца: релиз в прод и системный рефакторинг параллельно фичам."
+					en: "Joined a real-money iGaming platform mid-redesign with heavy accumulated legacy. Over **2 months**: production release plus systematic refactoring delivered alongside feature work.",
+					ru: "Пришёл на real-money iGaming платформу на этапе редизайна, с тяжёлым накопленным легаси. За **2 месяца**: релиз в прод и системный рефакторинг параллельно фичам."
 				},
 			},
 			// === Architectural cleanup — Vue/Fullstack/All variant ===
 			{
 				base: {
-					en: "Key refactors — network layer centralization, splitting 2–3k-line god components and stores (with legacy parity), Vue 3 typing standardization, and security hardening across user flows.",
-					ru: "Ключевые рефакторинги — централизация network-слоя, разбиение 2–3к-строчных god-компонентов и сторов (с сохранением legacy-поведения), стандартизация типизации Vue 3 и усиление security в пользовательских флоу."
+					en: "Key refactors — network layer centralization, splitting **2–3k-line god components and stores** (with legacy parity), Vue 3 typing standardization, and security hardening across user flows.",
+					ru: "Ключевые рефакторинги — централизация network-слоя, разбиение **2–3к-строчных god-компонентов и сторов** (с сохранением legacy-поведения), стандартизация типизации Vue 3 и усиление security в пользовательских флоу."
 				},
 				showIn: ['vue', 'fullstack', 'all'],
 			},
 			// === Architectural cleanup — React variant ===
 			{
 				base: {
-					en: "Key refactors — network layer centralization, splitting 2–3k-line god components and stores (with legacy parity), codebase-wide TypeScript standardization, and security hardening across user flows.",
-					ru: "Ключевые рефакторинги — централизация network-слоя, разбиение 2–3к-строчных god-компонентов и сторов (с сохранением legacy-поведения), стандартизация TypeScript по кодовой базе и усиление security в пользовательских флоу."
+					en: "Key refactors — network layer centralization, splitting **2–3k-line god components and stores** (with legacy parity), codebase-wide TypeScript standardization, and security hardening across user flows.",
+					ru: "Ключевые рефакторинги — централизация network-слоя, разбиение **2–3к-строчных god-компонентов и сторов** (с сохранением legacy-поведения), стандартизация TypeScript по кодовой базе и усиление security в пользовательских флоу."
 				},
 				showIn: ['react'],
 			},
 			// === Scope with feature list (all profiles) ===
 			{
 				base: {
-					en: "Owned 6+ end-to-end product features across 17 epics — retention events, onboarding, new banner system, referral program, reward claim.",
-					ru: "Самостоятельно вёл 6+ end-to-end продуктовых фич в рамках 17 эпиков — retention-эвенты, онбординг, новая система баннеров, реферальная программа, клейм наград."
+					en: "Owned **6+ end-to-end product features** across **17 epics** — retention events, onboarding, new banner system, referral program, reward claim.",
+					ru: "Самостоятельно вёл **6+ end-to-end продуктовых фич** в рамках **17 эпиков** — retention-эвенты, онбординг, новая система баннеров, реферальная программа, клейм наград."
 				},
 			},
 			// === Production-cycle processes (all profiles) ===
 			{
 				base: {
-					en: "Every feature shipped through a full production cycle — responsive on desktop/tablet/mobile, unit-tested, localized via admin panel, CDN-delivered with WebP + compression, event tracking via PostHog.",
-					ru: "Каждая фича уходила в прод по полному циклу — адаптив на десктопе/планшете/мобиле, юнит-тесты, локализация через админку, доставка через CDN с WebP + compression, event-трекинг через PostHog."
+					en: "Every feature shipped through a **full production cycle** — responsive on desktop/tablet/mobile, unit-tested, localized via admin panel, CDN-delivered with WebP + compression, event tracking via PostHog.",
+					ru: "Каждая фича уходила в прод по **полному циклу** — адаптив на десктопе/планшете/мобиле, юнит-тесты, локализация через админку, доставка через CDN с WebP + compression, event-трекинг через PostHog."
 				},
 			},
 		],

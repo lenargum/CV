@@ -31,35 +31,45 @@ export default function Education({ education, profile, nested = false }: Educat
   return (
     <Wrapper className={wrapperClass}>
       <HeadingTag className={headingClass}>{t.sections.education}</HeadingTag>
-      <div>
+      <div className="cv-stack">
         {education.map((edu, index) => (
-          <div key={index}>
-            <div className="flex flex-row items-start md:items-center gap-x-3 md:mb-4">
-              <img src={withBasePath(edu.icon || '')} alt={edu.institution} className="md:w-20 md:h-20 w-10 h-10 rounded-xl flex-shrink-0 mt-2 md:mt-0" />
-              <div className="flex flex-col">
-                <h3 className="md:mb-1">
+          <article key={index} className="cv-exp cv-exp--edu print:break-inside-avoid">
+            <div className="cv-exp__head">
+              <img src={withBasePath(edu.icon || '')} alt={edu.institution} className="cv-exp__icon" />
+              <div className="cv-exp__heading">
+                <div className="cv-exp__company">
                   {edu.degree}
-                  {edu.specialization && <span className="font-normal">, {edu.specialization}</span>}
-                </h3>
-                <div className="flex flex-col print:flex-row print:items-baseline print:gap-x-2">
-                  <MarkdownText as="span" className="font-normal">{edu.institution}</MarkdownText>
-                  <span className="text-text-tertiary text-sm">{getFormattedDateRange(edu.dateStart, edu.dateEnd)}</span>
+                  {edu.specialization && <span className="font-normal opacity-75">, {edu.specialization}</span>}
+                </div>
+                {/* Institution + years on a single flex row — degree text is
+                    long ("Bachelor of Computer Science, Software Engineer"),
+                    so a separate top-right meta column would float weirdly
+                    once degree wraps. Inline keeps them visually paired. */}
+                <div className="cv-edu__inst-row">
+                  <div className="cv-exp__title">
+                    <MarkdownText as="span">{edu.institution}</MarkdownText>
+                  </div>
+                  <div className="cv-edu__years">{getFormattedDateRange(edu.dateStart, edu.dateEnd)}</div>
                 </div>
               </div>
             </div>
-            <ul className="list-disc">
-              {edu.highlights.map((highlight, idx) => (
-                <li key={idx}>
-                  <MarkdownText>{highlight}</MarkdownText>
-                </li>
-              ))}
-            </ul>
-            {edu.technologies && edu.technologies.length > 0 && <div className="flex flex-wrap gap-2 mt-3">
-              {edu.technologies.map((tech, idx) => (
-                <Tag key={idx} tag={tech} profile={profile} />
-              ))}
-            </div>}
-          </div>
+            {edu.highlights.length > 0 && (
+              <ul className="cv-exp__bullets">
+                {edu.highlights.map((highlight, idx) => (
+                  <li key={idx}>
+                    <MarkdownText>{highlight}</MarkdownText>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {edu.technologies && edu.technologies.length > 0 && (
+              <div className="cv-exp__tags">
+                {edu.technologies.map((tech, idx) => (
+                  <Tag key={idx} tag={tech} profile={profile} />
+                ))}
+              </div>
+            )}
+          </article>
         ))}
       </div>
     </Wrapper>

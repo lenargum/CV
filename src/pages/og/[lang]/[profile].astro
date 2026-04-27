@@ -1,0 +1,196 @@
+---
+/**
+ * OG (social share) card route — design-system-faithful, mirrors the site's
+ * cv-card header layout (avatar + name/role/chips in a single horizontal row).
+ *
+ * Renders at 1200×630 with the live WebGL noise field on the background and
+ * a translucent .cv-card on top. No QR — the URL is already next to the OG
+ * preview when shared.
+ *
+ * Build: Puppeteer navigates here, waits for the canvas to render a few
+ * frames, then screenshots into public/og/og-{lang}-{profile}.png.
+ */
+import "../../../design-system/tokens.css";
+import "../../../styles/global.css";
+import NoiseBackground from "../../../components/NoiseBackground";
+import { composeCv } from "../../../lib/composeCv";
+import { PROFILES, LANGS } from "../../../lib/types";
+import type { ProfileType, LangType } from "../../../lib/types";
+import { withBasePath } from "../../../lib/utils";
+
+export function getStaticPaths() {
+  return LANGS.flatMap(lang =>
+    PROFILES.map(profile => ({
+      params: { lang, profile },
+      props: { lang, profile },
+    }))
+  );
+}
+
+interface Props {
+  lang: LangType;
+  profile: ProfileType;
+}
+
+const { lang, profile } = Astro.props;
+const cv = composeCv(profile, lang);
+
+// Capture mode (driven by ?capture=1 from generate-og-apng.mjs):
+//   - noise loop period in seconds (matches OG_LOOP_SECONDS in the script)
+//   - shader uses seamless loop math; no rAF, frames stepped externally
+//
+// OG_LOOP_TRAVEL: how much of the noise z-axis the cycle covers. 1.0 = the
+// shader default (full unit per loop = fast). Site moves at ~0.0005/frame so
+// 4-second site-pace is ≈ 0.12. We go even subtler (0.06) for a calm,
+// hypnotic loop appropriate to a preview that auto-replays.
+const isCapture = Astro.url.searchParams.get('capture') === '1';
+const OG_LOOP_SECONDS = 4;
+const OG_LOOP_TRAVEL = 0.25;
+
+// Per-profile accent → tokens from tokens.css
+const accentByProfile: Record<ProfileType, { bg: string; text: string; label: string }> = {
+  react:     { bg: 'var(--lenar-react-cyan)',  text: '#000', label: lang === 'ru' ? 'React-разработчик'    : 'React Developer' },
+  vue:       { bg: 'var(--lenar-emerald-500)', text: '#fff', label: lang === 'ru' ? 'Vue-разработчик'      : 'Vue Developer' },
+  fullstack: { bg: 'var(--lenar-go-blue)',     text: '#fff', label: lang === 'ru' ? 'Fullstack-инженер'    : 'Fullstack Engineer' },
+  all:       { bg: 'var(--lenar-white)',       text: '#000', label: lang === 'ru' ? 'Программный инженер' : 'Software Engineer' },
+};
+const accent = accentByProfile[profile];
+
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <title>{`OG ${lang}-${profile}`}</title>
+    <meta name="robots" content="noindex" />
+    <style is:global define:vars={{ accentBg: accent.bg, accentText: accent.text }}>
+      /* OG-specific viewport — neutralize anything Layout would normally do. */
+      html, body {
+        width: 1200px;
+        height: 630px;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: var(--lenar-charcoal);
+        color: var(--fg-primary);
+        font-family: var(--font-sans);
+      }
+      /* NoiseBackground reads color/bg from canvas computed style */
+      canvas {
+        position: fixed;
+        inset: 0;
+        width: 100% !important;
+        height: 100% !important;
+        background-color: var(--lenar-charcoal);
+        color: var(--lenar-white);
+        z-index: 0;
+      }
+
+      /* Outer frame — centers a compact card over the looping noise so the
+         animation stays visible around all four sides of the card. */
+      .og-frame {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      /* Card sized to its content (avatar height + padding). Width capped so
+         the noise field has visible breathing room left/right too. Uses the
+         .cv-card surface (rgba/blur/radius/shadow) from global.css. */
+      .og-card {
+        width: min(880px, 80%);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      /* === Hero row — mirrors the site's header (avatar left, content right) === */
+      .og-hero {
+        display: flex;
+        align-items: center;
+        gap: 44px;
+        min-width: 0;
+      }
+      /* Avatar container — inset surface (matches the site's AvatarSection
+         which uses .cv-inset: subtle translucent bg so the cut-out photo
+         sits on a soft plate instead of floating on the card surface). */
+      .og-avatar {
+        width: 260px;
+        height: 260px;
+        border-radius: var(--radius-2xl);
+        overflow: hidden;
+        flex: 0 0 auto;
+        background: rgba(255, 255, 255, 0.03);
+      }
+      /* Reproduce AvatarSection.tsx framing: scale(1.18) anchored top so the
+         face sits centered in the square crop. */
+      .og-avatar img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center top;
+        transform: scale(1.18);
+        transform-origin: center top;
+        display: block;
+      }
+
+      .og-content { min-width: 0; flex: 1 1 auto; }
+      /* Profile-focus pill — intentionally compact so the actual role below
+         the name dominates the hierarchy (focus filter is meta, role is content). */
+      .og-badge {
+        display: inline-block;
+        padding: 4px 14px;
+        border-radius: var(--radius-full);
+        background-color: var(--accentBg);
+        color: var(--accentText);
+        font-size: 14px;
+        font-weight: var(--weight-bold);
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+      }
+      .og-name {
+        font-size: 72px;
+        line-height: 1.0;
+        font-weight: var(--weight-bold);
+        letter-spacing: -0.025em;
+        margin-top: 12px;
+        color: var(--fg-primary);
+      }
+      .og-role {
+        margin-top: 10px;
+        font-size: 26px;
+        line-height: var(--leading-snug);
+        color: var(--fg-primary);
+        font-weight: var(--weight-medium);
+      }
+
+    </style>
+  </head>
+  <body>
+    {/* Live WebGL noise field — same component the site uses.
+        For OG capture: loop=2s + captureMode so frames are deterministic.
+        For static-PNG generation (no ?capture): a regular looping animation
+        plays — Puppeteer screenshots whatever frame happens at t≈1500ms. */}
+    <NoiseBackground client:load loopSeconds={OG_LOOP_SECONDS} loopTravel={OG_LOOP_TRAVEL} captureMode={isCapture} />
+
+    <div class="og-frame">
+      <div class="og-card cv-card">
+        <div class="og-hero">
+          <div class="og-avatar">
+            <img src={withBasePath(`/resume_photo.png`)} alt={cv.personalInfo.name} />
+          </div>
+          <div class="og-content">
+            <div class="og-badge">{accent.label}</div>
+            <div class="og-name">{cv.personalInfo.name}</div>
+            <div class="og-role">{cv.personalInfo.title}</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </body>
+</html>

@@ -131,47 +131,44 @@ export default function Experience({ experiences, profile }: ExperienceProps) {
 
   return (
     <section className="cv-section">
-      <div className="mb-6 print:mb-1">
-        <h2 className="section-title !mb-1 print:!mb-0">{t.sections.experience}</h2>
-        <span className="text-text-primary text-md">{totalExperienceText}</span>
+      <div className="mb-4 print:mb-1 flex items-baseline">
+        <h2 className="section-title !mb-0">{t.sections.experience}</h2>
+        <span className="section-meta">{totalExperienceText}</span>
       </div>
-      <div className="space-y-8 print:space-y-2">
+      <div className="cv-stack">
         {experiences.map((exp, index) => (
-          <div key={index} className="subsection">
-            <div className="flex flex-row items-start md:items-center gap-x-3 mb-4 print:mb-0 print:break-inside-avoid">
-              <img src={withBasePath(exp.icon || '')} alt={exp.company} className="md:w-20 md:h-20 w-10 h-10 rounded-xl flex-shrink-0 mt-2 md:mt-0" />
-              <div className="flex flex-col">
-                <h3 className="md:mb-1"><MarkdownText>{exp.company}</MarkdownText></h3>
-                <div className="flex flex-col print:flex-row print:items-baseline print:gap-x-2">
-                  <h4 className="md:mb-1"><MarkdownText>{`${exp.title}, ${exp.location}`}</MarkdownText></h4>
-
-                  <div className="flex flex-row items-baseline gap-x-2 print:gap-x-1">
-                    <span className="text-text-tertiary text-sm">{getFormattedDateRange(exp.dateStart, exp.dateEnd)}</span>
-                    <span className="text-text-tertiary text-sm">
-                      ({formatDuration(monthsBetween(exp.dateStart, exp.dateEnd), currentLang, true)})
-                    </span>
-                  </div>
+          <article key={index} className="cv-exp print:break-inside-avoid">
+            <div className="cv-exp__head">
+              <img src={withBasePath(exp.icon || '')} alt={exp.company} className="cv-exp__icon" />
+              <div className="cv-exp__heading">
+                <div className="cv-exp__company"><MarkdownText>{exp.company}</MarkdownText></div>
+                <div className="cv-exp__title"><MarkdownText>{exp.title}</MarkdownText></div>
+              </div>
+              <div className="cv-exp__meta">
+                <div>
+                  <span className="cv-exp__dur">{formatDuration(monthsBetween(exp.dateStart, exp.dateEnd), currentLang, true)} · </span>
+                  {getFormattedDateRange(exp.dateStart, exp.dateEnd)}
                 </div>
+                <div className="cv-exp__loc">{exp.location}</div>
               </div>
             </div>
-            {exp.description && exp.description.length > 0 && <ul className="list-disc">
-              {exp.description.map((item, idx) => (
-                <li key={idx}>
-                  <MarkdownText>{item}</MarkdownText>
-                </li>
-              ))}
-            </ul>}
-            {exp.technologies && exp.technologies.length > 0 && (
-              <div className="flex flex-wrap gap-2 mt-3 print:mt-1">
-                {profile === 'all' ? [...exp.technologies].sort(compareByPriority).map((tech, idx) => (
-                  <Tag key={idx} tag={tech} profile={profile} />
-                )) :
-                [...exp.technologies].map((tech, idx) => (
-                  <Tag key={idx} tag={tech} profile={profile} />
+            {exp.description && exp.description.length > 0 && (
+              <ul className="cv-exp__bullets">
+                {exp.description.map((item, idx) => (
+                  <li key={idx}>
+                    <MarkdownText>{item}</MarkdownText>
+                  </li>
                 ))}
+              </ul>
+            )}
+            {exp.technologies && exp.technologies.length > 0 && (
+              <div className="cv-exp__tags">
+                {profile === 'all'
+                  ? [...exp.technologies].sort(compareByPriority).map((tech, idx) => <Tag key={idx} tag={tech} profile={profile} />)
+                  : [...exp.technologies].map((tech, idx) => <Tag key={idx} tag={tech} profile={profile} />)}
               </div>
             )}
-          </div>
+          </article>
         ))}
       </div>
     </section>

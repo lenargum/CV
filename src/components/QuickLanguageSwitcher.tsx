@@ -1,70 +1,96 @@
 import { useTranslation } from '../i18n/useTranslation';
-import type { ProfileType } from '../lib/types';
+import type { ProfileType, LangType } from '../lib/types';
 
-interface QuickLanguageSwitcherProps {
+interface SwitcherProps {
   profile?: ProfileType;
   activeProfile?: ProfileType | '';
+  /** Override for currentLang when component runs OUTSIDE a LanguageProvider
+   *  context (e.g. as a stand-alone client:load island in Layout.astro). */
+  currentLang?: LangType;
 }
 
-export default function QuickLanguageSwitcher({
-  profile = 'all',
-  activeProfile = '',
-}: QuickLanguageSwitcherProps) {
-  const { currentLang } = useTranslation();
+// URL builder shared by both switchers.
+// EN at root (/, /react/, ...); RU under /ru/ (/ru/, /ru/react/, ...).
+function buildPath(lang: 'en' | 'ru', p: ProfileType): string {
+  const base = import.meta.env.BASE_URL.endsWith('/')
+    ? import.meta.env.BASE_URL
+    : `${import.meta.env.BASE_URL}/`;
+  const langSegment = lang === 'en' ? '' : 'ru/';
+  const profileSegment = p === 'all' ? '' : `${p}/`;
+  return `${base}${langSegment}${profileSegment}`;
+}
 
-  const activeClasses = 'bg-white text-black';
-  const inactiveClasses = 'bg-black hover:bg-white/10';
-
-  // URL scheme: EN at root (/, /react/, /vue/, /fullstack/);
-  // RU under /ru/ prefix (/ru/, /ru/react/, ...).
-  const buildPath = (lang: 'en' | 'ru', p: ProfileType): string => {
-    const base = import.meta.env.BASE_URL.endsWith('/')
-      ? import.meta.env.BASE_URL
-      : `${import.meta.env.BASE_URL}/`;
-    const langSegment = lang === 'en' ? '' : 'ru/';
-    const profileSegment = p === 'all' ? '' : `${p}/`;
-    return `${base}${langSegment}${profileSegment}`;
-  };
-
-  const getHref = (lang: 'en' | 'ru') => buildPath(lang, profile);
-  const getProfileHref = (lang: 'en' | 'ru', nextProfile: ProfileType) => buildPath(lang, nextProfile);
-
+/**
+ * LangSwitcher — pill with EN / RU.
+ * Lives in the floating top-right chrome cluster (Layout-level).
+ */
+export function LangSwitcher({ profile = 'all', currentLang: currentLangProp }: SwitcherProps) {
+  // Prefer the prop (passed from Astro's frontmatter) over the context.
+  // When this component lives in its own client:load island (Layout chrome),
+  // it has NO LanguageProvider above it — the context falls back to 'en' and
+  // the active state would never update. The prop fixes that.
+  const ctx = useTranslation();
+  const currentLang: LangType = currentLangProp ?? ctx.currentLang;
   return (
-    <div className="flex gap-2 p-1 md:p-0 rounded-lg md:padding-0 bg-black md:bg-transparent">
-      {profile === 'all' && <>
-        {(['react', 'vue', 'fullstack'] as const).map((_profile) => (
-          <a
-            key={_profile}
-            href={getProfileHref(currentLang, _profile)}
-            className={`px-3 py-1 rounded-md text-sm font-medium custom-link ${activeProfile === _profile
-              ? activeClasses
-              : inactiveClasses
-              } transition-colors duration-300 outline outline-1 outline-secondary`}
-          >
-            {_profile.charAt(0).toUpperCase() + _profile.slice(1)}
-          </a>
-        ))}
-        <div className="w-px h-5 mt-1 bg-primary-bg"></div>
-      </>}
-
+    <div className="cv-lang">
       <a
-        href={getHref('en')}
-        className={`px-3 py-1 rounded-md text-sm font-medium custom-link ${currentLang === 'en'
-          ? activeClasses
-          : inactiveClasses
-          } transition-colors duration-300`}
+        href={buildPath('en', profile)}
+        className={`cv-lang__btn custom-link ${currentLang === 'en' ? 'is-active' : ''}`}
       >
         EN
       </a>
       <a
-        href={getHref('ru')}
-        className={`px-3 py-1 rounded-md text-sm font-medium custom-link ${currentLang === 'ru'
-          ? activeClasses
-          : inactiveClasses
-          } transition-colors duration-300`}
+        href={buildPath('ru', profile)}
+        className={`cv-lang__btn custom-link ${currentLang === 'ru' ? 'is-active' : ''}`}
       >
         РУС
       </a>
+    </div>
+  );
+}
+
+/**
+ * ProfileSwitcher — All / React / Vue / Fullstack pill.
+ * Renders inline inside Header (only meaningful on the 'all' profile;
+ * focused profiles intentionally hide it to keep the version's surface clean).
+ */
+export function ProfileSwitcher({ activeProfile = 'all', currentLang: currentLangProp }: SwitcherProps) {
+  const ctx = useTranslation();
+  const currentLang: LangType = currentLangProp ?? ctx.currentLang;
+  const profiles: ProfileType[] = ['all', 'react', 'vue', 'fullstack'];
+  const labels: Record<LangType, Record<ProfileType, string>> = {
+    en: { all: 'All', react: 'React', vue: 'Vue', fullstack: 'Fullstack' },
+    ru: { all: 'Всё', react: 'React', vue: 'Vue', fullstack: 'Fullstack' },
+  };
+  const lbl = labels[currentLang];
+  return (
+    <div className="cv-profile-inline">
+      {profiles.map((p) => {
+        const isActive = activeProfile === p;
+        return (
+          <a
+            key={p}
+            href={isActive ? undefined : buildPath(currentLang, p)}
+            className={`cv-profile-inline__btn custom-link ${isActive ? 'is-active' : ''}`}
+            aria-pressed={isActive}
+          >
+            {lbl[p]}
+          </a>
+        );
+      })}
+    </div>
+  );
+}
+
+/**
+ * Default export kept for backward compatibility — renders both inline
+ * (used by ResumeCopyTool which doesn't have access to the floating chrome).
+ */
+export default function QuickLanguageSwitcher({ profile = 'all', activeProfile = '' }: SwitcherProps) {
+  return (
+    <div className="flex gap-2">
+      {profile === 'all' && <ProfileSwitcher activeProfile={activeProfile || profile} />}
+      <LangSwitcher profile={profile} />
     </div>
   );
 }

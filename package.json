@@ -7,7 +7,11 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "qr": "node scripts/generate-qrs.mjs"
+    "qr": "node scripts/generate-qrs.mjs",
+    "pdf-gen": "astro build && node scripts/generate-pdfs.mjs",
+    "og-gen": "astro build && node scripts/generate-og.mjs",
+    "og-apng": "astro build && node scripts/generate-og-apng.mjs",
+    "assets-gen": "pnpm qr && astro build && node scripts/generate-pdfs.mjs && node scripts/generate-og.mjs"
   },
   "dependencies": {
     "@astrojs/react": "^4.2.1",
@@ -24,7 +28,10 @@
     "@astrojs/tailwind": "5.0.3",
     "autoprefixer": "10.4.16",
     "postcss": "8.4.31",
+    "pngjs": "^7.0.0",
+    "puppeteer": "^24.42.0",
     "qrcode": "^1.5.4",
+    "upng-js": "^2.1.0",
     "tailwindcss": "3.3.5"
   }
 }

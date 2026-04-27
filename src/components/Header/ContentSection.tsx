@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, type ReactNode } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useTranslation } from '../../i18n/useTranslation';
 import SocialIcon from './SocialIcon';
@@ -16,22 +16,15 @@ interface ContentSectionProps {
     displayText: string;
   }[];
   profile: ProfileType;
+  /** Optional pill rendered to the right of name/title (e.g. ProfileSwitcher).
+   *  Keeps the heading row aligned with the switcher on a shared baseline. */
+  profileSwitcher?: ReactNode;
 }
 
-const ContentSection = ({ name, title, email, links, profile }: ContentSectionProps) => {
+const ContentSection = ({ name, title, email, links, profile, profileSwitcher }: ContentSectionProps) => {
   const { t } = useTranslation();
   const [copyStatus, setCopyStatus] = useState<string | null>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  const [isHovering, setIsHovering] = useState(false);
-  // Tracks the "entering" phase (mouse just entered the row). During this phase
-  // transitions are longer for a gentle rise; once the phase ends, transitions
-  // snap to short so that mouse movement feels responsive.
-  const [isEnteringPhase, setIsEnteringPhase] = useState(false);
-  const enterTimerRef = useRef<number | null>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const buttonRefs = useRef<(HTMLElement | null)[]>([]);
 
-  // Name from i18n (translatable), title from props (profile-specific from composeCv)
   const translatedName = t?.personalInfo?.name || name;
 
   const copyEmailToClipboard = () => {
@@ -46,151 +39,99 @@ const ContentSection = ({ name, title, email, links, profile }: ContentSectionPr
       });
   };
 
-  useEffect(() => {
-    // Initialize the buttonRefs array with the correct length
-    buttonRefs.current = buttonRefs.current.slice(0, links.length + 1);
-  }, [links]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!containerRef.current) return;
-
-    const rect = containerRef.current.getBoundingClientRect();
-    setMousePosition({
-      x: e.clientX - rect.left,
-      y: e.clientY - rect.top
-    });
-  };
-
-  const getButtonScale = (buttonEl: HTMLElement | null): string => {
-    if (!isHovering || !buttonEl) return '';
-
-    const buttonRect = buttonEl.getBoundingClientRect();
-    if (!containerRef.current) return '';
-
-    const containerRect = containerRef.current.getBoundingClientRect();
-
-    // Center of the button relative to the container
-    const buttonCenterX = buttonRect.left + buttonRect.width / 2 - containerRect.left;
-    const buttonCenterY = buttonRect.top + buttonRect.height / 2 - containerRect.top;
-
-    const distance = Math.sqrt(
-      Math.pow(mousePosition.x - buttonCenterX, 2) +
-      Math.pow(mousePosition.y - buttonCenterY, 2)
-    );
-
-    // Smooth Gaussian falloff — no discontinuity, natural "field" feel.
-    // sigma controls how quickly the influence drops with distance.
-    // peakDelta is the extra scale applied right at the cursor.
-    const sigma = 70;       // ≈ field radius (px); within sigma, influence is strong
-    const peakDelta = 0.35; // max additional scale at distance 0 → 1 + 0.35 = 1.35
-
-    const influence = Math.exp(-Math.pow(distance / sigma, 2));
-    if (influence < 0.005) return ''; // negligible — let CSS render baseline
-
-    return `scale(${1 + peakDelta * influence})`;
-  };
-
-  const setButtonRef = (index: number) => (el: HTMLElement | null) => {
-    buttonRefs.current[index] = el;
-  };
-
   return (
-    <div className="flex-1 p-6 md:p-10 print:py-0 flex justify-between items-center bg-secondary/80 relative">
-      <div className="flex flex-col justify-center">
-        <div className="flex justify-between items-center mb-2">
-          <h1 className="mb-0">{translatedName}</h1>
-        </div>
-        <h2 className="text-text-primary mb-8 print:mb-1">{title}</h2>
-        <div className="text-lg">
-          <div
-            ref={containerRef}
-            className="flex print:flex-col items-center print:items-start gap-6 print:gap-2"
-            onMouseMove={handleMouseMove}
-            onMouseEnter={(e) => {
-              // Initialize mouse position from the enter event so the first
-              // frame computes scale from the actual cursor position
-              // (avoids snapping from a stale {0,0} position on first hover).
-              if (containerRef.current) {
-                const rect = containerRef.current.getBoundingClientRect();
-                setMousePosition({
-                  x: e.clientX - rect.left,
-                  y: e.clientY - rect.top
-                });
-              }
-              setIsHovering(true);
-              // Start the "entering phase" — long transition for a gentle rise.
-              setIsEnteringPhase(true);
-              if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
-              enterTimerRef.current = window.setTimeout(() => {
-                setIsEnteringPhase(false);
-              }, 1000);
-            }}
-            onMouseLeave={() => {
-              setIsHovering(false);
-              setIsEnteringPhase(false);
-              if (enterTimerRef.current) {
-                window.clearTimeout(enterTimerRef.current);
-                enterTimerRef.current = null;
-              }
-            }}
-          >
-            <div className="flex items-center relative">
-              <button
-                ref={setButtonRef(0)}
-                className="inline-flex items-center bg-transparent border-0 p-0 transition-transform ease-out print:hidden"
-                onClick={copyEmailToClipboard}
-                title={email}
-                style={{ transform: getButtonScale(buttonRefs.current[0]), transitionProperty: 'transform', transitionTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)', transitionDuration: isEnteringPhase ? '1000ms' : '150ms' }}
-              >
-                <div className="text-text-primary">
-                  <SocialIcon type="email" />
-                </div>
-              </button>
-              <div className="hidden print:flex print:flex-row print:items-center print:gap-x-2">
-                <span className="text-text-primary text-sm ">telegram: {links.filter(link => link.name === 'Telegram')[0].displayText},</span>
-                <span className="text-text-primary text-sm ">email: {email}</span>
-              </div>
-
-              <AnimatePresence>
-                {copyStatus && (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.5, y: 0 }}
-                    animate={{ opacity: 1, scale: 1, y: 10 }}
-                    exit={{ opacity: 0, scale: 0.5, y: 0 }}
-                    transition={{
-                      type: "tween",
-                      ease: "easeInOut",
-                      duration: 0.3
-                    }}
-                    className="absolute top-[100%] left-0 z-10 origin-top-left"
-                  >
-                    <span className="text-sm bg-primary text-text-primary font-medium px-3 py-1.5 rounded-md shadow-md">
-                      {t?.clipboard?.[copyStatus as keyof typeof t.clipboard] || copyStatus}
-                    </span>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-
-            <div className="flex items-center gap-6 print:hidden">
-              {links.map((link, index) => (
-                <a
-                  key={link.name}
-                  ref={setButtonRef(index + 1)}
-                  className="inline-flex items-center bg-transparent border-0 p-0 transition-transform ease-out"
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  title={link.displayText}
-                  style={{ transform: getButtonScale(buttonRefs.current[index + 1]), transitionProperty: 'transform', transitionTimingFunction: 'cubic-bezier(0, 0, 0.2, 1)', transitionDuration: isEnteringPhase ? '1000ms' : '150ms' }}
-                >
-                  <div className="text-text-primary">
-                    <SocialIcon type={link.icon} />
-                  </div>
-                </a>
-              ))}
-            </div>
+    <div className="flex-1 min-w-0 flex justify-between items-stretch relative print:py-0">
+      <div className="flex flex-col justify-between min-w-0 flex-1 gap-4">
+        {/* Name + title on the LEFT, profile switcher on the RIGHT, same baseline.
+            Stacks below name on narrow screens (md:flex-row vs flex-col). */}
+        <div className="flex flex-col-reverse md:flex-row md:items-start md:justify-between gap-2 md:gap-4">
+          {/* Mobile pl-3 visually aligns the name/role text column with the
+              "All" button label inside the profile-switcher pill above (the
+              pill has internal padding, so without this offset the text
+              would sit flush-left while the pill text appears indented). */}
+          <div className="min-w-0 flex-1 pl-2 md:pl-0">
+            <h1 className="mb-1 md:mb-2 text-xl md:text-4xl font-bold tracking-tight leading-tight">{translatedName}</h1>
+            <h2 className="text-text-primary text-sm md:text-xl font-medium opacity-85 mb-0 print:mb-1">{title}</h2>
           </div>
+          {profileSwitcher && (
+            <div className="flex-shrink-0 print:hidden self-end md:self-start md:pt-1">
+              {profileSwitcher}
+            </div>
+          )}
+        </div>
+
+        {/* Social row — handoff "cv-social" style: clean rectangular pills,
+            email shows text + icon, others icon-only with title tooltip.
+            Negative margin pulls the FIRST pill's icon flush with text above
+            (text starts at column 0; pill has internal padding). Hover-bg
+            slight visual offset is intentional. */}
+        <div className="flex flex-wrap items-center gap-2 print:hidden md:-ml-[10px]">
+          {/* Email pill — wrapped in a relative container so the toast
+              originates from the pill itself (not from the row's left edge). */}
+          <div className="relative">
+            <button
+              type="button"
+              className="cv-social custom-link"
+              onClick={copyEmailToClipboard}
+              aria-label={email}
+            >
+              <SocialIcon type="email" />
+              <span className="hidden md:inline text-sm">{email}</span>
+            </button>
+            <AnimatePresence>
+              {copyStatus && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.5, y: -4 }}
+                  animate={{ opacity: 1, scale: 1, y: 6 }}
+                  exit={{ opacity: 0, scale: 0.5, y: -4 }}
+                  transition={{ type: "tween", ease: "easeInOut", duration: 0.3 }}
+                  className="absolute top-full left-1/2 -translate-x-1/2 z-10 origin-top whitespace-nowrap"
+                >
+                  {/* Toast styled to match the global .cv-tip hover tooltip
+                      (rgba dark surface, no border, same type/padding/radius). */}
+                  <span
+                    className="font-medium"
+                    style={{
+                      font: '500 11px/1 var(--font-sans)',
+                      color: 'var(--fg-primary)',
+                      background: 'rgba(20, 20, 20, 0.92)',
+                      padding: '6px 10px',
+                      borderRadius: '8px',
+                      display: 'inline-block',
+                    }}
+                  >
+                    {t?.clipboard?.[copyStatus as keyof typeof t.clipboard] || copyStatus}
+                  </span>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {links.map((link) => {
+            // Telegram gets text+icon treatment matching email (alias is short
+            // and verifiable). Other socials remain icon-only with tooltip.
+            const isTelegram = link.name === 'Telegram';
+            return (
+              <a
+                key={link.name}
+                className={`cv-social custom-link ${isTelegram ? '' : 'cv-social--icon'}`}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                title={link.displayText}
+                aria-label={link.displayText}
+              >
+                <SocialIcon type={link.icon} />
+                {isTelegram && <span className="hidden md:inline text-sm">{link.displayText}</span>}
+              </a>
+            );
+          })}
+        </div>
+
+        {/* Print-only contact line */}
+        <div className="hidden print:flex print:flex-row print:items-center print:gap-x-2">
+          <span className="text-text-primary text-sm">telegram: {links.filter(link => link.name === 'Telegram')[0]?.displayText},</span>
+          <span className="text-text-primary text-sm">email: {email}</span>
         </div>
       </div>
       <QRCode profile={profile} />
@@ -198,4 +139,4 @@ const ContentSection = ({ name, title, email, links, profile }: ContentSectionPr
   );
 };
 
-export default ContentSection; 
+export default ContentSection;

@@ -35,7 +35,7 @@ const Tag: React.FC<TagProps> = ({ tag, profile = 'all' }) => {
   // Priority: Architecture/Principles/Processes > React/Vue/Backend ecosystem > default
   let bgClass = 'bg-transparent border border-zinc-900';
   let colorClass = 'text-primary';
-  if (isCore) { bgClass = 'bg-primary-bg border border-zinc-900 print:border-none'; colorClass = 'text-text-primary'; }
+  if (isCore) { bgClass = 'bg-primary-bg print:border print:border-zinc-900'; colorClass = 'text-text-primary'; }
   else if (isMobile) { bgClass = 'bg-blue-500'; colorClass = 'text-white'; }
   else if (isArchitecture) { bgClass = 'bg-orange-500'; colorClass = 'text-white'; }
   else if (isPrinciples) { bgClass = 'bg-violet-500'; colorClass = 'text-white'; }

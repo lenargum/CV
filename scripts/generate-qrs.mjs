@@ -58,27 +58,33 @@ function roundedRectPath(x, y, w, h, r) {
 }
 
 function renderFinder(rowMod, colMod, mod, color) {
-  // 7×7 finder pattern: outer rounded ring (extra-rounded) + center round dot.
+  // 7×7 finder pattern, fully square (no rounding anywhere):
+  //   - outer 7×7 sharp-corner ring
+  //   - 5×5 inner cutout (sharp)
+  //   - 3×3 module square center block
   const x = colMod * mod;
   const y = rowMod * mod;
   const outerSize = 7 * mod;
   const innerSize = 5 * mod;
-  const outerR = mod * 2;
-  const innerR = mod * 1.5;
 
   const innerX = x + mod;
   const innerY = y + mod;
 
-  const ringPath = roundedRectPath(x, y, outerSize, outerSize, outerR) + ' ' +
-                   roundedRectPath(innerX, innerY, innerSize, innerSize, innerR);
+  const sharpRectPath = (x0, y0, w, h) =>
+    `M ${x0} ${y0} L ${x0 + w} ${y0} L ${x0 + w} ${y0 + h} L ${x0} ${y0 + h} Z`;
 
-  const centerCx = x + 3.5 * mod;
-  const centerCy = y + 3.5 * mod;
-  const centerR = 1.5 * mod;
+  const ringPath =
+    sharpRectPath(x, y, outerSize, outerSize) +
+    ' ' +
+    sharpRectPath(innerX, innerY, innerSize, innerSize);
+
+  const centerX = x + 2 * mod;
+  const centerY = y + 2 * mod;
+  const centerSize = 3 * mod;
 
   return (
-    `<path d="${ringPath}" fill="${color}" fill-rule="evenodd"/>` +
-    `<circle cx="${centerCx}" cy="${centerCy}" r="${centerR}" fill="${color}"/>`
+    `<path d="${ringPath}" fill="${color}" fill-rule="evenodd" shape-rendering="crispEdges"/>` +
+    `<rect x="${centerX}" y="${centerY}" width="${centerSize}" height="${centerSize}" fill="${color}" shape-rendering="crispEdges"/>`
   );
 }
 
@@ -109,8 +115,11 @@ function generateSVG(text) {
   body += renderFinder(mg, mg + (size - 7), m, FOREGROUND);             // top-right
   body += renderFinder(mg + (size - 7), mg, m, FOREGROUND);             // bottom-left
 
+  // crispEdges on the root eliminates sub-pixel anti-aliasing gaps between
+  // adjacent module rects. Finder ring path overrides to geometricPrecision
+  // for clean rounded corners (per-element shape-rendering attr).
   return `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalUnits} ${totalUnits}" width="${totalUnits}" height="${totalUnits}" shape-rendering="geometricPrecision">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${totalUnits} ${totalUnits}" width="${totalUnits}" height="${totalUnits}" shape-rendering="crispEdges">
 ${body}
 </svg>`;
 }

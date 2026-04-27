@@ -1,0 +1,397 @@
+---
+/**
+ * Light-theme formal CV for PDF preview / download.
+ * Mounted in the PDF modal via iframe; user can also open this URL directly.
+ *
+ * Layout intent (matching the Claude Design handoff resume.html):
+ *   - white background, near-black text, no animations, no chrome
+ *   - generous A4-friendly typography
+ *   - duration · dates right-aligned per company row
+ *   - markdown rendered inline via set:html (MarkdownText React component
+ *     doesn't pass children through Astro's renderer cleanly, hence local md())
+ */
+import { composeCv } from "../../../lib/composeCv";
+import { PROFILES, LANGS } from "../../../lib/types";
+import type { ProfileType, LangType } from "../../../lib/types";
+import { withBasePath } from "../../../lib/utils";
+
+export function getStaticPaths() {
+  return LANGS.flatMap(lang =>
+    PROFILES.map(profile => ({
+      params: { lang, profile },
+      props: { lang, profile },
+    }))
+  );
+}
+
+interface Props {
+  lang: LangType;
+  profile: ProfileType;
+}
+
+const { lang, profile } = Astro.props;
+const cv = composeCv(profile, lang);
+
+// === Local markdown helper — bold + italic + links → HTML.
+// Used with set:html to bypass MarkdownText (React) which doesn't carry
+// children through Astro's renderer.
+const escapeHtml = (s: string) =>
+  String(s ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+const md = (s: string | undefined): string => {
+  if (!s) return '';
+  return escapeHtml(s)
+    // [text](url) — escape after to keep & in url; simple regex is fine here
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+};
+
+// === Date helpers ===
+const months = lang === 'ru'
+  ? ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек']
+  : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+const fmtDate = (d: Date | null) => {
+  if (!d) return lang === 'ru' ? 'наст. время' : 'Present';
+  return `${months[d.getMonth()]} ${d.getFullYear()}`;
+};
+
+const monthsBetween = (s: Date, e: Date | null) => {
+  const end = e || new Date();
+  const diffDays = (end.getTime() - s.getTime()) / (1000 * 60 * 60 * 24);
+  return Math.max(1, Math.round(diffDays / 30.44));
+};
+
+const fmtDuration = (m: number) => {
+  const y = Math.floor(m / 12);
+  const r = m % 12;
+  if (lang === 'ru') {
+    let s = '';
+    if (y) s += `${y} ${y === 1 ? 'г' : 'г'}`;
+    if (r) s += `${s ? ' ' : ''}${r} мес`;
+    return s || '< 1 мес';
+  }
+  let s = '';
+  if (y) s += `${y} y`;
+  if (r) s += `${s ? ' ' : ''}${r} m`;
+  return s || '< 1 m';
+};
+
+const t = lang === 'ru'
+  ? { about: 'Обо мне', skills: 'Навыки', exp: 'Опыт работы', edu: 'Образование', awards: 'Награды', teaching: 'Преподавание' }
+  : { about: 'About me', skills: 'Skills', exp: 'Experience', edu: 'Education', awards: 'Awards', teaching: 'Teaching' };
+
+// PDF filename — browsers use document.title as the default "Save as PDF" name
+// AND build-time PDF generator writes to public/downloads/<this>.pdf.
+// Format: LenarGumerov_<Spec>[_<Lang>].pdf — ATS-parseable, position-explicit.
+//   react      → ReactFrontend
+//   vue        → VueFrontend
+//   fullstack  → Fullstack
+//   all        → Resume (avoids filename collision with /fullstack/, neutral)
+// Lang suffix only for RU since EN is the international ATS default.
+const specByProfile: Record<ProfileType, string> = {
+  react: 'CV_React',
+  vue: 'CV_Vue',
+  fullstack: 'CV_Fullstack',
+  all: 'CV',
+};
+const langSuffix = lang === 'ru' ? '_RU' : '';
+const pageTitle = `LenarGumerov_${specByProfile[profile]}${langSuffix}`;
+
+// Live URL the QR encodes — also used as the QR image's clickable target so
+// users viewing the PDF on screen can tap/click straight through to the site.
+// Mirrors scripts/generate-qrs.mjs::buildUrl().
+const SITE_ORIGIN = 'https://lenargum.me';
+const langSegment = lang === 'en' ? '' : 'ru/';
+const profileSegment = profile === 'all' ? '' : `${profile}/`;
+const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <title>{pageTitle}</title>
+    <meta name="robots" content="noindex" />
+    <style is:global>
+      @page { size: A4; margin: 14mm 15mm; }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #ffffff;
+        color: #0a0a0a;
+        font: 10.5pt/1.4 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+      .page { max-width: 800px; margin: 14px auto; padding: 14px 20px; }
+
+      /* Header — name/role/contacts left, QR code right (same height) */
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: stretch;
+        gap: 22px;
+        margin-bottom: 10px;
+      }
+      .header__left { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+      .header__qr {
+        flex: 0 0 auto;
+        display: flex;
+        align-items: stretch;
+      }
+      .header__qr img {
+        height: 100%;
+        width: auto;
+        max-height: 110px;
+        max-width: 110px;
+        display: block;
+      }
+
+      /* Heading + role styles ported from handoff resume.html */
+      h1.name { margin: 0 0 3px; font-size: 25pt; letter-spacing: -0.01em; font-weight: 700; line-height: 1.05; }
+      .role { color: #444; font-size: 12pt; margin-bottom: 10px; font-weight: 500; }
+      h2.section {
+        margin: 8px 0 6px;
+        font-size: 11pt;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: #222;
+        font-weight: 700;
+        border-bottom: 1px solid #ccc;
+        padding-bottom: 4px;
+      }
+
+      .contacts {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px 16px;
+        font-size: 10pt;
+        color: #333;
+      }
+      .contact { display: inline-flex; gap: 4px; align-items: baseline; }
+      .contact-label {
+        color: #555;
+        text-decoration: none;
+      }
+      .contacts a {
+        color: #0a0a0a;
+        text-decoration: underline;
+        text-decoration-color: #999;
+        text-underline-offset: 2px;
+      }
+      .summary p { margin: 0 0 4px; font-size: 10pt; color: #222; }
+      .skills {
+        font-size: 10pt;
+        color: #333;
+        line-height: 1.55;
+      }
+      .exp { margin-bottom: 9px; break-inside: avoid; page-break-inside: avoid; }
+      .exp-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      /* Icon wrapper sizes the slot; no clipping/rounding so circular logos
+         (e.g. Cobalt) don't lose their corners and square logos render as-is. */
+      .exp-icon-wrap {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 auto;
+        align-self: flex-start;
+      }
+      .exp-icon {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+      .exp-left { min-width: 0; flex: 1 1 auto; }
+      .exp-company { font-weight: 600; font-size: 10.5pt; color: #0a0a0a; }
+      .exp-role { color: #444; font-size: 9.5pt; margin-top: 1px; }
+      .exp-meta {
+        font-size: 9.5pt;
+        color: #666;
+        text-align: right;
+        white-space: nowrap;
+        flex: 0 0 auto;
+      }
+      .exp-loc { font-size: 8.5pt; color: #888; margin-top: 1px; }
+
+      /* Bullets — explicit disc marker with body color so it actually renders
+         on white backgrounds (default browser markers can be eaten by print
+         color profiles otherwise). */
+      ul.bullets {
+        margin: 5px 0 0;
+        padding-left: 18px;
+        list-style-position: outside;
+      }
+      ul.bullets li {
+        font-size: 10pt;
+        color: #222;
+        margin-bottom: 1px;
+        line-height: 1.38;
+        list-style-type: disc;
+      }
+      ul.bullets li::marker { color: #222; }
+      ul.bullets li strong { color: #000; font-weight: 700; }
+
+      /* Inline links (in bullets, summary, etc.) get a clear underline */
+      a {
+        color: #0a0a0a;
+        text-decoration: underline;
+        text-decoration-color: #999;
+        text-underline-offset: 2px;
+      }
+
+      .tags {
+        font-size: 9pt;
+        color: #555;
+        margin-top: 3px;
+        line-height: 1.4;
+      }
+      .award-sub { font-size: 9pt; color: #888; margin-top: 2px; }
+
+      @media print {
+        .page { margin: 0; padding: 0; max-width: none; }
+        body { background: #ffffff !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <div class="header">
+        <div class="header__left">
+          <h1 class="name">{cv.personalInfo.name}</h1>
+          <div class="role">{cv.personalInfo.title}</div>
+          <div class="contacts">
+            {/* Label (e.g. "Email:") stays plain; only the address/handle gets
+                the underline so the contact line scans cleanly. */}
+            <span class="contact">
+              <span class="contact-label">Email:</span>
+              <a href={`mailto:${cv.personalInfo.email}`}>{cv.personalInfo.email}</a>
+            </span>
+            {cv.personalInfo.links.map(link => (
+              <span class="contact">
+                <span class="contact-label">{link.name}:</span>
+                <a href={link.url}>{link.displayText}</a>
+              </span>
+            ))}
+          </div>
+        </div>
+        <div class="header__qr">
+          {/* QR encodes the live URL for THIS specific profile/lang.
+              Generated by `pnpm qr` into public/qr/qr-code-{lang}-{profile}.svg.
+              Wrapped in <a> so the QR is also clickable when the PDF is
+              viewed digitally — same target that the QR encodes. */}
+          <a href={qrTargetUrl} aria-label={qrTargetUrl}>
+            <img
+              src={withBasePath(`/qr/qr-code-${lang}-${profile}.svg`)}
+              alt={`QR: ${qrTargetUrl}`}
+            />
+          </a>
+        </div>
+      </div>
+
+      <h2 class="section">{t.about}</h2>
+      <div class="summary">
+        {cv.summary.split('\n').map(line => <p>{line}</p>)}
+      </div>
+
+      {/* Skills row only on focused profiles. The 'all' view's skills list
+          is the kitchen-sink (~80+ tags) — too noisy for a printed resume,
+          and per-experience tags below cover the relevant keywords for ATS. */}
+      {profile !== 'all' && cv.tags.length > 0 && (
+        <>
+          <h2 class="section">{t.skills}</h2>
+          <div class="skills">{cv.tags.join(' · ')}</div>
+        </>
+      )}
+
+      <h2 class="section">{t.exp}</h2>
+      {cv.experiences.map(exp => (
+        <div class="exp">
+          <div class="exp-head">
+            {exp.icon && (
+              <div class="exp-icon-wrap">
+                <img class="exp-icon" src={withBasePath(exp.icon)} alt="" />
+              </div>
+            )}
+            <div class="exp-left">
+              <div class="exp-company" set:html={md(exp.company)}></div>
+              <div class="exp-role" set:html={md(exp.title)}></div>
+            </div>
+            <div class="exp-meta">
+              <div>{fmtDuration(monthsBetween(exp.dateStart, exp.dateEnd))} · {fmtDate(exp.dateStart)} — {fmtDate(exp.dateEnd)}</div>
+              <div class="exp-loc">{exp.location}</div>
+            </div>
+          </div>
+          {exp.description.length > 0 && (
+            <ul class="bullets">
+              {exp.description.map(d => <li set:html={md(d)}></li>)}
+            </ul>
+          )}
+          {exp.technologies.length > 0 && <div class="tags">{exp.technologies.join(' · ')}</div>}
+        </div>
+      ))}
+
+      <h2 class="section">{t.edu}</h2>
+      {cv.education.map(edu => (
+        <div class="exp">
+          <div class="exp-head">
+            {edu.icon && (
+              <div class="exp-icon-wrap">
+                <img class="exp-icon" src={withBasePath(edu.icon)} alt="" />
+              </div>
+            )}
+            <div class="exp-left">
+              <div class="exp-company">
+                {edu.degree}{edu.specialization ? <span style="font-weight:400;color:#444">, {edu.specialization}</span> : null}
+              </div>
+              <div class="exp-role" set:html={md(edu.institution)}></div>
+            </div>
+            <div class="exp-meta">
+              <div>{edu.dateStart.getFullYear()} — {edu.dateEnd.getFullYear()}</div>
+            </div>
+          </div>
+          {edu.highlights.length > 0 && (
+            <ul class="bullets">
+              {edu.highlights.map(h => <li set:html={md(h)}></li>)}
+            </ul>
+          )}
+        </div>
+      ))}
+
+      {cv.awards.length > 0 && (
+        <>
+          <h2 class="section">{t.awards}</h2>
+          <ul class="bullets">
+            {cv.awards.map(a => (
+              <li>
+                <span set:html={md(a.details)}></span>
+                {a.subDetails && <div class="award-sub" set:html={md(a.subDetails)}></div>}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {cv.teaching.length > 0 && (
+        <>
+          <h2 class="section">{t.teaching}</h2>
+          <ul class="bullets">
+            {cv.teaching.map(tch => (
+              <li>
+                <span set:html={md(tch.details)}></span>
+                {tch.subDetails && <div class="award-sub" set:html={md(tch.subDetails)}></div>}
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </div>
+  </body>
+</html>

@@ -7,7 +7,11 @@ export const CORE_TAGS = [
   "Backend",
   "Mobile",
   "Data Structures & Algorithms",
-  "Game Development"
+  // Game-dev cluster — kept in CORE for grouping/coloring; hidden from
+  // Key Skills (see HIDE_FROM_KEY_SKILLS) so it doesn't dilute the section.
+  "Game Development",
+  "C#",
+  "Unity",
 ];
 
 // Frontend Core technologies
@@ -37,6 +41,17 @@ export const BACKEND_TAGS = [
   "Message Queues",
   "SQL",
   "NoSQL",
+  // Niche/specific backend tech — included so Tag.tsx colors them as backend
+  // (Go-blue), but hidden from Key Skills via HIDE_FROM_KEY_SKILLS to keep
+  // that section noise-free. Still searchable in per-experience tag rows.
+  "TimescaleDB",
+  "SQLite",
+  // Education-era backend tech — kept for color/grouping, hidden from Key Skills.
+  "MySQL",
+  "Python Flask",
+  "Python FastAPI",
+  "Python Django",
+  "Java Spring",
 ];
 
 // Tools & visualization
@@ -61,14 +76,34 @@ export const TOOLING_TAGS = [
   "Chart.js",
   "SVG",
 
+  // Realtime / network
+  "WebSockets",
+
   // AI assistants
   "Cursor",
   "Claude",
-  "ChatGPT",
 ];
 
-// Rendering types
-export const RENDERING_TAGS = ["SPA", "SSR", "SSG", "CSR"];
+/**
+ * Tags that exist in the data (for color/grouping purposes) but should NOT
+ * render in the Key Skills section on the 'all' profile. Per-experience tag
+ * rows are unaffected — these tags still appear under each role where used.
+ */
+export const HIDE_FROM_KEY_SKILLS = new Set<string>([
+  "TimescaleDB",
+  "SQLite",
+  "MySQL",
+  "Python Flask",
+  "Python FastAPI",
+  "Python Django",
+  "Java Spring",
+  "C#",
+  "Unity",
+  "Game Development",
+]);
+
+// Rendering types — CSR dropped (it's the implicit default for any SPA, no signal)
+export const RENDERING_TAGS = ["SPA", "SSR", "SSG"];
 
 // UI / Visual concepts
 export const UI_VISUAL_TAGS = [
