@@ -25,14 +25,14 @@ export const experiences: ExperienceItem[] = [
 			en: "Cyprus, Remote",
 			ru: "Кипр, Удалённо"
 		},
-		date_start: new Date(2026, 1, 16), // February 16, 2026
+		date_start: new Date(2025, 9, 17), // October 17, 2025
 		date_end: new Date(2026, 3, 17),   // April 17, 2026
 		description: [
 			// === Top bullet — context + delivery + proactivity (all profiles) ===
 			{
 				base: {
-					en: "Joined a real-money iGaming platform mid-redesign with heavy accumulated legacy. Over **2 months**: production release plus systematic refactoring delivered alongside feature work.",
-					ru: "Пришёл на real-money iGaming платформу на этапе редизайна, с тяжёлым накопленным легаси. За **2 месяца**: релиз в прод и системный рефакторинг параллельно фичам."
+					en: "Joined a real-money iGaming platform mid-redesign with heavy accumulated legacy. Over **6 months**: production release plus systematic refactoring delivered alongside feature work.",
+					ru: "Пришёл на real-money iGaming платформу на этапе редизайна, с тяжёлым накопленным легаси. За **6 месяцев**: релиз в прод и системный рефакторинг параллельно фичам."
 				},
 			},
 			// === Architectural cleanup — Vue/Fullstack/All variant ===
@@ -54,8 +54,8 @@ export const experiences: ExperienceItem[] = [
 			// === Scope with feature list (all profiles) ===
 			{
 				base: {
-					en: "Owned **6+ end-to-end product features** across **17 epics** — retention events, onboarding, new banner system, referral program, reward claim.",
-					ru: "Самостоятельно вёл **6+ end-to-end продуктовых фич** в рамках **17 эпиков** — retention-эвенты, онбординг, новая система баннеров, реферальная программа, клейм наград."
+					en: "**As one of two frontend engineers**, owned **18+ end-to-end product features** across **50+ epics** — retention events, onboarding, new banner system, referral program, reward claim.",
+					ru: "**Один из двух фронтенд-инженеров в команде**, вёл **18+ end-to-end продуктовых фич** в рамках **50+ эпиков** — retention-эвенты, онбординг, новая система баннеров, реферальная программа, клейм наград."
 				},
 			},
 			// === Production-cycle processes (all profiles) ===
@@ -120,7 +120,7 @@ export const experiences: ExperienceItem[] = [
 			ru: "Удалённо"
 		},
 		date_start: new Date(2025, 0, 1), // January 1, 2025
-		date_end: new Date(2026, 1, 15), // February 15, 2026 (day before Cobalt start)
+		date_end: new Date(2025, 9, 16), // October 16, 2025 (day before Cobalt start)
 		description: [
 			// === CANON (all) — буллет 1 ===
 			{
@@ -297,8 +297,8 @@ export const experiences: ExperienceItem[] = [
 		},
 		icon: '/CV/icons/portal.jpg',
 		company: {
-			en: 'Orbit — Telegram Mini Apps gaming platform "[Portal](https://t.me/orbit_portal_bot)"',
-			ru: 'Orbit — игровая платформа в Telegram Mini Apps "[Portal](https://t.me/orbit_portal_bot)"',
+			en: 'Orbit — [Portal](https://t.me/orbit_portal_bot)',
+			ru: 'Orbit — [Portal](https://t.me/orbit_portal_bot)',
 		},
 		location: {
 			en: "Dubai, Remote",

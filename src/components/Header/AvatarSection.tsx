@@ -17,6 +17,11 @@ const AvatarSection = memo(({ name }: AvatarSectionProps) => {
       <img
         src={imgSrc}
         alt={name}
+        width={132}
+        height={132}
+        loading="eager"
+        decoding="async"
+        fetchPriority="high"
         // Mobile zooms in harder onto the face (scale 1.55 vs desktop 1.18) —
         // the smaller square would otherwise show too much shoulder/shirt.
         // transform-origin top-center keeps the head pinned and crops body.

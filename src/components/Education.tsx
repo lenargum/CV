@@ -35,21 +35,31 @@ export default function Education({ education, profile, nested = false }: Educat
         {education.map((edu, index) => (
           <article key={index} className="cv-exp cv-exp--edu print:break-inside-avoid">
             <div className="cv-exp__head">
-              <img src={withBasePath(edu.icon || '')} alt={edu.institution} className="cv-exp__icon" />
+              <img
+                src={withBasePath(edu.icon || '')}
+                alt={edu.institution}
+                width={40}
+                height={40}
+                loading="lazy"
+                decoding="async"
+                className="cv-exp__icon"
+              />
+              {/* Mirror the Experience block structure:
+                    cv-exp__company = degree (large, bold)
+                    cv-exp__title   = specialization (subtitle)
+                    cv-exp__meta    = years (top) + institution (bottom),
+                                      analog of dates + location in Experience. */}
               <div className="cv-exp__heading">
-                <div className="cv-exp__company">
-                  {edu.degree}
-                  {edu.specialization && <span className="font-normal opacity-75">, {edu.specialization}</span>}
-                </div>
+                <div className="cv-exp__company">{edu.degree}</div>
+                {edu.specialization && (
+                  <div className="cv-exp__title">{edu.specialization}</div>
+                )}
               </div>
-              {/* Institution + years live OUTSIDE the heading so they can flow
-                  to a new full-width row under the icon when degree wraps —
-                  CSS places this child on row 2 spanning both columns. */}
-              <div className="cv-edu__inst-row">
-                <div className="cv-exp__title">
+              <div className="cv-exp__meta">
+                <div>{getFormattedDateRange(edu.dateStart, edu.dateEnd)}</div>
+                <div className="cv-exp__loc">
                   <MarkdownText as="span">{edu.institution}</MarkdownText>
                 </div>
-                <div className="cv-edu__years">{getFormattedDateRange(edu.dateStart, edu.dateEnd)}</div>
               </div>
             </div>
             {edu.highlights.length > 0 && (

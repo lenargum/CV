@@ -139,7 +139,15 @@ export default function Experience({ experiences, profile }: ExperienceProps) {
         {experiences.map((exp, index) => (
           <article key={index} className="cv-exp print:break-inside-avoid">
             <div className="cv-exp__head">
-              <img src={withBasePath(exp.icon || '')} alt={exp.company} className="cv-exp__icon" />
+              <img
+                src={withBasePath(exp.icon || '')}
+                alt={exp.company}
+                width={40}
+                height={40}
+                loading="lazy"
+                decoding="async"
+                className="cv-exp__icon"
+              />
               <div className="cv-exp__heading">
                 <div className="cv-exp__company"><MarkdownText>{exp.company}</MarkdownText></div>
                 <div className="cv-exp__title"><MarkdownText>{exp.title}</MarkdownText></div>

@@ -11,7 +11,15 @@ export default function QRCode({ profile }: { profile: ProfileType }) {
             const profileSegment = profile === 'all' ? '' : `${profile}/`;
             return `https://lenargum.me/${langSegment}${profileSegment}`;
           })()} target="_blank" rel="noopener noreferrer" title="Open CV in browser">
-            <img src={withBasePath(`/qr/qr-code-${currentLang}-${profile}.svg`)} style={{ flexGrow: 1, maxWidth: '100px', maxHeight: '100px' }} alt="Open CV in browser" />
+            <img
+              src={withBasePath(`/qr/qr-code-${currentLang}-${profile}.svg`)}
+              width={100}
+              height={100}
+              loading="lazy"
+              decoding="async"
+              style={{ flexGrow: 1, maxWidth: '100px', maxHeight: '100px' }}
+              alt="Open CV in browser"
+            />
         </a>
     )
 }

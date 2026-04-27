@@ -122,7 +122,7 @@ const ogImageUrl = withBasePath(`og/og-${lang}-${profile}.png?v=5`);
       aria-pressed="false"
       type="button"
     >
-      <img src={withBasePath("lava-lamp.png")} alt="" />
+      <img src={withBasePath("lava-lamp.png")} alt="" width={30} height={30} loading="lazy" decoding="async" />
     </button>
 
     {/* Floating chrome — desktop only (PDF + lang) at the top-right
@@ -207,7 +207,7 @@ const ogImageUrl = withBasePath(`og/og-${lang}-${profile}.png?v=5`);
             aria-checked="false"
           >
             <span class="cv-menu-overlay__toggle-label">
-              <img src={withBasePath("lava-lamp.png")} alt="" class="cv-menu-overlay__toggle-icon" />
+              <img src={withBasePath("lava-lamp.png")} alt="" width={22} height={22} loading="lazy" decoding="async" class="cv-menu-overlay__toggle-icon" />
               <span>{lang === 'ru' ? 'Лава-лампа' : 'Lava lamp'}</span>
             </span>
             <span class="cv-menu-overlay__switch" aria-hidden="true">

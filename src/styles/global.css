@@ -110,9 +110,9 @@ section.cv-section:first-child {
   /* Mobile: 2-col grid (icon + content). Some company names are long
      ("Orbit — Telegram Mini Apps gaming platform") and a 3rd meta column
      would squeeze the content into 4-line wraps. Meta moves below content,
-     full-width, right-aligned — reads cleanly even on 320px screens. */
+     full-width, left-aligned — reads cleanly even on 320px screens. */
   .cv-exp__head {
-    grid-template-columns: 36px minmax(0, 1fr);
+    grid-template-columns: 40px minmax(0, 1fr);
     gap: 10px;
   }
   /* Meta spans full width on its own row UNDER the icon (grid-column 1/-1),
@@ -156,12 +156,6 @@ section.cv-section:first-child {
   background: transparent;
   flex-shrink: 0;
 }
-@media (max-width: 640px) {
-  /* Match the mobile grid column (36px) — at 40px the icon overflowed by
-     4px and looked off-axis. Border-radius stays at 8px so the rounding
-     visually matches the desktop treatment. */
-  .cv-exp__icon { width: 36px; height: 36px; }
-}
 .cv-exp__heading { min-width: 0; }
 .cv-exp__company {
   font-weight: 600;
@@ -172,7 +166,6 @@ section.cv-section:first-child {
 .cv-exp__title {
   color: var(--fg-secondary);
   font-size: 14px;
-  margin-top: 2px;
   opacity: 0.75;
 }
 .cv-exp__meta {
@@ -202,45 +195,9 @@ section.cv-section:first-child {
 }
 .cv-exp__tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
 
-/* Education head — 2-col grid (icon + degree heading). The institution row
-   is placed on row 2 spanning BOTH columns so it flows under the icon when
-   the degree wraps, instead of stacking awkwardly to the right of the icon. */
-.cv-exp--edu .cv-exp__head {
-  grid-template-columns: 40px minmax(0, 1fr);
-  row-gap: 6px;
-}
-@media (max-width: 640px) {
-  .cv-exp--edu .cv-exp__head { grid-template-columns: 36px minmax(0, 1fr); }
-}
-.cv-exp--edu .cv-edu__inst-row {
-  grid-column: 1 / -1;
-}
-.cv-edu__inst-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
-}
-/* The .cv-exp__title base rule adds margin-top: 2px that compounds inside the
-   inst-row flexbox — strip it here so institution sits tight under the
-   degree line. */
-.cv-edu__inst-row .cv-exp__title { margin-top: 0; }
-/* Same treatment as experience meta — stack on two lines, left-aligned,
-   on most phones (≤480px). Institution on top, years below. */
-@media (max-width: 480px) {
-  .cv-edu__inst-row {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 2px;
-  }
-  .cv-edu__years { text-align: left; }
-}
-.cv-edu__years {
-  font-size: 12px;
-  color: var(--fg-tertiary);
-  white-space: nowrap;
-  flex-shrink: 0;
-}
+/* Education uses the exact same .cv-exp__head grid shape as Experience —
+   no per-section overrides needed. The .cv-exp--edu modifier is kept on the
+   article for potential future divergence. */
 .cv-stack > * + * { margin-top: 12px; }
 @media print {
   .cv-stack > * + * { margin-top: 8px; }
