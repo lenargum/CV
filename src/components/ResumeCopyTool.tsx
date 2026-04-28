@@ -224,9 +224,7 @@ export default function ResumeCopyTool({
                   role="radio"
                   aria-checked={isActive}
                   className={`cv-profile-inline__btn custom-link ${isActive ? 'is-active' : ''}`}
-                  onClick={() => p !== 'all' && setProfile(p as ProfileType)}
-                  disabled={p === 'all'}
-                  title={p === 'all' ? 'Use a focused profile' : undefined}
+                  onClick={() => setProfile(p)}
                 >
                   {PROFILE_LABELS[lang][p]}
                 </button>

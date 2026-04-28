@@ -970,12 +970,6 @@ body.lava-mode .cv-lava:focus { opacity: 1; }
   gap: 10px 16px;
   align-items: center;
 }
-/* Disabled "All" button in profile switcher — meta value, not selectable */
-.cv-profile-inline__btn:disabled {
-  opacity: 0.35;
-  cursor: not-allowed;
-}
-
 .cv-copy-toggles {
   display: flex;
   flex-wrap: wrap;
