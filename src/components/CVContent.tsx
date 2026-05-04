@@ -70,8 +70,8 @@ export default function CVContent({
 
           <div className="flex flex-col print:bg-white">
             <Summary summary={summary} />
-            <Tags allTags={allTags} profile={profile} />
             <Experience experiences={experiences} profile={profile} />
+            <Tags allTags={allTags} profile={profile} />
             <Education education={education} profile={profile} />
             <Achievements awards={awards} teaching={teaching} />
           </div>

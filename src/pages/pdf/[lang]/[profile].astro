@@ -301,16 +301,6 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
         {cv.summary.split('\n').map(line => <p>{line}</p>)}
       </div>
 
-      {/* Skills row only on focused profiles. The 'all' view's skills list
-          is the kitchen-sink (~80+ tags) — too noisy for a printed resume,
-          and per-experience tags below cover the relevant keywords for ATS. */}
-      {profile !== 'all' && cv.tags.length > 0 && (
-        <>
-          <h2 class="section">{t.skills}</h2>
-          <div class="skills">{cv.tags.join(' · ')}</div>
-        </>
-      )}
-
       <h2 class="section">{t.exp}</h2>
       {cv.experiences.map(exp => (
         <div class="exp">
@@ -337,6 +327,16 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
           {exp.technologies.length > 0 && <div class="tags">{exp.technologies.join(' · ')}</div>}
         </div>
       ))}
+
+      {/* Skills row only on focused profiles. The 'all' view's skills list
+          is the kitchen-sink (~80+ tags) — too noisy for a printed resume,
+          and per-experience tags above cover the relevant keywords for ATS. */}
+      {profile !== 'all' && cv.tags.length > 0 && (
+        <>
+          <h2 class="section">{t.skills}</h2>
+          <div class="skills">{cv.tags.join(' · ')}</div>
+        </>
+      )}
 
       <h2 class="section">{t.edu}</h2>
       {cv.education.map(edu => (
