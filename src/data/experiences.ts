@@ -1,6 +1,13 @@
-import type { ProfiledBullet, ProfiledTechnologies, ProfiledText, TranslatedText, TranslatedArray } from '../lib/types';
+import type { ProfiledTechnologies, ProfiledText, TranslatedText, TranslatedArray, ExperienceSection, ExperienceCategory } from '../lib/types';
 
 export type { TranslatedText, TranslatedArray };
+
+export const EXPERIENCE_CATEGORIES: Record<ExperienceCategory, TranslatedText> = {
+	product:      { en: "Product & features",          ru: "Продукт и фичи" },
+	architecture: { en: "Architecture & refactoring",   ru: "Архитектура и рефакторинг" },
+	performance:  { en: "Performance",                  ru: "Производительность" },
+	process:      { en: "Process & team",               ru: "Процессы и команда" },
+};
 
 export interface ExperienceItem {
 	title: string | TranslatedText | ProfiledText;
@@ -9,7 +16,8 @@ export interface ExperienceItem {
 	location: string | TranslatedText;
 	date_start: Date;
 	date_end: Date | null;
-	description?: ProfiledBullet[] | TranslatedArray;
+	intro?: TranslatedText | ProfiledText;
+	description?: ExperienceSection[];
 	technologies?: string[] | ProfiledTechnologies;
 }
 
@@ -27,43 +35,55 @@ export const experiences: ExperienceItem[] = [
 		},
 		date_start: new Date(2025, 9, 17), // October 17, 2025
 		date_end: new Date(2026, 3, 17),   // April 17, 2026
+		intro: {
+			en: "Real-money iGaming platform. Joined mid-rebuild — a UI redesign running in parallel with an architecture rework, on top of heavy accumulated legacy.",
+			ru: "Real-money iGaming платформа. Пришёл в разгар масштабного обновления — редизайн интерфейса параллельно с переработкой архитектуры, поверх тяжёлого накопленного легаси."
+		},
 		description: [
-			// === Top bullet — context + delivery + proactivity (all profiles) ===
 			{
-				base: {
-					en: "Joined a real-money iGaming platform **mid-rebuild** (parallel UI redesign + architectural overhaul) with heavy accumulated legacy. Over **6 months**: production release plus systematic refactoring delivered alongside feature work.",
-					ru: "Пришёл на real-money iGaming платформу **в разгар ребилда** (UI-редизайн параллельно с архитектурным овeрхолом), с тяжёлым накопленным легаси. За **6 месяцев**: релиз в прод и системный рефакторинг параллельно фичам."
-				},
+				cat: 'architecture',
+				items: [
+					// === Architectural cleanup — Vue/Fullstack/All variant ===
+					{
+						base: {
+							en: "Key refactors — network layer centralization, splitting **2–3k-line god components and stores** (with legacy parity), Vue 3 typing standardization, and security hardening across user flows.",
+							ru: "Ключевые рефакторинги — централизация сетевого слоя, разбиение **2–3к-строчных god-компонентов и хранилищ** (с сохранением прежнего поведения), стандартизация типизации Vue 3 и усиление безопасности в пользовательских сценариях."
+						},
+						showIn: ['vue', 'fullstack', 'all'],
+					},
+					// === Architectural cleanup — React variant ===
+					{
+						base: {
+							en: "Key refactors — network layer centralization, splitting **2–3k-line god components and stores** (with legacy parity), codebase-wide TypeScript standardization, and security hardening across user flows.",
+							ru: "Ключевые рефакторинги — централизация сетевого слоя, разбиение **2–3к-строчных god-компонентов и хранилищ** (с сохранением прежнего поведения), стандартизация TypeScript по кодовой базе и усиление безопасности в пользовательских сценариях."
+						},
+						showIn: ['react'],
+					},
+				],
 			},
-			// === Architectural cleanup — Vue/Fullstack/All variant ===
 			{
-				base: {
-					en: "Key refactors — network layer centralization, splitting **2–3k-line god components and stores** (with legacy parity), Vue 3 typing standardization, and security hardening across user flows.",
-					ru: "Ключевые рефакторинги — централизация network-слоя, разбиение **2–3к-строчных god-компонентов и сторов** (с сохранением legacy-поведения), стандартизация типизации Vue 3 и усиление security в пользовательских флоу."
-				},
-				showIn: ['vue', 'fullstack', 'all'],
+				cat: 'product',
+				items: [
+					// === Scope with feature list (all profiles) ===
+					{
+						base: {
+							en: "**As one of two frontend engineers**, owned **18+ end-to-end product features** across **50+ epics** — retention events, onboarding, new banner system, referral program, reward claim.",
+							ru: "**Один из двух фронтенд-инженеров в команде**, вёл **18+ сквозных продуктовых фич** в рамках **50+ эпиков** — механики удержания, онбординг, новая система баннеров, реферальная программа, получение наград."
+						},
+					},
+				],
 			},
-			// === Architectural cleanup — React variant ===
 			{
-				base: {
-					en: "Key refactors — network layer centralization, splitting **2–3k-line god components and stores** (with legacy parity), codebase-wide TypeScript standardization, and security hardening across user flows.",
-					ru: "Ключевые рефакторинги — централизация network-слоя, разбиение **2–3к-строчных god-компонентов и сторов** (с сохранением legacy-поведения), стандартизация TypeScript по кодовой базе и усиление security в пользовательских флоу."
-				},
-				showIn: ['react'],
-			},
-			// === Scope with feature list (all profiles) ===
-			{
-				base: {
-					en: "**As one of two frontend engineers**, owned **18+ end-to-end product features** across **50+ epics** — retention events, onboarding, new banner system, referral program, reward claim.",
-					ru: "**Один из двух фронтенд-инженеров в команде**, вёл **18+ end-to-end продуктовых фич** в рамках **50+ эпиков** — retention-эвенты, онбординг, новая система баннеров, реферальная программа, клейм наград."
-				},
-			},
-			// === Production-cycle processes (all profiles) ===
-			{
-				base: {
-					en: "Every feature shipped through a **full production cycle** — responsive on desktop/tablet/mobile, unit-tested, localized via admin panel, CDN-delivered with WebP + compression, event tracking via PostHog.",
-					ru: "Каждая фича уходила в прод по **полному циклу** — адаптив на десктопе/планшете/мобиле, юнит-тесты, локализация через админку, доставка через CDN с WebP + compression, event-трекинг через PostHog."
-				},
+				cat: 'process',
+				items: [
+					// === Production-cycle processes (all profiles) ===
+					{
+						base: {
+							en: "Every feature shipped through a **full production cycle** — responsive on desktop/tablet/mobile, unit-tested, localized via admin panel, CDN-delivered with WebP + compression, event tracking via PostHog.",
+							ru: "Каждая фича уходила в прод по **полному циклу** — адаптив на десктопе/планшете/мобиле, юнит-тесты, локализация через админку, доставка через CDN с WebP и сжатием, трекинг событий через PostHog."
+						},
+					},
+				],
 			},
 		],
 		technologies: {
@@ -121,15 +141,13 @@ export const experiences: ExperienceItem[] = [
 		},
 		date_start: new Date(2025, 0, 1), // January 1, 2025
 		date_end: new Date(2025, 9, 16), // October 16, 2025 (day before Cobalt start)
+		intro: {
+			en: "Independent product work — web apps and Telegram Mini Apps across iGaming, e-commerce, and crypto.",
+			ru: "Самостоятельные продуктовые проекты — веб-приложения и Telegram Mini Apps в iGaming, e-commerce и крипте."
+		},
 		description: [
-			// === CANON (all) — буллет 1 ===
 			{
-				base: {
-					en: "Built product-level web applications and Mini Apps: iGaming, e‑commerce, crypto dashboards, and internal tools.",
-					ru: "Разрабатывал продуктовые веб-приложения и Mini Apps: iGaming, e‑commerce, крипто‑дашборды и internal‑инструменты."
-				},
-				showIn: ['all'],
-			},
+				items: [
 			// === CANON (all) — буллет 2 ===
 			{
 				base: {
@@ -263,10 +281,12 @@ export const experiences: ExperienceItem[] = [
 			// === FULLSTACK — буллет 5 ===
 			{
 				base: {
-					en: "Worked on a mobile e‑commerce app (Flutter) with 1C integrations.",
-					ru: "Работал с мобильным e‑commerce приложением (Flutter) и интеграцией с 1С."
+					en: "Worked on a mobile e‑commerce app (Flutter) with backend on Go and admin pages on React.",
+					ru: "Работал над мобильным e‑commerce приложением (Flutter) с backend на Go и админкой на React."
 				},
 				showIn: ['fullstack'],
+			},
+				],
 			},
 		],
 		technologies: {
@@ -306,54 +326,70 @@ export const experiences: ExperienceItem[] = [
 		},
 		date_start: new Date(2024, 8, 15), // September 15, 2024
 		date_end: new Date(2025, 2, 31), // March 31, 2025
+		intro: {
+			en: "Telegram gaming platform that grew to **1M users**.",
+			ru: "Игровая платформа в Telegram, выросла до **1M пользователей**."
+		},
 		description: [
-			// === CANON — буллет 1: Lead + 1M users ===
 			{
-				base: {
-					en: "Led the frontend of a [Telegram gaming platform](https://t.me/orbit_portal_bot) from pre-launch to **1M users**, owning UI and core business logic (rewards, purchases, ads)",
-					ru: "Возглавил фронтенд [игровой платформы в Telegram](https://t.me/orbit_portal_bot): от prelaunch до **1M пользователей**; отвечал за UI и ключевую логику (награды, покупки, реклама)"
-				},
-				// показывать везде
+				cat: 'product',
+				items: [
+					// === Lead + 1M users ===
+					{
+						base: {
+							en: "Led the frontend of a [Telegram gaming platform](https://t.me/orbit_portal_bot) from pre-launch to **1M users**, owning UI and core business logic (rewards, purchases, ads)",
+							ru: "Возглавил фронтенд [игровой платформы в Telegram](https://t.me/orbit_portal_bot): от prelaunch до **1M пользователей**; отвечал за UI и ключевую логику (награды, покупки, реклама)"
+						},
+					},
+					// === SDK (только all) ===
+					{
+						base: {
+							en: "Built a drop-in TMA SDK with embeddable UI widgets and cross-game services (auth/profile, balance & inventory sync, leaderboards)",
+							ru: "Разработал drop-in SDK для TMA с встраиваемыми UI-виджетами и межигровыми сервисами (аутентификация, профиль, баланс, инвентарь, лидерборды)"
+						},
+						showIn: ['all'],
+					},
+					// === Animations and Theming ===
+					{
+						base: {
+							en: "Delivered rich animated interactions and visual theming based on user-selected Telegram styles using Motion.js, custom particle systems, and Spline-based animations",
+							ru: "Реализовал насыщенные анимированные взаимодействия и визуальные темы на основе пользовательских стилей Telegram с использованием Motion.js, кастомных систем частиц и анимаций на базе Spline"
+						},
+					},
+					// === Platform components ===
+					{
+						base: {
+							en: "Designed and built platform‑level components and reusable UI for partner Telegram Mini Apps, including shared services (authentication, profiles, balance & inventory sync, leaderboards)",
+							ru: "Спроектировал и реализовал платформенные компоненты и reusable UI для партнёрских Telegram Mini Apps, включая общие сервисы (аутентификация, профиль, синхронизация баланса и инвентаря, лидерборды)"
+						},
+						showIn: ['react', 'vue'],
+					},
+				],
 			},
-			// === CANON — буллет 2: SDK (только all) ===
 			{
-				base: {
-					en: "Built a drop-in TMA SDK with embeddable UI widgets and cross-game services (auth/profile, balance & inventory sync, leaderboards)",
-					ru: "Разработал drop-in SDK для TMA с встраиваемыми UI-виджетами и межигровыми сервисами (аутентификация, профиль, баланс, инвентарь, лидерборды)"
-				},
-				showIn: ['all'],
+				cat: 'performance',
+				items: [
+					// === Performance ===
+					{
+						base: {
+							en: "Optimized for Telegram Mini Apps constraints: **reduced initial JS payload by 55%** (1.1 MB → 490 KB gz) via code-splitting, tree-shaking, and asset deduplication",
+							ru: "Оптимизировал под ограничения TMA: **сократил initial JS на 55%** (с 1.1 MB до 490 KB gz) благодаря code-splitting, tree-shaking и дедупликации ассетов"
+						},
+					},
+				],
 			},
-			// === CANON — буллет 3: Animations and Theming ===
 			{
-				base: {
-					en: "Delivered rich animated interactions and visual theming based on user-selected Telegram styles using Motion.js, custom particle systems, and Spline-based animations",
-					ru: "Реализовал насыщенные анимированные взаимодействия и визуальные темы на основе пользовательских стилей Telegram с использованием Motion.js, кастомных систем частиц и анимаций на базе Spline"
-				},
-				// показывать везде
-			},
-			// === CANON — буллет 4: Performance ===
-			{
-				base: {
-					en: "Optimized for Telegram Mini Apps constraints: **reduced initial JS payload by 55%** (1.1 MB → 490 KB gz) via code-splitting, tree-shaking, and asset deduplication",
-					ru: "Оптимизировал под ограничения TMA: **сократил initial JS на 55%** (с 1.1 MB до 490 KB gz) благодаря code-splitting, tree-shaking и дедупликации ассетов"
-				},
-				// показывать везде
-			},
-			// === CANON — буллет 5: Platform components ===
-			{
-				base: {
-					en: "Designed and built platform‑level components and reusable UI for partner Telegram Mini Apps, including shared services (authentication, profiles, balance & inventory sync, leaderboards)",
-					ru: "Спроектировал и реализовал платформенные компоненты и reusable UI для партнёрских Telegram Mini Apps, включая общие сервисы (аутентификация, профиль, синхронизация баланса и инвентаря, лидерборды)"
-				},
-				showIn: ['react', 'vue'],
-			},
-			// === FULLSTACK — буллет: Architecture (только fullstack) ===
-			{
-				base: {
-					en: "Collaborated on platform architecture and cross-service integrations for partner games",
-					ru: "Участвовал в проектировании платформенной архитектуры и интеграций с партнёрскими сервисами"
-				},
-				showIn: ['fullstack'],
+				cat: 'architecture',
+				items: [
+					// === Architecture (только fullstack) ===
+					{
+						base: {
+							en: "Collaborated on platform architecture and cross-service integrations for partner games",
+							ru: "Участвовал в проектировании платформенной архитектуры и интеграций с партнёрскими сервисами"
+						},
+						showIn: ['fullstack'],
+					},
+				],
 			},
 		],
 		technologies: {
@@ -391,46 +427,56 @@ export const experiences: ExperienceItem[] = [
 		},
 		date_start: new Date(2023, 5, 1), // June 1, 2023
 		date_end: new Date(2024, 8, 15), // September 15, 2024
+		intro: {
+			en: "AI tooling for generating ad creatives.",
+			ru: "AI-инструменты для генерации рекламных креативов."
+		},
 		description: [
-			// === CANON — буллет 1: Editor ===
 			{
-				base: {
-					en: "Developed a complex image and video editor with multi-layer support, batch imports, timeline, and animation system",
-					ru: "Разработал сложный редактор изображений и видео с поддержкой мультислоёв, пакетной загрузки и системой таймлайна и анимаций"
-				},
-				// показывать везде
+				cat: 'product',
+				items: [
+					// === Editor ===
+					{
+						base: {
+							en: "Developed a complex image and video editor with multi-layer support, batch imports, timeline, and animation system",
+							ru: "Разработал сложный редактор изображений и видео с поддержкой мультислоёв, пакетной загрузки и системой таймлайна и анимаций"
+						},
+					},
+					// === Banner generator ===
+					{
+						base: {
+							en: "Designed and implemented an ad banner generator with a flexible template system and post‑generation editing",
+							ru: "Спроектировал и реализовал генератор рекламных баннеров с системой шаблонов и возможностью постредактирования"
+						},
+					},
+					// === UI Redesign ===
+					{
+						base: {
+							en: "Led a full UI redesign from a legacy Android-style interface to a modern **Material 3+** design system",
+							ru: "Возглавил полный редизайн интерфейса — от устаревшего Android-стиля до современной дизайн-системы **Material 3+**"
+						},
+					},
+					// === Dashboards ===
+					{
+						base: {
+							en: "Built analytical dashboards with charts and visual summaries across multiple ad networks, **reducing campaign review time from ~10 to ~2 minutes**",
+							ru: "Разработал аналитические дашборды с графиками и визуальными сводками по рекламным сетям, **сократив время ревью кампаний с ~10 до ~2 минут**"
+						},
+					},
+				],
 			},
-			// === CANON — буллет 2: Banner generator ===
 			{
-				base: {
-					en: "Designed and implemented an ad banner generator with a flexible template system and post‑generation editing",
-					ru: "Спроектировал и реализовал генератор рекламных баннеров с системой шаблонов и возможностью постредактирования"
-				},
-				// показывать везде
-			},
-			// === CANON — буллет 3: UI Redesign ===
-			{
-				base: {
-					en: "Led a full UI redesign from a legacy Android-style interface to a modern **Material 3+** design system",
-					ru: "Возглавил полный редизайн интерфейса — от устаревшего Android-стиля до современной дизайн-системы **Material 3+**"
-				},
-				// показывать везде
-			},
-			// === CANON — буллет 4: Dashboards ===
-			{
-				base: {
-					en: "Built analytical dashboards with charts and visual summaries across multiple ad networks, **reducing campaign review time from ~10 to ~2 minutes**",
-					ru: "Разработал аналитические дашборды с графиками и визуальными сводками по рекламным сетям, **сократив время ревью кампаний с ~10 до ~2 минут**"
-				},
-				// показывать везде
-			},
-			// === FULLSTACK — буллет: Backend integration ===
-			{
-				base: {
-					en: "Collaborated with backend and analytics to integrate ad network data into product dashboards",
-					ru: "Работал в связке с backend и аналитикой, интегрируя данные рекламных сетей в продуктовые дашборды"
-				},
-				showIn: ['fullstack'],
+				cat: 'architecture',
+				items: [
+					// === Backend integration (только fullstack) ===
+					{
+						base: {
+							en: "Collaborated with backend and analytics to integrate ad network data into product dashboards",
+							ru: "Работал в связке с backend и аналитикой, интегрируя данные рекламных сетей в продуктовые дашборды"
+						},
+						showIn: ['fullstack'],
+					},
+				],
 			},
 		],
 		technologies: {
@@ -466,38 +512,48 @@ export const experiences: ExperienceItem[] = [
 		},
 		date_start: new Date(2021, 9, 1), // October 1, 2021
 		date_end: new Date(2023, 5, 30), // June 30, 2023
+		intro: {
+			en: "Icon and design-asset platform.",
+			ru: "Платформа иконок и дизайн-ресурсов."
+		},
 		description: [
-			// === CANON — буллет 1: SVG Editor ===
 			{
-				base: {
-					en: "Built the [Iconizer SVG editor](https://icons8.com/iconizer) on Paper.js with support for grouped downloads, editable previews, syntax-highlighted embed code, and role-based access",
-					ru: "Разработал [SVG-редактор Iconizer](https://icons8.com/iconizer) на Paper.js с поддержкой групповых скачиваний, редактируемых превью, подсветки кода и ролевого доступа"
-				},
-				// показывать везде
+				cat: 'product',
+				items: [
+					// === SVG Editor ===
+					{
+						base: {
+							en: "Built the [Iconizer SVG editor](https://icons8.com/iconizer) on Paper.js with support for grouped downloads, editable previews, syntax-highlighted embed code, and role-based access",
+							ru: "Разработал [SVG-редактор Iconizer](https://icons8.com/iconizer) на Paper.js с поддержкой групповых скачиваний, редактируемых превью, подсветки кода и ролевого доступа"
+						},
+					},
+					// === UI Kit ===
+					{
+						base: {
+							en: "Maintained and extended a shared internal UI kit used across multiple products, including accessibility improvements",
+							ru: "Поддерживал и развивал внутренний UI-kit, используемый в нескольких продуктах, включая улучшения доступности"
+						},
+					},
+					// === Ad UX ===
+					{
+						base: {
+							en: "Improved in-product ad UX, **increasing CTR by 18%** and achieving **72% viewability**",
+							ru: "Улучшил UX рекламных блоков: **CTR +18%**, **viewability 72%**"
+						},
+					},
+				],
 			},
-			// === CANON — буллет 2: UI Kit ===
 			{
-				base: {
-					en: "Maintained and extended a shared internal UI kit used across multiple products, including accessibility improvements",
-					ru: "Поддерживал и развивал внутренний UI-kit, используемый в нескольких продуктах, включая улучшения доступности"
-				},
-				// показывать везде
-			},
-			// === CANON — буллет 3: Ad UX ===
-			{
-				base: {
-					en: "Improved in-product ad UX, **increasing CTR by 18%** and achieving **72% viewability**",
-					ru: "Улучшил UX рекламных блоков: **CTR +18%**, **viewability 72%**"
-				},
-				// показывать везде
-			},
-			// === CANON — буллет 4: Performance ===
-			{
-				base: {
-					en: "Optimized performance using lazy loading, SSR, and image compression — **LCP −42%**, **CLS 0.03**, **image payload −55%**",
-					ru: "Оптимизировал производительность с помощью lazy loading, SSR и сжатия изображений — **LCP −42%**, **CLS 0.03**, **вес изображений −55%**"
-				},
-				// показывать везде
+				cat: 'performance',
+				items: [
+					// === Performance ===
+					{
+						base: {
+							en: "Optimized performance using lazy loading, SSR, and image compression — **LCP −42%**, **CLS 0.03**, **image payload −55%**",
+							ru: "Оптимизировал производительность с помощью lazy loading, SSR и сжатия изображений — **LCP −42%**, **CLS 0.03**, **вес изображений −55%**"
+						},
+					},
+				],
 			},
 		],
 		technologies: {
@@ -535,38 +591,42 @@ export const experiences: ExperienceItem[] = [
 		},
 		date_start: new Date(2021, 1, 1), // February 1, 2021
 		date_end: new Date(2021, 7, 31), // August 31, 2021
+		intro: {
+			en: "Document-heavy enterprise system.",
+			ru: "Корпоративная система документооборота."
+		},
 		description: [
-			// === CANON — буллет 1: SPA modules ===
 			{
-				base: {
-					en: "Developed isolated SPA modules integrated into a legacy monolithic system, including PHP‑based integrations",
-					ru: "Разрабатывал изолированные SPA-модули, интегрируемые в легаси-монолит, включая PHP‑интеграции"
-				},
-				// показывать везде
-			},
-			// === CANON — буллет 2: UI Kit ===
-			{
-				base: {
-					en: "Built an internal UI kit for document-heavy workflows",
-					ru: "Создал внутренний UI-kit для задач документооборота"
-				},
-				// показывать везде
-			},
-			// === CANON — буллет 3: Editable table ===
-			{
-				base: {
-					en: "Implemented a complex editable table with nested forms and full mobile responsiveness",
-					ru: "Реализовал сложную редактируемую таблицу с вложенными формами и полной адаптацией под мобильные устройства"
-				},
-				// показывать везде
-			},
-			// === CANON — буллет 4: UX ===
-			{
-				base: {
-					en: "Improved UX to reduce repetitive manual steps in bureaucratic interfaces",
-					ru: "Улучшал UX для сокращения ручных и повторяющихся операций в бюрократических интерфейсах"
-				},
-				// показывать везде
+				items: [
+					// === SPA modules ===
+					{
+						base: {
+							en: "Developed isolated SPA modules integrated into a legacy monolithic system, including PHP‑based integrations",
+							ru: "Разрабатывал изолированные SPA-модули, интегрируемые в легаси-монолит, включая PHP‑интеграции"
+						},
+					},
+					// === UI Kit ===
+					{
+						base: {
+							en: "Built an internal UI kit for document-heavy workflows",
+							ru: "Создал внутренний UI-kit для задач документооборота"
+						},
+					},
+					// === Editable table ===
+					{
+						base: {
+							en: "Implemented a complex editable table with nested forms and full mobile responsiveness",
+							ru: "Реализовал сложную редактируемую таблицу с вложенными формами и полной адаптацией под мобильные устройства"
+						},
+					},
+					// === UX ===
+					{
+						base: {
+							en: "Improved UX to reduce repetitive manual steps in bureaucratic interfaces",
+							ru: "Улучшал UX для сокращения ручных и повторяющихся операций в бюрократических интерфейсах"
+						},
+					},
+				],
 			},
 		],
 		technologies: {

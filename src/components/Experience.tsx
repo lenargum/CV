@@ -169,15 +169,21 @@ export default function Experience({ experiences, profile }: ExperienceProps) {
                 <div className="cv-exp__loc">{exp.location}</div>
               </div>
             </div>
-            {exp.description && exp.description.length > 0 && (
-              <ul className="cv-exp__bullets">
-                {exp.description.map((item, idx) => (
-                  <li key={idx}>
-                    <MarkdownText>{item}</MarkdownText>
-                  </li>
-                ))}
-              </ul>
+            {exp.intro && (
+              <p className="cv-exp__intro"><MarkdownText>{exp.intro}</MarkdownText></p>
             )}
+            {exp.sections.map((section, sIdx) => (
+              <div key={sIdx} className="cv-exp__section">
+                {section.label && <h4 className="cv-exp__cat">{section.label}</h4>}
+                <ul className="cv-exp__bullets">
+                  {section.items.map((item, idx) => (
+                    <li key={idx}>
+                      <MarkdownText>{item}</MarkdownText>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
             {exp.technologies && exp.technologies.length > 0 && (
               <div className="cv-exp__tags">
                 {profile === 'all'

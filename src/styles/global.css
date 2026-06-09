@@ -186,6 +186,23 @@ section.cv-section:first-child {
   font-weight: 700;
   opacity: 1;
 }
+.cv-exp__intro {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--fg-secondary);
+  opacity: 0.9;
+}
+.cv-exp__section { margin-top: 10px; }
+.cv-exp__section .cv-exp__bullets { margin-top: 6px; }
+.cv-exp__cat {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fg-tertiary);
+}
 .cv-exp__tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; }
 
 /* Education uses the exact same .cv-exp__head grid shape as Experience —
@@ -895,11 +912,12 @@ body.lava-mode .cv-lava:focus { opacity: 1; }
     color: #555 !important;
   }
   .section-meta::before { color: #999 !important; }
-  .cv-exp__company, .cv-exp__title, .cv-exp__bullets li, .cv-exp__bullets strong, .cv-exp__meta {
+  .cv-exp__company, .cv-exp__title, .cv-exp__bullets li, .cv-exp__bullets strong, .cv-exp__meta, .cv-exp__intro, .cv-exp__cat {
     color: #000 !important;
     opacity: 1 !important;
   }
   .cv-exp__title, .cv-exp__meta { color: #444 !important; }
+  .cv-exp__cat { color: #555 !important; }
 
   /* Avoid breaking experience items across pages */
   .cv-exp { break-inside: avoid; page-break-inside: avoid; }

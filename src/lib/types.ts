@@ -44,6 +44,16 @@ export interface ProfiledBullet {
 	overrides?: Partial<Record<ProfileType, TranslatedText>>;
 }
 
+// === Experience Sections ===
+
+export type ExperienceCategory = 'product' | 'architecture' | 'performance' | 'process';
+
+/** A group of bullets within an experience. Omit `cat` for an unlabeled (flat) group. */
+export interface ExperienceSection {
+	cat?: ExperienceCategory;
+	items: ProfiledBullet[];
+}
+
 /**
  * Tags/technologies with profile-specific filtering
  */
@@ -83,6 +93,12 @@ export interface ComposedPersonalInfo {
 	description: string;
 }
 
+export interface ComposedSection {
+	/** Resolved category label in current language; undefined → render without heading */
+	label?: string;
+	items: string[];
+}
+
 export interface ComposedExperience {
 	title: string;
 	icon?: string;
@@ -90,6 +106,9 @@ export interface ComposedExperience {
 	location: string;
 	dateStart: Date;
 	dateEnd: Date | null;
+	intro?: string;
+	sections: ComposedSection[];
+	/** Flat union of all section items — kept for pdf/og/copy back-compat */
 	description: string[];
 	technologies: string[];
 }
@@ -142,6 +161,11 @@ export function isProfiledText(value: unknown): value is ProfiledText {
 
 export function isProfiledBulletArray(value: unknown): value is ProfiledBullet[] {
 	return Array.isArray(value) && value.length > 0 && 'base' in value[0];
+}
+
+export function isExperienceSectionArray(value: unknown): value is ExperienceSection[] {
+	return Array.isArray(value) && value.length > 0 &&
+		typeof value[0] === 'object' && value[0] !== null && 'items' in value[0];
 }
 
 export function isProfiledTechnologies(value: unknown): value is ProfiledTechnologies {

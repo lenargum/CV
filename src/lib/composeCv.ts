@@ -6,8 +6,10 @@ import type {
 	ProfiledText,
 	ProfiledBullet,
 	ProfiledTechnologies,
+	ExperienceSection,
 	ComposedCV,
 	ComposedPersonalInfo,
+	ComposedSection,
 	ComposedExperience,
 	ComposedEducation,
 	ComposedAchievement,
@@ -22,7 +24,7 @@ import {
 
 import { personalInfo } from '../data/personal-info';
 import { summary } from '../data/summary';
-import { experiences } from '../data/experiences';
+import { experiences, EXPERIENCE_CATEGORIES } from '../data/experiences';
 import { education } from '../data/education';
 import { awards, teaching } from '../data/achievements';
 import { generateTags, getTagsForProfile } from '../data/tags';
@@ -96,8 +98,34 @@ export function getBullets(
 	if (isTranslatedArray(value)) {
 		return value[lang] || value.en;
 	}
-	
+
 	return [];
+}
+
+/**
+ * Compose grouped sections for an experience: filter bullets by profile,
+ * resolve category labels by lang, drop sections that end up empty.
+ */
+export function composeSections(
+	sections: ExperienceSection[] | undefined,
+	profile: ProfileType,
+	lang: LangType
+): ComposedSection[] {
+	if (!sections) return [];
+	return sections
+		.map(section => {
+			const items = section.items
+				.filter(b => !b.showIn || b.showIn.length === 0 || b.showIn.includes(profile))
+				.map(b => {
+					const override = b.overrides?.[profile];
+					return override ? (override[lang] || override.en) : (b.base[lang] || b.base.en);
+				});
+			const label = section.cat
+				? (EXPERIENCE_CATEGORIES[section.cat][lang] || EXPERIENCE_CATEGORIES[section.cat].en)
+				: undefined;
+			return { label, items };
+		})
+		.filter(s => s.items.length > 0);
 }
 
 /**
@@ -149,16 +177,21 @@ export function composeCv(profile: ProfileType, lang: LangType): ComposedCV {
 	const composedSummary = getProfiledText(summary.content, profile, lang);
 
 	// === Experiences ===
-	const composedExperiences: ComposedExperience[] = experiences.map(exp => ({
-		title: getProfiledText(exp.title, profile, lang),
-		icon: exp.icon,
-		company: getText(exp.company, lang),
-		location: getText(exp.location, lang),
-		dateStart: exp.date_start,
-		dateEnd: exp.date_end,
-		description: getBullets(exp.description, profile, lang),
-		technologies: getTechnologies(exp.technologies, profile),
-	}));
+	const composedExperiences: ComposedExperience[] = experiences.map(exp => {
+		const sections = composeSections(exp.description, profile, lang);
+		return {
+			title: getProfiledText(exp.title, profile, lang),
+			icon: exp.icon,
+			company: getText(exp.company, lang),
+			location: getText(exp.location, lang),
+			dateStart: exp.date_start,
+			dateEnd: exp.date_end,
+			intro: exp.intro ? getProfiledText(exp.intro, profile, lang) : undefined,
+			sections,
+			description: sections.flatMap(s => s.items),
+			technologies: getTechnologies(exp.technologies, profile),
+		};
+	});
 
 	// === Education ===
 	const composedEducation: ComposedEducation[] = education.map(edu => ({

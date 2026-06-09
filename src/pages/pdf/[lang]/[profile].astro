@@ -117,7 +117,7 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
     <title>{pageTitle}</title>
     <meta name="robots" content="noindex" />
     <style is:global>
-      @page { size: A4; margin: 14mm 15mm; }
+      @page { size: A4; margin: 11mm 14mm; }
       * { box-sizing: border-box; }
       html, body {
         margin: 0;
@@ -154,14 +154,14 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
       h1.name { margin: 0 0 3px; font-size: 25pt; letter-spacing: -0.01em; font-weight: 700; line-height: 1.05; }
       .role { color: #444; font-size: 12pt; margin-bottom: 10px; font-weight: 500; }
       h2.section {
-        margin: 8px 0 6px;
+        margin: 6px 0 4px;
         font-size: 11pt;
         letter-spacing: 0.1em;
         text-transform: uppercase;
         color: #222;
         font-weight: 700;
         border-bottom: 1px solid #ccc;
-        padding-bottom: 4px;
+        padding-bottom: 3px;
       }
 
       .contacts {
@@ -188,7 +188,7 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
         color: #333;
         line-height: 1.55;
       }
-      .exp { margin-bottom: 9px; break-inside: avoid; page-break-inside: avoid; }
+      .exp { margin-bottom: 5px; break-inside: avoid; page-break-inside: avoid; }
       .exp-head {
         display: flex;
         justify-content: space-between;
@@ -225,7 +225,7 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
          on white backgrounds (default browser markers can be eaten by print
          color profiles otherwise). */
       ul.bullets {
-        margin: 5px 0 0;
+        margin: 3px 0 0;
         padding-left: 18px;
         list-style-position: outside;
       }
@@ -233,11 +233,22 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
         font-size: 10pt;
         color: #222;
         margin-bottom: 1px;
-        line-height: 1.38;
+        line-height: 1.32;
         list-style-type: disc;
       }
       ul.bullets li::marker { color: #222; }
       ul.bullets li strong { color: #000; font-weight: 700; }
+
+      /* Company intro line + category subheadings — mirror the site's grouped
+         experience structure. */
+      .exp-intro { font-size: 9.5pt; color: #333; margin: 3px 0 0; line-height: 1.32; }
+      /* Category as a compact inline lead-in on the group's first bullet —
+         keeps the grouping visible without spending a full line per heading
+         (critical for the 2-page A4 budget on dense RU variants). */
+      .exp-cat-in {
+        font-weight: 700; text-transform: uppercase;
+        font-size: 8.5pt; letter-spacing: 0.04em; color: #333;
+      }
 
       /* Inline links (in bullets, summary, etc.) get a clear underline */
       a {
@@ -319,11 +330,14 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
               <div class="exp-loc">{exp.location}</div>
             </div>
           </div>
-          {exp.description.length > 0 && (
+          {exp.intro && <p class="exp-intro" set:html={md(exp.intro)}></p>}
+          {exp.sections.map(section => (
             <ul class="bullets">
-              {exp.description.map(d => <li set:html={md(d)}></li>)}
+              {section.items.map((d, i) => (
+                <li set:html={(i === 0 && section.label ? `<span class="exp-cat-in">${section.label}:</span> ` : '') + md(d)}></li>
+              ))}
             </ul>
-          )}
+          ))}
           {exp.technologies.length > 0 && <div class="tags">{exp.technologies.join(' · ')}</div>}
         </div>
       ))}
