@@ -65,6 +65,7 @@ export default function ResumeCopyTool({
   const [lang, setLang] = useState<LangType>(initialLang);
   const [profile, setProfile] = useState<ProfileType>(initialProfile);
   const [useMarkdown, setUseMarkdown] = useState(true);
+  const [catHeadings, setCatHeadings] = useState(false);
   const [numericDates, setNumericDates] = useState(true);
   const [stackAsText, setStackAsText] = useState(false);
   const [copyStatusById, setCopyStatusById] = useState<Record<string, CopyStatus>>({});
@@ -87,8 +88,13 @@ export default function ResumeCopyTool({
 
   const cv = useMemo(() => composeCv(profile, lang), [profile, lang]);
   const blocks = useMemo(
-    () => buildCopyBlocks(cv, { markdown: useMarkdown, dateFormat: numericDates ? 'numeric' : 'month-year' }),
-    [cv, useMarkdown, numericDates]
+    () =>
+      buildCopyBlocks(cv, {
+        markdown: useMarkdown,
+        dateFormat: numericDates ? 'numeric' : 'month-year',
+        categoryStyle: catHeadings ? 'heading' : 'bold',
+      }),
+    [cv, useMarkdown, numericDates, catHeadings]
   );
 
   const t = useMemo(
@@ -98,6 +104,7 @@ export default function ResumeCopyTool({
             heading: 'Конструктор резюме',
             subtitle: 'Скопируй любую часть: саммари, опыт, образование, достижения, преподавание.',
             useMarkdown: 'Markdown',
+            catHeadings: 'Категории как ####',
             numericDates: 'Даты как ДД.ММ.ГГГГ',
             stackAsText: 'Стек одной строкой',
             copyBlock: 'Скопировать',
@@ -122,6 +129,7 @@ export default function ResumeCopyTool({
             heading: 'Resume Copy',
             subtitle: 'Copy any block: summary, experience, education, awards, teaching.',
             useMarkdown: 'Markdown',
+            catHeadings: 'Categories as ####',
             numericDates: 'Dates as DD.MM.YYYY',
             stackAsText: 'Stack as comma text',
             copyBlock: 'Copy',
@@ -258,6 +266,12 @@ export default function ResumeCopyTool({
             <input type="checkbox" checked={useMarkdown} onChange={(e) => setUseMarkdown(e.target.checked)} />
             <span>{t.useMarkdown}</span>
           </label>
+          {useMarkdown && (
+            <label className="cv-copy-toggle">
+              <input type="checkbox" checked={catHeadings} onChange={(e) => setCatHeadings(e.target.checked)} />
+              <span>{t.catHeadings}</span>
+            </label>
+          )}
           <label className="cv-copy-toggle">
             <input type="checkbox" checked={numericDates} onChange={(e) => setNumericDates(e.target.checked)} />
             <span>{t.numericDates}</span>
@@ -360,7 +374,7 @@ export default function ResumeCopyTool({
                         {statusText(copyStatusById[card.body.id] ?? 'idle', t.copyBody, lang)}
                       </button>
                     </div>
-                    <textarea readOnly value={card.body.text} rows={6} className="cv-copy-textarea" />
+                    <textarea readOnly value={card.body.text} rows={10} className="cv-copy-textarea" />
                   </div>
                 )}
 

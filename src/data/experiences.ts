@@ -281,8 +281,8 @@ export const experiences: ExperienceItem[] = [
 			// === FULLSTACK — буллет 5 ===
 			{
 				base: {
-					en: "Worked on a mobile e‑commerce app (Flutter) with backend on Go and admin pages on React.",
-					ru: "Работал над мобильным e‑commerce приложением (Flutter) с backend на Go и админкой на React."
+					en: "Worked on a mobile e‑commerce app (Flutter); built it solo across the full stack — Go + PostgreSQL backend, React admin (QR codes, CRUD, service flows), OpenAPI-driven contracts, and a Docker container per service including S3 and mail.",
+					ru: "Работал над мобильным e‑commerce приложением (Flutter); сделал в соло на всех слоях — бэкенд на Go + PostgreSQL, админка на React (QR-коды, CRUD, сервисные флоу), контракты на OpenAPI и по Docker-контейнеру на каждый сервис, включая S3 и почту."
 				},
 				showIn: ['fullstack'],
 			},
@@ -438,8 +438,8 @@ export const experiences: ExperienceItem[] = [
 					// === Editor ===
 					{
 						base: {
-							en: "Developed a complex image and video editor with multi-layer support, batch imports, timeline, and animation system",
-							ru: "Разработал сложный редактор изображений и видео с поддержкой мультислоёв, пакетной загрузки и системой таймлайна и анимаций"
+							en: "Built a complex **Canvas-based** image and video editor with multi-layer support, timeline, batch imports, and an animation system",
+							ru: "Разработал на **Canvas** сложный редактор изображений и видео: мультислои, таймлайн, пакетная загрузка и система анимаций"
 						},
 					},
 					// === Banner generator ===

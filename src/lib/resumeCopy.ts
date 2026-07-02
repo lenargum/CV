@@ -3,6 +3,8 @@
 export interface ResumeCopyOptions {
   markdown: boolean;
   dateFormat: 'numeric' | 'month-year';
+  /** Category label style in markdown mode: bold line (default) or #### heading */
+  categoryStyle?: 'bold' | 'heading';
 }
 
 export interface CopyBlock {
@@ -61,7 +63,12 @@ function formatDateRange(
 }
 
 export function buildCopyBlocks(cv: ComposedCV, options: ResumeCopyOptions): CopyBlock[] {
-  const { markdown, dateFormat } = options;
+  const { markdown, dateFormat, categoryStyle = 'bold' } = options;
+
+  const formatCategoryLabel = (label: string): string => {
+    if (!markdown) return `${label}:`;
+    return categoryStyle === 'heading' ? `#### ${label}` : `**${label}:**`;
+  };
 
   const summaryBlock: CopyBlock = {
     id: 'summary',
@@ -101,14 +108,25 @@ export function buildCopyBlocks(cv: ComposedCV, options: ResumeCopyOptions): Cop
     ];
   });
 
-  const experienceBlocks: CopyBlock[] = cv.experiences.map((exp, index) => ({
-    id: `experience-${index}`,
-    section: 'experience-body',
-    title: `${cv.lang === 'ru' ? 'Experience Body' : 'Experience Body'} ${index + 1}: ${formatText(exp.company, false)}`,
-    text: exp.description.length > 0
-      ? exp.description.map((item) => `- ${formatText(item, markdown)}`).join('\n')
-      : '',
-  }));
+  const experienceBlocks: CopyBlock[] = cv.experiences.map((exp, index) => {
+    // Mirror the resume page structure: intro paragraph, then bullet groups
+    // with category labels. Groups are separated by a blank line.
+    const parts: string[] = [];
+    if (exp.intro) parts.push(formatText(exp.intro, markdown));
+    for (const section of exp.sections) {
+      const lines: string[] = [];
+      if (section.label) lines.push(formatCategoryLabel(section.label));
+      lines.push(...section.items.map((item) => `- ${formatText(item, markdown)}`));
+      if (lines.length > 0) parts.push(lines.join('\n'));
+    }
+
+    return {
+      id: `experience-${index}`,
+      section: 'experience-body',
+      title: `Experience Body ${index + 1}: ${formatText(exp.company, false)}`,
+      text: parts.join('\n\n'),
+    };
+  });
 
   const educationMetaBlocks: CopyBlock[] = cv.education.flatMap((edu, index) => {
     const prefix = `${index + 1}. ${formatText(edu.institution, markdown)}`;
