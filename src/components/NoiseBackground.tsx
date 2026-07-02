@@ -74,7 +74,16 @@ const NoiseBackground: React.FC<NoiseBackgroundProps> = ({ loopSeconds, loopTrav
         const scrollParallaxIntensity = 0.1;
         const lerpFactor = 0.08;
         const scrollEaseFactor = 0.2;
-        // No DPR/pixel cap in WebGL path
+        // Phones render the fragment shader over every backing-store pixel, and
+        // at DPR 3 that's desktop-monitor pixel counts on a fraction of the GPU.
+        // The noise field is low-frequency (blobs, soft gaussian cuts), so a
+        // 1.5x backing store upscaled by the browser is visually identical —
+        // and 4x cheaper at DPR 3. Desktop (fine pointer) keeps native DPR.
+        // ?coarse=1 forces the mobile-budget path on desktop for visual QA
+        // (same pattern as ?capture=1 above).
+        const isCoarsePointer = window.matchMedia('(pointer: coarse)').matches
+            || new URLSearchParams(window.location.search).get('coarse') === '1';
+        const dprCap = isCoarsePointer ? 1.5 : Infinity;
 
         // Respect prefers-reduced-motion with a static frame
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -300,9 +309,13 @@ void main(){
         // Trail config: fine-grained 1px spacing keeps the snake smooth (no
         // visible jitter between cuts). MAX_CUTS × CUT_SPACING_PX caps the
         // spatial tail length; LIFETIME caps the temporal fade.
-        const MAX_CUTS_JS = 240;
+        // On touch devices the shader's per-fragment cut loop is the lava-mode
+        // bottleneck: 3px spacing keeps the same 240px spatial tail with a
+        // third of the cuts, and the ~40px gaussians overlap so heavily the
+        // thinning is invisible. Desktop keeps the fine 1px trail.
+        const MAX_CUTS_JS = isCoarsePointer ? 80 : 240;
         const CUT_LIFETIME_MS = 900;
-        const CUT_SPACING_PX = 1;
+        const CUT_SPACING_PX = isCoarsePointer ? 3 : 1;
         const CUT_RADIUS_CSS = 40.0;
         // Over content (resume card, menus) the creature smoothly melts away —
         // radius AND strength ease to zero — and grows back when the cursor
@@ -313,6 +326,10 @@ void main(){
         const SCALE_EASE = 0.03;
         const cutScale = { current: 1, target: 1 };
         const cuts: Array<[number, number, number]> = [];
+        // Reused across frames — allocating per-frame churns GC on phones.
+        // Entries past u_cutCount are never read by the shader, so stale
+        // values from longer previous trails are harmless.
+        const packedCuts = new Float32Array(MAX_CUTS_JS * 3);
         let lastCutPos: [number, number] | null = null;
         let pendingMouse: { x: number; y: number } | null = null;
         const easedPtr = { x: null as number | null, y: null as number | null };
@@ -389,7 +406,7 @@ void main(){
             const logicalWidth = window.innerWidth;
             const logicalHeight = window.innerHeight;
 
-            dpr = window.devicePixelRatio || 1;
+            dpr = Math.min(window.devicePixelRatio || 1, dprCap);
 
             const newWidth = Math.max(1, Math.floor(logicalWidth * dpr));
             const newHeight = Math.max(1, Math.floor(logicalHeight * dpr));
@@ -494,7 +511,6 @@ void main(){
             gl.uniform1f(u_cursorRadius, scaledRadius);
             // GC expired cuts
             while (cuts.length && now - cuts[0][2] > CUT_LIFETIME_MS) cuts.shift();
-            const packed = new Float32Array(MAX_CUTS_JS * 3);
             for (let k = 0; k < cuts.length; ++k) {
               const [cx, cy, t0] = cuts[k];
               const age = now - t0;
@@ -503,11 +519,11 @@ void main(){
               // Content-fade scale multiplies in so the whole tail melts
               // together with the head when the cursor is over content.
               const s = linear * linear * cutScale.current;
-              packed[k * 3 + 0] = cx;
-              packed[k * 3 + 1] = cy;
-              packed[k * 3 + 2] = s;
+              packedCuts[k * 3 + 0] = cx;
+              packedCuts[k * 3 + 1] = cy;
+              packedCuts[k * 3 + 2] = s;
             }
-            gl.uniform3fv(u_cuts, packed);
+            gl.uniform3fv(u_cuts, packedCuts);
             gl.uniform1i(u_cutCount, cuts.length);
             gl.uniform1f(u_cutRadius, scaledRadius);
 
