@@ -224,15 +224,16 @@ void main(){
     cut += c.z * c.z * c.z * falloff;
   }
 
-  // Always-fresh head cut at the cursor position — fixed strength = 1, full
-  // radius, never fades. Disabled when cursor isn't active.
-  if (u_cursor.z > 0.5) {
+  // Always-fresh head cut at the cursor position. z carries activity ×
+  // content-fade scale (0..1) so the head melts away smoothly over content
+  // instead of blinking off.
+  if (u_cursor.z > 0.0) {
     vec2 dh = screenPx - u_cursor.xy;
     float invR2h = 1.0 / max(u_cursorRadius * u_cursorRadius, 1.0);
     float falloffH = exp(-dot(dh, dh) * invR2h);
     // Boost the head so its depth matches the accumulated tail (multiple
     // overlapping gaussians) — without this the head looks thinner than the body.
-    cut += falloffH * 1.5;
+    cut += falloffH * 1.5 * u_cursor.z;
   }
   v -= 0.45 * clamp(cut, 0.0, 1.5);
 
@@ -303,16 +304,24 @@ void main(){
         const CUT_LIFETIME_MS = 900;
         const CUT_SPACING_PX = 1;
         const CUT_RADIUS_CSS = 40.0;
+        // Over content (resume card, menus) the creature smoothly melts away —
+        // radius AND strength ease to zero — and grows back when the cursor
+        // returns to the open noise field, symmetrically. Strength must fade
+        // along with the radius: a zero radius alone still leaves ~1px specks
+        // (invR2 clamps at 1). Desktop only: the touch path pins the scale
+        // to 1 (lava-mode).
+        const SCALE_EASE = 0.03;
+        const cutScale = { current: 1, target: 1 };
         const cuts: Array<[number, number, number]> = [];
         let lastCutPos: [number, number] | null = null;
         let pendingMouse: { x: number; y: number } | null = null;
         const easedPtr = { x: null as number | null, y: null as number | null };
         const EASE = 0.35;
 
-        // The pointer/touch interactivity should only fire when the user is
-        // actually on the noise field — NOT on top of the resume card or the
-        // mobile menu. In lava-mode the card is hidden, so the whole screen
-        // is the noise field — re-enable everywhere.
+        // Distinguishes the open noise field from content sitting on top of it
+        // (resume card, mobile menu, floating chrome). On the field the cursor
+        // creature runs at full size; over content it eases away to nothing.
+        // In lava-mode the card is hidden, so the whole screen is the field.
         const isOnInteractiveSurface = (e: { clientX: number; clientY: number; target?: EventTarget | null }): boolean => {
           if (document.body.classList.contains('lava-mode')) return true;
           let el: Element | null = null;
@@ -328,10 +337,7 @@ void main(){
         };
 
         const onCursorMove = (e: MouseEvent) => {
-          if (!isOnInteractiveSurface(e)) {
-            cursor.active = 0;
-            return;
-          }
+          cutScale.target = isOnInteractiveSurface(e) ? 1 : 0;
           const rect = canvas.getBoundingClientRect();
           cursor.tx = e.clientX - rect.left;
           cursor.ty = rect.height - (e.clientY - rect.top);
@@ -341,7 +347,6 @@ void main(){
           if (!(e as any).relatedTarget) cursor.active = 0;
         };
         const onMouseCut = (e: MouseEvent) => {
-          if (!isOnInteractiveSurface(e)) return;
           const rect = canvas.getBoundingClientRect();
           const x = e.clientX - rect.left;
           const y = rect.height - (e.clientY - rect.top); // GL origin = bottom-left
@@ -425,6 +430,7 @@ void main(){
                 return;
             }
             if (e.touches.length === 0) return;
+            cutScale.target = 1; // lava-mode: whole screen is the field, full size
             const t = e.touches[0];
             const rect = canvas.getBoundingClientRect();
             // parallax
@@ -482,8 +488,10 @@ void main(){
             drainCuts(now);
             cursor.x += (cursor.tx - cursor.x) * 0.35;
             cursor.y += (cursor.ty - cursor.y) * 0.35;
-            gl.uniform3f(u_cursor, cursor.x, cursor.y, cursor.active);
-            gl.uniform1f(u_cursorRadius, CUT_RADIUS_CSS);
+            cutScale.current += (cutScale.target - cutScale.current) * SCALE_EASE;
+            const scaledRadius = CUT_RADIUS_CSS * cutScale.current;
+            gl.uniform3f(u_cursor, cursor.x, cursor.y, cursor.active * cutScale.current);
+            gl.uniform1f(u_cursorRadius, scaledRadius);
             // GC expired cuts
             while (cuts.length && now - cuts[0][2] > CUT_LIFETIME_MS) cuts.shift();
             const packed = new Float32Array(MAX_CUTS_JS * 3);
@@ -492,14 +500,16 @@ void main(){
               const age = now - t0;
               const linear = Math.max(0, 1 - age / CUT_LIFETIME_MS);
               // Quadratic ease-in: gentler decay early, steep at the end.
-              const s = linear * linear;
+              // Content-fade scale multiplies in so the whole tail melts
+              // together with the head when the cursor is over content.
+              const s = linear * linear * cutScale.current;
               packed[k * 3 + 0] = cx;
               packed[k * 3 + 1] = cy;
               packed[k * 3 + 2] = s;
             }
             gl.uniform3fv(u_cuts, packed);
             gl.uniform1i(u_cutCount, cuts.length);
-            gl.uniform1f(u_cutRadius, CUT_RADIUS_CSS);
+            gl.uniform1f(u_cutRadius, scaledRadius);
 
             gl.drawArrays(gl.TRIANGLES, 0, 3);
 
