@@ -2,6 +2,7 @@ import { useTranslation } from '../i18n/useTranslation';
 import { MarkdownText } from '../utils/markdown';
 import type { ComposedExperience, ProfileType } from '../lib/types';
 import Tag from './Tag/Tag';
+import Reveal from './Reveal';
 import { withBasePath } from '../lib/utils';
 import { TAGS_PRIORITY } from '@/data/tags';
 
@@ -131,13 +132,13 @@ export default function Experience({ experiences, profile }: ExperienceProps) {
 
   return (
     <section className="cv-section">
-      <div className="mb-4 print:mb-1 flex items-baseline">
+      <Reveal as="div" className="mb-4 print:mb-1 flex items-baseline">
         <h2 className="section-title !mb-0">{t.sections.experience}</h2>
         <span className="section-meta">{totalExperienceText}</span>
-      </div>
+      </Reveal>
       <div className="cv-stack">
         {experiences.map((exp, index) => (
-          <article key={index} className="cv-exp print:break-inside-avoid">
+          <Reveal as="article" key={index} className="cv-exp print:break-inside-avoid" index={index}>
             <div className="cv-exp__head">
               <img
                 src={withBasePath(exp.icon || '')}
@@ -191,7 +192,7 @@ export default function Experience({ experiences, profile }: ExperienceProps) {
                   : [...exp.technologies].map((tech, idx) => <Tag key={idx} tag={tech} profile={profile} />)}
               </div>
             )}
-          </article>
+          </Reveal>
         ))}
       </div>
     </section>

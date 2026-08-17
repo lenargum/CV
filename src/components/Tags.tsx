@@ -3,6 +3,7 @@ import { useTranslation } from '../i18n/useTranslation';
 import { TAG_GROUPS, getTagGroups, isTagInSpecificGroup } from '../data/tag-groups';
 import type { TagGroupConfig } from '../data/tag-groups';
 import Tag from './Tag/Tag';
+import Reveal from './Reveal';
 import { HIDE_FROM_KEY_SKILLS } from '../data/tags';
 import type { ProfileType } from '../lib/types';
 
@@ -69,20 +70,20 @@ export default function Tags({ allTags = [], profile }: TagsProps) {
   // === FLAT LAYOUT for react/vue/fullstack ===
   if (!isGroupedLayout) {
     return (
-      <section className="cv-section">
+      <Reveal as="section" className="cv-section">
         <h2 className="section-title">{t.sections.technologies}</h2>
         <div className="cv-tag-row">
           {allTags.filter(filterMetaTags).map((tag, index) => (
             <Tag key={index} tag={tag} profile={profile} />
           ))}
         </div>
-      </section>
+      </Reveal>
     );
   }
 
   // === GROUPED LAYOUT for 'all' profile — 2-col grid of inset skill-group cards ===
   return (
-    <section className="cv-section">
+    <Reveal as="section" className="cv-section">
       <h2 className="section-title">{t.sections.technologies}</h2>
       <div className="cv-skills">
         {categorizedTags.map(({ group, tags }, groupIndex) => (
@@ -96,6 +97,6 @@ export default function Tags({ allTags = [], profile }: TagsProps) {
           </div>
         ))}
       </div>
-    </section>
+    </Reveal>
   );
 }

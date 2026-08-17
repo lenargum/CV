@@ -99,6 +99,13 @@ section.cv-section:first-child {
     border-radius: 0 !important;
     padding: 0 !important;
   }
+  /* Neutralise scroll-reveal inline styles (motion) so a Ctrl+P of the live
+     site never captures a section mid-animation at opacity:0 / translated. */
+  #cv-content,
+  #cv-content * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 .cv-exp__head {
   display: grid;

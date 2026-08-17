@@ -1,5 +1,6 @@
 import { useTranslation } from '../i18n/useTranslation';
 import { MarkdownText } from '../utils/markdown';
+import Reveal from './Reveal';
 import type { ComposedAchievement } from '../lib/types';
 
 export interface AchievementsProps {
@@ -11,7 +12,7 @@ export interface AchievementsProps {
 export default function Achievements({ awards, teaching, nested = false }: AchievementsProps) {
   const { t } = useTranslation();
 
-  const Wrapper = nested ? 'div' : 'section';
+  const asTag = nested ? 'div' : 'section';
   const wrapperClass = nested ? '' : 'cv-section';
   const teachingWrapperClass = nested ? 'print:hidden' : 'cv-section print:hidden';
   const HeadingTag = nested ? 'h3' : 'h2';
@@ -19,7 +20,7 @@ export default function Achievements({ awards, teaching, nested = false }: Achie
 
   return (
     <>
-      <Wrapper className={wrapperClass}>
+      <Reveal as={asTag} className={wrapperClass} disabled={nested}>
         <HeadingTag className={headingClass}>{t.sections.awards}</HeadingTag>
         <ul className="list-disc">
           {awards.map((achievement, index) => (
@@ -33,8 +34,8 @@ export default function Achievements({ awards, teaching, nested = false }: Achie
             </li>
           ))}
         </ul>
-      </Wrapper>
-      <Wrapper className={teachingWrapperClass}>
+      </Reveal>
+      <Reveal as={asTag} className={teachingWrapperClass} disabled={nested} index={1}>
         <HeadingTag className={headingClass}>{t.sections.teaching}</HeadingTag>
         <ul className="list-disc">
           {teaching.map((achievement, index) => (
@@ -48,7 +49,7 @@ export default function Achievements({ awards, teaching, nested = false }: Achie
             </li>
           ))}
         </ul>
-      </Wrapper>
+      </Reveal>
     </>
   );
 }

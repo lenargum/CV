@@ -2,6 +2,7 @@ import { useTranslation } from '../i18n/useTranslation';
 import { MarkdownText } from '../utils/markdown';
 import type { ComposedEducation, ProfileType } from '../lib/types';
 import Tag from './Tag/Tag';
+import Reveal from './Reveal';
 import { withBasePath } from '../lib/utils';
 
 export interface EducationProps {
@@ -23,13 +24,12 @@ export default function Education({ education, profile, nested = false }: Educat
     return `${startYear} — ${endYear}`;
   };
 
-  const Wrapper = nested ? 'div' : 'section';
   const wrapperClass = nested ? '' : 'cv-section';
   const HeadingTag = nested ? 'h3' : 'h2';
   const headingClass = nested ? 'subsection-title' : 'section-title';
 
   return (
-    <Wrapper className={wrapperClass}>
+    <Reveal as={nested ? 'div' : 'section'} className={wrapperClass} disabled={nested}>
       <HeadingTag className={headingClass}>{t.sections.education}</HeadingTag>
       <div className="cv-stack">
         {education.map((edu, index) => (
@@ -81,6 +81,6 @@ export default function Education({ education, profile, nested = false }: Educat
           </article>
         ))}
       </div>
-    </Wrapper>
+    </Reveal>
   );
 }
