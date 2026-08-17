@@ -7,6 +7,7 @@ export const EXPERIENCE_CATEGORIES: Record<ExperienceCategory, TranslatedText> =
 	architecture: { en: "Architecture & refactoring",   ru: "Архитектура и рефакторинг" },
 	performance:  { en: "Performance",                  ru: "Производительность" },
 	process:      { en: "Process & team",               ru: "Процессы и команда" },
+	observability:{ en: "Observability",                ru: "Observability" },
 };
 
 export interface ExperienceItem {
@@ -22,6 +23,208 @@ export interface ExperienceItem {
 }
 
 export const experiences: ExperienceItem[] = [
+	{
+		title: {
+			base: {
+				en: "Fullstack Engineer",
+				ru: "Fullstack-инженер",
+			},
+			profiles: {
+				react: {
+					en: "Frontend Engineer",
+					ru: "Frontend-инженер",
+				},
+			},
+		},
+		icon: '/CV/icons/meridian.svg',
+		company: '[Meridian AI Fund](https://meridian-ai-fund.com/)',
+		location: {
+			en: "Saint Lucia, Remote",
+			ru: "Сент-Люсия, Удалённо"
+		},
+		date_start: new Date(2026, 6, 1), // July 1, 2026
+		date_end: null,                   // Present
+		intro: {
+			base: {
+				en: "AI-fund investment platform — a public product taking real on-chain crypto payments. Owned it across frontend, backend, infrastructure, and analytics.",
+				ru: "Инвестиционная платформа AI-фонда — публичный продукт с приёмом реальных крипто-платежей on-chain. Вёл фронтенд, бэкенд, инфраструктуру и аналитику."
+			},
+			profiles: {
+				react: {
+					en: "AI-fund investment platform. Built the frontend of a live product — an admin back-office, a country-aware investment flow, auto-updating clients, and full localization.",
+					ru: "Инвестиционная платформа AI-фонда. Делал фронтенд живого продукта — админ-панель, инвестиционный флоу с лимитами по странам, само-обновляющиеся клиенты и полную локализацию."
+				},
+			},
+		},
+		description: [
+			{
+				cat: 'product',
+				items: [
+					// === all — detailed payments & product (watcher first) ===
+					{
+						base: {
+							en: "Built the **crypto payment engine** — a standalone on-chain watcher that polls Solana, Ethereum, and Tron nodes, matches each incoming payment by a unique amount, waits for per-network confirmations, and routes anomalies (under or overpaid, late, unmatched) to manual reconciliation.",
+							ru: "Собрал **движок крипто-платежей** — отдельный on-chain watcher, который поллит ноды Solana, Ethereum и Tron, матчит каждый платёж по уникальной сумме, ждёт подтверждений по каждой сети и отправляет аномалии (недоплата, переплата, поздний, неопознанный) на ручную сверку."
+						},
+						showIn: ['all'],
+					},
+					{
+						base: {
+							en: "Built the **back-office** — a payout workflow (on hold, paid, rejected, with an audit trail), payment-anomaly resolution, plus portfolio, news, and per-country limit management.",
+							ru: "Сделал **админ-панель** — workflow выплат (на удержании, выплачено, отклонено, с аудитом), разбор аномалий платежей, управление портфелем, новостями и лимитами по странам."
+						},
+						showIn: ['all'],
+					},
+					{
+						base: {
+							en: "**Passwordless auth** — one-time six-digit codes and magic links (hashed codes, TTL, attempt limits), with admin access gated by an email allowlist.",
+							ru: "**Беспарольная авторизация** — одноразовые шестизначные коды и magic-ссылки (хэш кода, TTL, лимит попыток), админ-доступ по email-аллоулисту."
+						},
+						showIn: ['all'],
+					},
+					// === Fullstack — consolidated payments & product ===
+					{
+						base: {
+							en: "Built the **crypto payment engine** — an on-chain watcher across Solana, Ethereum, and Tron that matches each payment by a unique amount, waits for confirmations, and routes anomalies to manual reconciliation.",
+							ru: "Собрал **движок крипто-платежей** — on-chain watcher по Solana, Ethereum и Tron, который матчит каждый платёж по уникальной сумме, ждёт подтверждений и отправляет аномалии на ручную сверку."
+						},
+						showIn: ['fullstack'],
+					},
+					{
+						base: {
+							en: "Built the **back-office and passwordless auth** — payout workflow with an audit trail, payment-anomaly resolution, per-country limits, and one-time-code or magic-link login.",
+							ru: "Сделал **админ-панель и беспарольную авторизацию** — workflow выплат с аудитом, разбор аномалий, лимиты по странам и вход по одноразовому коду или magic-ссылке."
+						},
+						showIn: ['fullstack'],
+					},
+					// === React — product UI ===
+					{
+						base: {
+							en: "Built the **admin back-office UI** — payout review, payment-anomaly resolution, and portfolio, news, and limit management.",
+							ru: "Собрал **UI админ-панели** — ревью выплат, разбор аномалий платежей, управление портфелем, новостями и лимитами."
+						},
+						showIn: ['react'],
+					},
+					{
+						base: {
+							en: "Investment flow with a **country-aware limits slider** (rules from the API), a searchable country list, and safe two-step destructive actions.",
+							ru: "Инвестиционный флоу со **слайдером лимитов по странам** (правила приходят из API), поиском по списку стран и безопасным удалением в два шага."
+						},
+						showIn: ['react'],
+					},
+					{
+						base: {
+							en: "Passwordless login UI (six-digit code or magic link) and full English and Russian localization (i18next).",
+							ru: "UI беспарольного входа (шестизначный код или magic-ссылка) и полная локализация на английский и русский (i18next)."
+						},
+						showIn: ['react'],
+					},
+				],
+			},
+			{
+				cat: 'architecture',
+				items: [
+					// === all — detailed backend & delivery ===
+					{
+						base: {
+							en: "**Fastify** backend with fail-fast config validation (Zod), rate limiting, and bot detection. Postgres and Prisma with automatic migrations and an isolated test database.",
+							ru: "Бэкенд на **Fastify** с fail-fast валидацией конфига (Zod), rate-limit и bot-detection. Postgres и Prisma с авто-миграциями и изолированной тестовой базой."
+						},
+						showIn: ['all'],
+					},
+					{
+						base: {
+							en: "Owned **automated deployments** — Dockerized services shipped to a VPS with no manual steps, Caddy serving hashed assets behind a no-cache HTML shell. Live price quotes on a schedule, with order composition stored as immutable snapshots (keep what happened, compute the rest).",
+							ru: "Владел **автоматическим деплоем** — Docker-сервисы уезжают на VPS без ручных шагов, Caddy отдаёт хэшированные ассеты за no-cache HTML-шеллом. Живые котировки по расписанию, состав заказа хранится неизменяемыми снимками (храним что произошло, остальное вычисляем)."
+						},
+						showIn: ['all'],
+					},
+					// === Fullstack — consolidated backend & delivery ===
+					{
+						base: {
+							en: "Owned the **backend and delivery** — Fastify (Zod-validated config, rate limiting, bot detection), Postgres and Prisma with automatic migrations, and Dockerized services auto-deployed to a VPS behind Caddy. Live quotes on a schedule with event-sourced order snapshots.",
+							ru: "Вёл **бэкенд и доставку** — Fastify (Zod-валидация конфига, rate-limit, bot-detection), Postgres и Prisma с авто-миграциями, Docker-сервисы с авто-деплоем на VPS за Caddy. Живые котировки по расписанию с event-sourced снимками заказов."
+						},
+						showIn: ['fullstack'],
+					},
+					// === React — frontend infra ===
+					{
+						base: {
+							en: "Built an **auto-update system** so live clients pick up new releases automatically, without a hard refresh.",
+							ru: "Построил **систему авто-обновления** — живые клиенты подхватывают новые релизы автоматически, без хард-релоуда."
+						},
+						showIn: ['react'],
+					},
+					{
+						base: {
+							en: "Hashed asset builds (Vite) behind a no-cache HTML shell, with a lightweight first-party event-tracking client.",
+							ru: "Хэшированные сборки ассетов (Vite) за no-cache HTML-шеллом и лёгкий клиент собственного event-трекинга."
+						},
+						showIn: ['react'],
+					},
+				],
+			},
+			{
+				cat: 'observability',
+				items: [
+					// === all — detailed analytics & monitoring ===
+					{
+						base: {
+							en: "Built **first-party, cookieless analytics** to replace a third-party tool — GDPR-clean by design: visitors keyed by a daily salted hash, no raw IP or user-agent stored, location kept only as a country code (MaxMind). A server-side Meta Conversions API mirrors browser events with hashed data and purchase deduplication.",
+							ru: "Сделал **собственную cookieless-аналитику** взамен стороннего инструмента — GDPR-чистую by design: посетитель определяется дневным солёным хэшем, сырые IP и user-agent не хранятся, локация — только код страны (MaxMind). Серверный Meta Conversions API дублирует браузерные события с хэшированными данными и дедупом покупок."
+						},
+						showIn: ['all'],
+					},
+					{
+						base: {
+							en: "**Sentry** on backend and watcher, a dead-man-switch healthcheck, Telegram alerts, and transactional email (Resend) in English and Russian.",
+							ru: "**Sentry** на бэкенде и watcher'е, dead-man-switch healthcheck, Telegram-алерты и транзакционная почта (Resend) на английском и русском."
+						},
+						showIn: ['all'],
+					},
+					// === Fullstack — consolidated analytics & monitoring ===
+					{
+						base: {
+							en: "Built **first-party cookieless analytics** (GDPR-clean, MaxMind geo) with a server-side Meta Conversions API, plus Sentry on backend and watcher and a dead-man-switch healthcheck.",
+							ru: "Сделал **собственную cookieless-аналитику** (GDPR-чистую, гео через MaxMind) с серверным Meta Conversions API, плюс Sentry на бэкенде и watcher'е и dead-man-switch healthcheck."
+						},
+						showIn: ['fullstack'],
+					},
+				],
+			},
+			{
+				// === Vue — minimal fullstack credit (framework-agnostic) ===
+				items: [
+					{
+						base: {
+							en: "Fullstack work on a live AI-fund platform — an **on-chain crypto payment engine**, first-party cookieless analytics, and automated deployments.",
+							ru: "Fullstack-работа на живой платформе AI-фонда — **on-chain движок крипто-платежей**, собственная cookieless-аналитика и автоматический деплой."
+						},
+						showIn: ['vue'],
+					},
+				],
+			},
+		],
+		technologies: {
+			base: [
+				"React", "TypeScript", "Fastify", "Prisma",
+				"PostgreSQL", "Zod", "Docker", "Caddy", "Sentry", "MaxMind", "CI/CD"
+			],
+			byProfile: {
+				react: [
+					"React", "TypeScript", "Vite", "Tailwind",
+					"SCSS", "i18next", "CI/CD"
+				],
+				vue: [
+					"TypeScript", "Fastify", "Prisma", "PostgreSQL", "Zod", "Docker", "CI/CD"
+				],
+				fullstack: [
+					"React", "TypeScript", "Fastify", "Prisma",
+					"PostgreSQL", "Zod", "Docker", "Sentry", "CI/CD"
+				],
+			}
+		},
+	},
 	{
 		title: {
 			en: "Senior Frontend Engineer",
@@ -79,8 +282,8 @@ export const experiences: ExperienceItem[] = [
 					// === Production-cycle processes (all profiles) ===
 					{
 						base: {
-							en: "Every feature shipped through a **full production cycle** — responsive on desktop/tablet/mobile, unit-tested, localized via admin panel, CDN-delivered with WebP + compression, event tracking via PostHog.",
-							ru: "Каждая фича уходила в прод по **полному циклу** — адаптив на десктопе/планшете/мобиле, юнит-тесты, локализация через админку, доставка через CDN с WebP и сжатием, трекинг событий через PostHog."
+							en: "Every feature shipped through a **full production cycle** — responsive, unit-tested, localized, CDN + WebP, PostHog tracking.",
+							ru: "Каждая фича — через **полный продовый цикл**: адаптив, юнит-тесты, локализация, CDN + WebP, трекинг в PostHog."
 						},
 					},
 				],
@@ -148,52 +351,11 @@ export const experiences: ExperienceItem[] = [
 		description: [
 			{
 				items: [
-			// === CANON (all) — буллет 2 ===
-			{
-				base: {
-					en: "Developed **UI-heavy** interfaces with animations, complex state management, and responsive layout systems.",
-					ru: "Создавал **UI-heavy** интерфейсы с анимациями, сложными состояниями и адаптивными layout‑системами."
-				},
-				showIn: ['all'],
-			},
-			// === CANON (all) — буллет 3 ===
-			{
-				base: {
-					en: "Delivered fullstack solutions: frontend, backend, CI/CD, and deployment.",
-					ru: "Реализовывал fullstack-решения: frontend + backend + CI/CD + деплой."
-				},
-				showIn: ['all'],
-			},
-			// === CANON (all) — буллет 4 ===
-			{
-				base: {
-					en: "Designed application architecture, role-based access systems, real-time updates, and integrations.",
-					ru: "Проектировал архитектуру, систему ролей и прав доступа, real-time обновления и интеграции."
-				},
-				showIn: ['all'],
-			},
-			// === CANON (all) — буллет 5 ===
-			{
-				base: {
-					en: "Owned quality, performance, and bringing projects to a production-ready state.",
-					ru: "Отвечал за качество, производительность и доведение проектов до рабочей прод-стадии."
-				},
-				showIn: ['all'],
-			},
-
 			// === REACT — буллет 1 ===
 			{
 				base: {
 					en: "Built **UI-heavy** web applications and Telegram Mini Apps using React / Next.js.",
 					ru: "Разрабатывал **UI-heavy** веб-приложения и Telegram Mini Apps на React / Next.js."
-				},
-				showIn: ['react'],
-			},
-			// === REACT — буллет 2 ===
-			{
-				base: {
-					en: "Implemented complex animations, interactive states, and responsive layouts.",
-					ru: "Реализовывал сложные анимации, интерактивные состояния и адаптивные интерфейсы."
 				},
 				showIn: ['react'],
 			},
@@ -205,15 +367,6 @@ export const experiences: ExperienceItem[] = [
 				},
 				showIn: ['react'],
 			},
-			// === REACT — буллет 4 ===
-			{
-				base: {
-					en: "Optimized performance, UX, and initial load.",
-					ru: "Оптимизировал производительность, UX и initial load."
-				},
-				showIn: ['react'],
-			},
-
 			// === VUE — буллет 1 ===
 			{
 				base: {
@@ -222,69 +375,29 @@ export const experiences: ExperienceItem[] = [
 				},
 				showIn: ['vue'],
 			},
-			// === VUE — буллет 2 ===
-			{
-				base: {
-					en: "Developed responsive UI systems and animated interfaces.",
-					ru: "Создавал адаптивные UI-системы и анимированные интерфейсы."
-				},
-				showIn: ['vue'],
-			},
 			// === VUE — буллет 3 ===
 			{
 				base: {
-					en: "Delivered landing pages and product pages with strong UX focus.",
-					ru: "Реализовывал лендинги и продуктовые страницы с упором на визуал и UX."
+					en: "Delivered landing pages and product pages with animation and responsive layout.",
+					ru: "Реализовывал лендинги и продуктовые страницы с анимацией и адаптивной вёрсткой."
 				},
 				showIn: ['vue'],
-			},
-			// === VUE — буллет 4 ===
-			{
-				base: {
-					en: "Optimized client-side performance and stability.",
-					ru: "Оптимизировал клиентскую производительность и стабильность."
-				},
-				showIn: ['vue'],
-			},
-			// === FULLSTACK — буллет 1 ===
-			{
-				base: {
-					en: "Built production fullstack products, covering frontend, backend services, and infrastructure.",
-					ru: "Разрабатывал production fullstack-продукты: frontend, backend-сервисы и инфраструктуру."
-				},
-				showIn: ['fullstack'],
 			},
 			// === FULLSTACK — буллет 2 ===
 			{
 				base: {
-					en: "Developed a crypto dashboard with **real-time updates**, portfolio metrics, and role-based access.",
-					ru: "Создал крипто-дашборд с **real-time обновлениями**, метриками портфелей и ролями пользователей."
+					en: "Developed a crypto dashboard — **real-time via Go + WebSockets**, portfolio metrics, and role-based access.",
+					ru: "Создал крипто-дашборд — **real-time на Go + WebSockets**, метрики портфелей и роли пользователей."
 				},
-				showIn: ['fullstack'],
-			},
-			// === FULLSTACK — буллет 3 ===
-			{
-				base: {
-					en: "Implemented backend services in Go with WebSockets and REST APIs.",
-					ru: "Реализовывал backend-сервисы на Go с WebSocket-ами и REST API."
-				},
-				showIn: ['fullstack'],
-			},
-			// === FULLSTACK — буллет 4 ===
-			{
-				base: {
-					en: "Set up CI/CD pipelines, deployment, and environments.",
-					ru: "Настраивал CI/CD, деплой и окружения."
-				},
-				showIn: ['fullstack'],
+				showIn: ['fullstack', 'all'],
 			},
 			// === FULLSTACK — буллет 5 ===
 			{
 				base: {
-					en: "Worked on a mobile e‑commerce app (Flutter); built it solo across the full stack — Go + PostgreSQL backend, React admin (QR codes, CRUD, service flows), OpenAPI-driven contracts, and a Docker container per service including S3 and mail.",
-					ru: "Работал над мобильным e‑commerce приложением (Flutter); сделал в соло на всех слоях — бэкенд на Go + PostgreSQL, админка на React (QR-коды, CRUD, сервисные флоу), контракты на OpenAPI и по Docker-контейнеру на каждый сервис, включая S3 и почту."
+					en: "Worked on a mobile e‑commerce app (Flutter), built solo across the full stack — Go + PostgreSQL backend, React admin (QR codes, CRUD, service flows), OpenAPI-driven contracts, and a Docker container per service including S3 and mail.",
+					ru: "Работал над мобильным e‑commerce приложением (Flutter), сделал в соло на всех слоях — бэкенд на Go + PostgreSQL, админка на React (QR-коды, CRUD, сервисные флоу), контракты на OpenAPI и по Docker-контейнеру на каждый сервис, включая S3 и почту."
 				},
-				showIn: ['fullstack'],
+				showIn: ['fullstack', 'all'],
 			},
 				],
 			},
@@ -338,7 +451,7 @@ export const experiences: ExperienceItem[] = [
 					{
 						base: {
 							en: "Led the frontend of a [Telegram gaming platform](https://t.me/orbit_portal_bot) from pre-launch to **1M users**, owning UI and core business logic (rewards, purchases, ads)",
-							ru: "Возглавил фронтенд [игровой платформы в Telegram](https://t.me/orbit_portal_bot): от prelaunch до **1M пользователей**; отвечал за UI и ключевую логику (награды, покупки, реклама)"
+							ru: "Возглавил фронтенд [игровой платформы в Telegram](https://t.me/orbit_portal_bot): от prelaunch до **1M пользователей**, отвечал за UI и ключевую логику (награды, покупки, реклама)"
 						},
 					},
 					// === SDK (только all) ===
@@ -372,7 +485,7 @@ export const experiences: ExperienceItem[] = [
 					// === Performance ===
 					{
 						base: {
-							en: "Optimized for Telegram Mini Apps constraints: **reduced initial JS payload by 55%** (1.1 MB → 490 KB gz) via code-splitting, tree-shaking, and asset deduplication",
+							en: "Optimized for Telegram Mini Apps constraints: **reduced initial JS payload by 55%** (from 1.1 MB to 490 KB gz) via code-splitting, tree-shaking, and asset deduplication",
 							ru: "Оптимизировал под ограничения TMA: **сократил initial JS на 55%** (с 1.1 MB до 490 KB gz) благодаря code-splitting, tree-shaking и дедупликации ассетов"
 						},
 					},
@@ -381,13 +494,13 @@ export const experiences: ExperienceItem[] = [
 			{
 				cat: 'architecture',
 				items: [
-					// === Architecture (только fullstack) ===
+					// === SDK integration into partner games (fullstack + all) ===
 					{
 						base: {
-							en: "Collaborated on platform architecture and cross-service integrations for partner games",
-							ru: "Участвовал в проектировании платформенной архитектуры и интеграций с партнёрскими сервисами"
+							en: "Built a reusable SDK adapter and integration docs so partner **Unity and Unreal games** ran correctly inside Telegram Mini Apps — WebView constraints, auth handoff, and balance and inventory sync. Adopted across **dozens of partner games**.",
+							ru: "Сделал переиспользуемый SDK-адаптер и доку по интеграции, чтобы партнёрские игры на **Unity и Unreal** корректно работали внутри Telegram Mini Apps — ограничения WebView, проброс авторизации, синхронизация баланса и инвентаря. Внедрён в **десятки партнёрских игр**."
 						},
-						showIn: ['fullstack'],
+						showIn: ['fullstack', 'all'],
 					},
 				],
 			},
@@ -465,19 +578,6 @@ export const experiences: ExperienceItem[] = [
 					},
 				],
 			},
-			{
-				cat: 'architecture',
-				items: [
-					// === Backend integration (только fullstack) ===
-					{
-						base: {
-							en: "Collaborated with backend and analytics to integrate ad network data into product dashboards",
-							ru: "Работал в связке с backend и аналитикой, интегрируя данные рекламных сетей в продуктовые дашборды"
-						},
-						showIn: ['fullstack'],
-					},
-				],
-			},
 		],
 		technologies: {
 			base: [
@@ -520,18 +620,11 @@ export const experiences: ExperienceItem[] = [
 			{
 				cat: 'product',
 				items: [
-					// === SVG Editor ===
+					// === SVG Editor + cross-project UI kit ===
 					{
 						base: {
-							en: "Built the [Iconizer SVG editor](https://icons8.com/iconizer) on Paper.js with support for grouped downloads, editable previews, syntax-highlighted embed code, and role-based access",
-							ru: "Разработал [SVG-редактор Iconizer](https://icons8.com/iconizer) на Paper.js с поддержкой групповых скачиваний, редактируемых превью, подсветки кода и ролевого доступа"
-						},
-					},
-					// === UI Kit ===
-					{
-						base: {
-							en: "Maintained and extended a shared internal UI kit used across multiple products, including accessibility improvements",
-							ru: "Поддерживал и развивал внутренний UI-kit, используемый в нескольких продуктах, включая улучшения доступности"
+							en: "Built the [Iconizer SVG editor](https://icons8.com/iconizer) on Paper.js (grouped downloads, editable previews, syntax-highlighted embed code) and a **cross-project atomic UI component library** shipped across Icons8 products",
+							ru: "Разработал [SVG-редактор Iconizer](https://icons8.com/iconizer) на Paper.js (групповые скачивания, редактируемые превью, подсветка кода) и **кросс-проектную атомарную UI-библиотеку компонентов** для продуктов Icons8"
 						},
 					},
 					// === Ad UX ===
@@ -605,25 +698,11 @@ export const experiences: ExperienceItem[] = [
 							ru: "Разрабатывал изолированные SPA-модули, интегрируемые в легаси-монолит, включая PHP‑интеграции"
 						},
 					},
-					// === UI Kit ===
-					{
-						base: {
-							en: "Built an internal UI kit for document-heavy workflows",
-							ru: "Создал внутренний UI-kit для задач документооборота"
-						},
-					},
 					// === Editable table ===
 					{
 						base: {
 							en: "Implemented a complex editable table with nested forms and full mobile responsiveness",
 							ru: "Реализовал сложную редактируемую таблицу с вложенными формами и полной адаптацией под мобильные устройства"
-						},
-					},
-					// === UX ===
-					{
-						base: {
-							en: "Improved UX to reduce repetitive manual steps in bureaucratic interfaces",
-							ru: "Улучшал UX для сокращения ручных и повторяющихся операций в бюрократических интерфейсах"
 						},
 					},
 				],

@@ -46,7 +46,7 @@ export interface ProfiledBullet {
 
 // === Experience Sections ===
 
-export type ExperienceCategory = 'product' | 'architecture' | 'performance' | 'process';
+export type ExperienceCategory = 'product' | 'architecture' | 'performance' | 'process' | 'observability';
 
 /** A group of bullets within an experience. Omit `cat` for an unlabeled (flat) group. */
 export interface ExperienceSection {

@@ -12,12 +12,12 @@ export const summary: Summary = {
         },
         profiles: {
             fullstack: {
-                ru: "Fullstack Engineer с сильным фокусом на frontend и UI-heavy продуктах.\nПомимо фронтенда разрабатываю backend-сервисы на Go и мобильные Flutter-приложения с полным CI/CD и деплоем.",
-                en: "Fullstack Engineer with a strong frontend focus and experience in UI-heavy products.\nIn addition to frontend, build backend services in Go and Flutter mobile apps with full CI/CD and deployment."
+                ru: "Fullstack Engineer с сильным фокусом на frontend и UI-heavy продуктах.\nПомимо фронтенда разрабатываю backend-сервисы на Node.js и Go и мобильные Flutter-приложения с полным CI/CD и деплоем.",
+                en: "Fullstack Engineer with a strong frontend focus and experience in UI-heavy products.\nIn addition to frontend, build backend services in Node.js and Go, and Flutter mobile apps with full CI/CD and deployment."
             },
             all: {
-                ru: "Fullstack Engineer с сильным фокусом на frontend и UI-heavy продуктах.\nПомимо фронтенда разрабатываю backend на Go и мобильные Flutter-приложения с полным CI/CD и деплоем.",
-                en: "Fullstack Engineer with a strong frontend focus and experience in UI-heavy products.\nIn addition to frontend, build backend services in Go and Flutter mobile apps with full CI/CD and deployment."
+                ru: "Fullstack Engineer с сильным фокусом на frontend и UI-heavy продуктах.\nПомимо фронтенда разрабатываю backend на Node.js и Go и мобильные Flutter-приложения с полным CI/CD и деплоем.",
+                en: "Fullstack Engineer with a strong frontend focus and experience in UI-heavy products.\nIn addition to frontend, build backend services in Node.js and Go, and Flutter mobile apps with full CI/CD and deployment."
             }
         }
     }

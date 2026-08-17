@@ -82,8 +82,8 @@ const fmtDuration = (m: number) => {
 };
 
 const t = lang === 'ru'
-  ? { about: 'Обо мне', skills: 'Навыки', exp: 'Опыт работы', edu: 'Образование', awards: 'Награды', teaching: 'Преподавание' }
-  : { about: 'About me', skills: 'Skills', exp: 'Experience', edu: 'Education', awards: 'Awards', teaching: 'Teaching' };
+  ? { about: 'Обо мне', skills: 'Навыки', exp: 'Опыт работы', edu: 'Образование', awards: 'Награды', teaching: 'Преподавание', awardsTeaching: 'Награды и преподавание' }
+  : { about: 'About me', skills: 'Skills', exp: 'Experience', edu: 'Education', awards: 'Awards', teaching: 'Teaching', awardsTeaching: 'Awards & teaching' };
 
 // PDF filename — browsers use document.title as the default "Save as PDF" name
 // AND build-time PDF generator writes to public/downloads/<this>.pdf.
@@ -126,7 +126,7 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
         color: #0a0a0a;
         font: 10.5pt/1.4 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       }
-      .page { max-width: 800px; margin: 14px auto; padding: 14px 20px; }
+      .page { max-width: 800px; margin: 14px auto; padding: 13px 20px; }
 
       /* Header — name/role/contacts left, QR code right (same height) */
       .header {
@@ -134,7 +134,7 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
         justify-content: space-between;
         align-items: stretch;
         gap: 22px;
-        margin-bottom: 10px;
+        margin-bottom: 9px;
       }
       .header__left { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
       .header__qr {
@@ -145,16 +145,16 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
       .header__qr img {
         height: 100%;
         width: auto;
-        max-height: 110px;
-        max-width: 110px;
+        max-height: 100px;
+        max-width: 100px;
         display: block;
       }
 
       /* Heading + role styles ported from handoff resume.html */
-      h1.name { margin: 0 0 3px; font-size: 25pt; letter-spacing: -0.01em; font-weight: 700; line-height: 1.05; }
-      .role { color: #444; font-size: 12pt; margin-bottom: 10px; font-weight: 500; }
+      h1.name { margin: 0 0 3px; font-size: 24pt; letter-spacing: -0.01em; font-weight: 700; line-height: 1.05; }
+      .role { color: #444; font-size: 12pt; margin-bottom: 8px; font-weight: 500; }
       h2.section {
-        margin: 6px 0 4px;
+        margin: 4px 0 2px;
         font-size: 11pt;
         letter-spacing: 0.1em;
         text-transform: uppercase;
@@ -182,13 +182,13 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
         text-decoration-color: #999;
         text-underline-offset: 2px;
       }
-      .summary p { margin: 0 0 4px; font-size: 10pt; color: #222; }
+      .summary p { margin: 0 0 3px; font-size: 10pt; color: #222; }
       .skills {
-        font-size: 10pt;
+        font-size: 9.5pt;
         color: #333;
-        line-height: 1.55;
+        line-height: 1.45;
       }
-      .exp { margin-bottom: 5px; break-inside: avoid; page-break-inside: avoid; }
+      .exp { margin-bottom: 3px; break-inside: avoid; page-break-inside: avoid; }
       .exp-head {
         display: flex;
         justify-content: space-between;
@@ -198,8 +198,8 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
       /* Icon wrapper sizes the slot; no clipping/rounding so circular logos
          (e.g. Cobalt) don't lose their corners and square logos render as-is. */
       .exp-icon-wrap {
-        width: 38px;
-        height: 38px;
+        width: 36px;
+        height: 36px;
         flex: 0 0 auto;
         align-self: flex-start;
       }
@@ -233,7 +233,7 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
         font-size: 10pt;
         color: #222;
         margin-bottom: 1px;
-        line-height: 1.32;
+        line-height: 1.3;
         list-style-type: disc;
       }
       ul.bullets li::marker { color: #222; }
@@ -241,7 +241,7 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
 
       /* Company intro line + category subheadings — mirror the site's grouped
          experience structure. */
-      .exp-intro { font-size: 9.5pt; color: #333; margin: 3px 0 0; line-height: 1.32; }
+      .exp-intro { font-size: 9.5pt; color: #333; margin: 3px 0 0; line-height: 1.3; }
       /* Category as a compact inline lead-in on the group's first bullet —
          keeps the grouping visible without spending a full line per heading
          (critical for the 2-page A4 budget on dense RU variants). */
@@ -261,10 +261,13 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
       .tags {
         font-size: 9pt;
         color: #555;
-        margin-top: 3px;
-        line-height: 1.4;
+        margin-top: 2px;
+        line-height: 1.35;
       }
       .award-sub { font-size: 9pt; color: #888; margin-top: 2px; }
+      .compact-line { font-size: 10pt; color: #222; line-height: 1.3; margin-top: 2px; }
+      .compact-line a { color: #0a0a0a; }
+      .award-sub-inline { font-size: 9pt; color: #888; }
 
       @media print {
         .page { margin: 0; padding: 0; max-width: none; }
@@ -342,15 +345,10 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
         </div>
       ))}
 
-      {/* Skills row only on focused profiles. The 'all' view's skills list
-          is the kitchen-sink (~80+ tags) — too noisy for a printed resume,
-          and per-experience tags above cover the relevant keywords for ATS. */}
-      {profile !== 'all' && cv.tags.length > 0 && (
-        <>
-          <h2 class="section">{t.skills}</h2>
-          <div class="skills">{cv.tags.join(' · ')}</div>
-        </>
-      )}
+      {/* Skills section omitted from the PDF on every profile: the per-experience
+          tag rows already carry the relevant keywords for ATS, and dropping the
+          standalone list keeps focused variants to a clean 2-page A4 at a
+          readable line-height. (The on-site Key Skills section is unaffected.) */}
 
       <h2 class="section">{t.edu}</h2>
       {cv.education.map(edu => (
@@ -379,31 +377,20 @@ const qrTargetUrl = `${SITE_ORIGIN}/${langSegment}${profileSegment}`;
         </div>
       ))}
 
-      {cv.awards.length > 0 && (
+      {/* Awards + Teaching merged into one compact section (single heading,
+          items joined by · instead of a bulleted list) — keeps the tail from
+          spilling onto a 3rd A4 page on the focused variants. */}
+      {(cv.awards.length > 0 || cv.teaching.length > 0) && (
         <>
-          <h2 class="section">{t.awards}</h2>
-          <ul class="bullets">
-            {cv.awards.map(a => (
-              <li>
-                <span set:html={md(a.details)}></span>
-                {a.subDetails && <div class="award-sub" set:html={md(a.subDetails)}></div>}
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-
-      {cv.teaching.length > 0 && (
-        <>
-          <h2 class="section">{t.teaching}</h2>
-          <ul class="bullets">
-            {cv.teaching.map(tch => (
-              <li>
-                <span set:html={md(tch.details)}></span>
-                {tch.subDetails && <div class="award-sub" set:html={md(tch.subDetails)}></div>}
-              </li>
-            ))}
-          </ul>
+          <h2 class="section">{t.awardsTeaching}</h2>
+          {cv.awards.length > 0 && (
+            <div class="compact-line" set:html={cv.awards.map(a =>
+              md(a.details) + (a.subDetails ? ` <span class="award-sub-inline">(${md(a.subDetails)})</span>` : '')
+            ).join(' · ')}></div>
+          )}
+          {cv.teaching.length > 0 && (
+            <div class="compact-line" set:html={cv.teaching.map(tch => md(tch.details)).join(' · ')}></div>
+          )}
         </>
       )}
     </div>

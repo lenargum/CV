@@ -31,7 +31,11 @@ export const VUE_ECOSYSTEM_TAGS = ["Vue", "Vuex", "Pinia", "Nuxt", "Vuetify"];
 
 // Backend
 export const BACKEND_TAGS = [
+  "Node.js",
+  "Fastify",
   "Go",
+  "Prisma",
+  "Zod",
   "PostgreSQL",
   "Redis",
   "MongoDB",
@@ -44,6 +48,8 @@ export const BACKEND_TAGS = [
   // Niche/specific backend tech — included so Tag.tsx colors them as backend
   // (Go-blue), but hidden from Key Skills via HIDE_FROM_KEY_SKILLS to keep
   // that section noise-free. Still searchable in per-experience tag rows.
+  "Caddy",
+  "MaxMind",
   "TimescaleDB",
   "SQLite",
   // Education-era backend tech — kept for color/grouping, hidden from Key Skills.
@@ -65,10 +71,14 @@ export const TOOLING_TAGS = [
   "Figma",
   "Telegram Mini Apps (TMA)",
 
-  // Analytics
+  // i18n
+  "i18next",
+
+  // Analytics & monitoring
   "Google Tag Manager",
   "Yandex Metrica",
   "PostHog",
+  "Sentry",
 
   // Visualization / animation
   "Motion.js",
@@ -90,6 +100,8 @@ export const TOOLING_TAGS = [
  * rows are unaffected — these tags still appear under each role where used.
  */
 export const HIDE_FROM_KEY_SKILLS = new Set<string>([
+  "Caddy",
+  "MaxMind",
   "TimescaleDB",
   "SQLite",
   "MySQL",
@@ -216,7 +228,7 @@ export const generateTags = (): string[] => {
 const KEY_SKILLS_BY_PROFILE: Record<ProfileType, string[]> = {
   react: [
     "React", "TypeScript", "Next.js", "Redux", "Zustand",
-    "Tailwind", "Web Performance Optimization", "CI/CD",
+    "Tailwind", "i18next", "Web Performance Optimization", "CI/CD",
     "Telegram Mini Apps (TMA)", "Motion.js", "shadcn/ui",
     "Vitest", "Git", "REST API"
   ],
@@ -227,11 +239,11 @@ const KEY_SKILLS_BY_PROFILE: Record<ProfileType, string[]> = {
     "Web Performance Optimization", "Git", "REST API"
   ],
   fullstack: [
-    "React", "TypeScript", "Next.js", "Zustand", "Tailwind",
+    "React", "TypeScript", "Node.js", "Fastify", "Next.js", "Zustand", "Tailwind",
     "Go", "REST API", "WebSockets", "Microservices",
-    "PostgreSQL", "Redis", "MongoDB", "TimescaleDB",
+    "Prisma", "Zod", "PostgreSQL", "Redis", "MongoDB", "TimescaleDB",
     "Docker", "CI/CD", "Git",
-    "PostHog", "Vitest"
+    "Sentry", "PostHog", "Vitest"
   ],
   all: [], // empty means use generateTags()
 };
@@ -247,7 +259,7 @@ const PROFILE_HIDE_TAGS: Partial<Record<ProfileType, string[]>> = {
 const PROFILE_HIGHLIGHT_TAGS: Partial<Record<ProfileType, string[]>> = {
   react: [...REACT_ECOSYSTEM_TAGS, "Telegram Mini Apps (TMA)", "Motion.js", "Vitest"],
   vue: [...VUE_ECOSYSTEM_TAGS, "Chart.js", "Paper.js", "Vitest"],
-  fullstack: ["Go", "PostgreSQL", "Redis", "Docker", "CI/CD", "PostHog", "Vitest", ...REACT_ECOSYSTEM_TAGS],
+  fullstack: ["Node.js", "Fastify", "Go", "Prisma", "PostgreSQL", "Redis", "Docker", "CI/CD", "Sentry", "PostHog", "Vitest", ...REACT_ECOSYSTEM_TAGS],
   all: [], // no special highlighting
 };
 
